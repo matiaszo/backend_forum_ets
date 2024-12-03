@@ -5,6 +5,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+
 
 @Entity
 @Table(name = "tbProjectMember")
@@ -23,4 +27,15 @@ public class ProjectMemberModel {
         this.projectMemberId = projectMemberId;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private UserModel user;
+
+    @ManyToOne
+    @JoinColumn(name = "id_project")
+    private ProjectModel skill;
 }
+
+
+
+
