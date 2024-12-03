@@ -29,6 +29,9 @@ public class UserModel {
     @OneToMany(mappedBy="user", orphanRemoval = true)
     private List<UserSkillModel> skills;  
 
+    @OneToMany(mappedBy="user", orphanRemoval = true)
+    private List<InteractionModel> interactions;  
+
     public String getName() {
         return name;
     }

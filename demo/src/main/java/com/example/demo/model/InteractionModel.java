@@ -28,10 +28,6 @@ public class InteractionModel {
     @JoinColumn(name = "id_user")
     private UserModel user;
     
-    // para colocar na tabela user
-    // @OneToMany(mappedBy="user", orphanRemoval = true)
-    // private List<InteractionModel> Users;  
-    
     @OneToMany(mappedBy="chat", orphanRemoval = true)
     private List<MessageModel> Messages;  
 
