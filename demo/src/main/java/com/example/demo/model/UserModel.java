@@ -20,11 +20,14 @@ public class UserModel {
     @Column
     private Long userId;
 
+    @OneToMany
+    private List<InterestModel> interest;
+
     @Column
     private String name;
     
     @OneToMany(mappedBy="user", orphanRemoval = true)
-    private List<UserSkillModel> Skills;  
+    private List<UserSkillModel> skills;  
 
     public String getName() {
         return name;
@@ -110,5 +113,6 @@ public class UserModel {
     public void setGitUsername(String gitUsername) {
         this.gitUsername = gitUsername;
     }
+
     
 }
