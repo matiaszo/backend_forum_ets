@@ -1,14 +1,17 @@
 package com.example.demo.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table( name = "tbUser")
-public class User {
+public class UserModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +19,9 @@ public class User {
     private Long userId;
 
     private String name;
+    
+    @OneToMany(mappedBy="user", orphanRemoval = true)
+    private List<UserSkillModel> Skills;  
 
     public String getName() {
         return name;
