@@ -23,6 +23,9 @@ public class UserModel {
     @OneToMany
     private List<InterestModel> interest;
 
+    @OneToMany
+    private List<FeedbackModel> feedbacks;
+
     @Column
     private String name;
     
