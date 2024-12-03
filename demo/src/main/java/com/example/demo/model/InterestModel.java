@@ -1,28 +1,32 @@
 package com.example.demo.model;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name= "tbSkills")
-public class SkillsModel {
+@Table( name = "tbInterest")
+public class InterestModel {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_skills;
-    
+    private Long interestId;
+
+    public Long getInterestId() {
+        return interestId;
+    }
+
+    public void setInterestId(Long interestId) {
+        this.interestId = interestId;
+    }
+
     @Column
     private String name;
 
-    @OneToMany(mappedBy="skill", orphanRemoval = true)
-    private List<UserSkillModel> Users;  
-    
     public String getName() {
         return name;
     }
@@ -31,11 +35,7 @@ public class SkillsModel {
         this.name = name;
     }
 
-    public Long getId_skills() {
-        return id_skills;
-    }
+    @ManyToOne
+    private UserModel user;
 
-    public void setId_skills(Long id_skills) {
-        this.id_skills = id_skills;
-    }
 }
