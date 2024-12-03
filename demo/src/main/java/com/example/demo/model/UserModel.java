@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,8 +17,10 @@ public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
+    @Column
     private Long userId;
 
+    @Column
     private String name;
     
     @OneToMany(mappedBy="user", orphanRemoval = true)
@@ -31,6 +34,7 @@ public class UserModel {
         this.name = name;
     }
 
+    @Column
     private String edv;
 
     public String getEdv() {
@@ -41,6 +45,7 @@ public class UserModel {
         this.edv = edv;
     }
 
+    @Column
     private String password;
 
     public String getPassword() {
@@ -51,6 +56,7 @@ public class UserModel {
         this.password = password;
     }
 
+    @Column
     private Boolean instructor;
 
     public Boolean getInstructor() {
@@ -61,6 +67,7 @@ public class UserModel {
         this.instructor = instructor;
     }
 
+    @Column
     private String image;
 
     public String getImage() {
@@ -71,6 +78,7 @@ public class UserModel {
         this.image = image;
     }
 
+    @Column
     private String bio;
 
     public String getBio() {
@@ -81,6 +89,7 @@ public class UserModel {
         this.bio = bio;
     }
 
+    @Column
     private String email;
     
     public String getEmail() {
@@ -91,6 +100,7 @@ public class UserModel {
         this.email = email;
     }
 
+    @Column
     private String gitUsername;
 
     public String getGitUsername() {
