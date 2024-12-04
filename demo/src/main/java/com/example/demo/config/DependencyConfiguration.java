@@ -8,10 +8,12 @@ import com.example.demo.filters.JWTFilter;
 import com.example.demo.interfaces.AuthInterface;
 import com.example.demo.interfaces.EncoderInterface;
 import com.example.demo.interfaces.JWTInterface;
+import com.example.demo.interfaces.SkillsInterface;
 import com.example.demo.interfaces.UserInterface;
 import com.example.demo.services.AuthService;
 import com.example.demo.services.EncoderService;
 import com.example.demo.services.JWTService;
+import com.example.demo.services.SkillsService;
 import com.example.demo.services.UserService;
 
 @Configuration
@@ -40,5 +42,10 @@ public class DependencyConfiguration {
     @Bean
     public UserInterface userInterface() {
         return new UserService();
+    }
+   
+    @Bean
+    public SkillsInterface skillInterface() {
+        return new SkillsService();
     }
 }
