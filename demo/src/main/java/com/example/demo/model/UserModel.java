@@ -42,6 +42,14 @@ public class UserModel {
     @Column
     private String gitUsername;
 
+    public Long getUserId() {
+        return id_user;
+    }
+
+    public void setUserId(Long userId) {
+        this.id_user = userId;
+    }
+
     //! fOREGIN KEYS ENVIADAS
     @OneToMany(mappedBy="user", orphanRemoval = true)
     private List<InterestModel> interest;
