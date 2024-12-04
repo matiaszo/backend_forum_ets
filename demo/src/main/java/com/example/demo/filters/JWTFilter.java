@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.demo.dto.Token;
+import com.example.demo.interfaces.JWTInterface;
 import com.example.demo.services.JWTService;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JWTFilter extends OncePerRequestFilter{
 
     @Autowired
-    private JWTService jwtService;
+    private JWTInterface<Token> jwtService;
 
 
     @Override
