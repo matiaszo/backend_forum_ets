@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -16,17 +17,25 @@ public class FeedbackModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedbackId;
 
-    public Long getFeedbackId() {
-        return feedbackId;
-    }
-
-    public void setFeedbackId(Long feedbackId) {
-        this.feedbackId = feedbackId;
-    }
-
     @Column
     private Boolean visibility; // public é palavra reservada. TRUE: público, FALSE: privado
 
+    @Column
+    private String feedback;
+
+    @ManyToOne
+    @JoinColumn(name = "id_interaction")
+    private InteractionModel interaction;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_receptor")
+    private UserModel receptor;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_project")
+    private ProjectModel project;
+
+    //! GETTERS AND SETTERS
     public Boolean getVisibility() {
         return visibility;
     }
@@ -35,20 +44,11 @@ public class FeedbackModel {
         this.visibility = visibility;
     }
 
-    @Column
-    private String feedback;
+    public Long getFeedbackId() {
+        return feedbackId;
+    }
 
-    @ManyToOne
-    private InteractionModel interaction;
-
-    @ManyToOne
-    private UserModel receptor;
-    
-    @ManyToOne
-    private ProjectModel project;
-
-
-
-
-
+    public void setFeedbackId(Long feedbackId) {
+        this.feedbackId = feedbackId;
+    }
 }

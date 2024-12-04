@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import java.sql.Timestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,17 +21,38 @@ public class ProjectMessageModel {
     @Column
     private String text;
 
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp date;
+
     @ManyToOne
     @JoinColumn(name = "id_project")
     private ProjectModel project;
-
-    // @OneToMany(mappedBy="project", orphanRemoval = true)
-    // private List<ProjectMessageModel> Projects;
     
     @ManyToOne
-    @JoinColumn(name = "id_interaction")
-    private InteractionModel interaction;
+    @JoinColumn(name = "id_user")
+    private UserModel user;
 
-    // @OneToMany(mappedBy="interaction", orphanRemoval = true)
-    // private List<ProjectMessageModel> Projects;
+    public Long getId_project_message() {
+        return id_project_message;
+    }
+
+    public void setId_project_message(Long id_project_message) {
+        this.id_project_message = id_project_message;
+    }
+    
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+    
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
+    }
 }

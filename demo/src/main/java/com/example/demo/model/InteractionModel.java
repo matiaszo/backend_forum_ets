@@ -28,8 +28,8 @@ public class InteractionModel {
     @JoinColumn(name = "id_user")
     private UserModel user;
     
-    @OneToMany(mappedBy="chat", orphanRemoval = true)
-    private List<MessageModel> Messages;  
+    @OneToMany(mappedBy="interaction", orphanRemoval = true)
+    private List<MessageModel> messages;  
 
     public Long getId_interaction() {
         return id_interaction;
