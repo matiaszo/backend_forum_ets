@@ -11,18 +11,27 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tbChat")
-public class ChatModel {
+@Table(name = "tbSection")
+public class SectionModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_chat;
-
+    private Long id_section;
+    
     @Column
     private String name;
 
-    @OneToMany(mappedBy="chat", orphanRemoval = true)
-    private List<MessageModel> messages;  
+    @OneToMany(mappedBy="section", orphanRemoval = true)
+    private List<TopicModel> topics;  
+    
+    //! GETTERS AND SETTERS
+    public List<TopicModel> getTopics() {
+        return topics;
+    }
 
+    public void setTopics(List<TopicModel> topics) {
+        this.topics = topics;
+    }
+    
     public String getName() {
         return name;
     }
@@ -31,11 +40,11 @@ public class ChatModel {
         this.name = name;
     }
 
-    public Long getId_chat() {
-        return id_chat;
+    public Long getId_section() {
+        return id_section;
     }
 
-    public void setId_chat(Long id_chat) {
-        this.id_chat = id_chat;
+    public void setId_section(Long id_section) {
+        this.id_section = id_section;
     }
 }

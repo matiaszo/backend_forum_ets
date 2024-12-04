@@ -16,10 +16,24 @@ public class ProjectModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long projectId;
+    private Long id_project;
 
     @Column
     private String title;
+    
+    @OneToMany(mappedBy="project", orphanRemoval = true)
+    private List<FeedbackModel> feedbacks;
+    
+    @OneToMany(mappedBy="project", orphanRemoval = true)
+    private List<ProjectMessageModel> Projects;
+
+    public Long getId_project() {
+        return id_project;
+    }
+
+    public void setId_project(Long id_project) {
+        this.id_project = id_project;
+    }
 
     public String getTitle() {
         return title;
@@ -28,8 +42,5 @@ public class ProjectModel {
     public void setTitle(String title) {
         this.title = title;
     }
-
-    @OneToMany
-    private List<FeedbackModel> feedbacks;
 
 }
