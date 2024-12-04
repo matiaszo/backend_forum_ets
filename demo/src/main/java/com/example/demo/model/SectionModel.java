@@ -15,15 +15,26 @@ import jakarta.persistence.Table;
 public class SectionModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_section;
+    private Long sectionId;
     
     @Column
-    private String name;
+    private String title;
 
+    @Column
+    private String description;
+
+    
     @OneToMany(mappedBy="section", orphanRemoval = true)
     private List<TopicModel> topics;  
     
     //! GETTERS AND SETTERS
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     public List<TopicModel> getTopics() {
         return topics;
     }
@@ -32,19 +43,19 @@ public class SectionModel {
         this.topics = topics;
     }
     
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
-    public Long getId_section() {
-        return id_section;
+    public Long getSectionId() {
+        return sectionId;
     }
 
-    public void setId_section(Long id_section) {
-        this.id_section = id_section;
+    public void setSectionId(Long id_section) {
+        this.sectionId = id_section;
     }
 }

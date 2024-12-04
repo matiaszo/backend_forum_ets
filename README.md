@@ -1,9 +1,9 @@
 > para abrir use ctrl + shift + v
 
-# Token:
+### Token:
 ```
 {
-    id : number
+    userId : number
     instructor : boolean
 }
 ```
@@ -210,5 +210,5 @@
 - ## POST /interest/{id}
 
   - ## Front-end
-  
+
   - ## Back-end
