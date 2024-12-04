@@ -1,13 +1,13 @@
 > para abrir use ctrl + shift + v
 
-# Token:
+### Token:
 ```
 {
-    id : number
+    userId : number
     instructor : boolean
 }
 ```
-# /auth
+# /auth ✅
 ## POST /auth ✅
 
 ### Front-end
@@ -27,19 +27,10 @@
 
 
 # /register ✅
-## POST /register
+## POST /register ✅
 
 ### Requirements:
  Bcrypt, 8 characters;
-
-> [!IMPORTANT]
-> retornos do backend:
-> 0: algum dos parâmetros é nulo
-> 1: e-mail inválido
-> 2: senha inválida
-> 3: edv repetido
-> 10: OK!  
-
 
 ### Front-end
 ```
@@ -51,6 +42,8 @@
     intructor : boolean
 }
 ```
+> [!IMPORTANT]
+> retornos do backend: 0: algum dos parâmetros é nulo | 1: e-mail inválido | 2: senha inválida | 3: edv repetido | 10: OK!  
 
 ### Back-end
 ```
@@ -58,8 +51,8 @@
     number
 }
 ```
-# /forum
-## GET /forum
+# /forum ✅
+## GET /forum ✅
 
 ### Front-end
 
@@ -82,7 +75,7 @@ title
 ]
 ```
 
-## POST /forum/create
+## POST /forum/create ✅
 
 ### Front-end
 ```
@@ -96,16 +89,13 @@ title
 
 ```
 
+> [!IMPORTANT]
+> retornos do backend: 1: algum dos parâmetros é nulo | 2: título já existe | 3: não é instrutor (403) | 10: OK!  
+
 ### Back-end
 ```
 [
-    section: {
-        id : number
-        title : string
-        image : string
-        description: string
-    },
-    message: string
+    number
 ]
 ```
 
