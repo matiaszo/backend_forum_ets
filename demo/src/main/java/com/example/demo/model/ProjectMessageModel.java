@@ -21,7 +21,7 @@ public class ProjectMessageModel {
     @Column
     private String text;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private Timestamp date;
 
     @ManyToOne

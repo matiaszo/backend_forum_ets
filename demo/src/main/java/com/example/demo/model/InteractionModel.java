@@ -21,7 +21,7 @@ public class InteractionModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_interaction;
     
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private Timestamp date;
     
     @ManyToOne
