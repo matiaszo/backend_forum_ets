@@ -1,4 +1,4 @@
-> Para abrir use ctrl + shift + v
+> para abrir use ctrl + shift + v
 
 # Token:
 ```
@@ -7,10 +7,10 @@
     instructor : boolean
 }
 ```
+# /auth
+## POST /auth ✅
 
-# POST /auth
-
-## Front-end
+### Front-end
 ```
 {
     edv : string
@@ -18,7 +18,7 @@
 }
 ```
 
-## Back-end
+### Back-end
 ```
 {
     token : string
@@ -26,12 +26,22 @@
 ```
 
 
-# POST /register
+# /register ✅
+## POST /register
 
 ### Requirements:
-> Bcrypt, 8 characters;
+ Bcrypt, 8 characters;
 
-## Front-end
+> [!IMPORTANT]
+> retornos do backend:
+> 0: algum dos parâmetros é nulo
+> 1: e-mail inválido
+> 2: senha inválida
+> 3: edv repetido
+> 10: OK!  
+
+
+### Front-end
 ```
 {
     edv : string
@@ -42,20 +52,16 @@
 }
 ```
 
-## Back-end
+### Back-end
 ```
 {
-    edv : string
-    password : string
-    name : string
-    email : string
-    intructor : boolean
+    number
 }
 ```
+# /forum
+## GET /forum
 
-# GET /forum
-
-## Front-end
+### Front-end
 
 ### Query
 ```
@@ -63,7 +69,7 @@ page
 title
 ```
 
-## Back-end
+### Back-end
 ```
 [
     {
@@ -73,6 +79,33 @@ title
         mainComment : string
     },
     ...
+]
+```
+
+## POST /forum/create
+
+### Front-end
+```
+
+{
+    title : string
+    id : number
+    image : string
+    description: string
+}
+
+```
+
+### Back-end
+```
+[
+    section: {
+        id : number
+        title : string
+        image : string
+        description: string
+    },
+    message: string
 ]
 ```
 
