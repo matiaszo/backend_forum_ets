@@ -112,13 +112,13 @@
 
 # /profile
 
-- ## GET /profile/{id}
+- ## GET /profile/{id_user}
 
   - ## Front-end
 
     ### Path
     ```
-    id - id do usuário
+    id_user - id do usuário
     ```
 
   - ## Back-end
@@ -140,18 +140,25 @@
             },
             ...
         ]
+
+        interests : [
+            {
+                id : number
+                name : string
+            }
+        ]
     }
     ```
 
 > Obs: Para a criação do perfil, não é necassário uma bio ou um github, caso o usuário não tenha estes dados, eles voltarão como string vazia
 
-- ## GET /profile/feedback/{id}
+- ## GET /profile/feedback/{id_user}
 
   - ## Front-end
 
     ### Path
     ```
-    id - id do usuário
+    id_user - id do usuário
     ```
 
   - ## Back-end
@@ -172,13 +179,13 @@
     ]
     ```
 
-- ## GET /profile/interactions/{id}
+- ## GET /profile/interactions/{id_user}
 
   - ## Front-end
 
     ### Path
     ```
-    id - id do usuário
+    id_user - id do usuário
     ```
 
   - ## Back-end
@@ -205,10 +212,178 @@
     >
     > `feedback` - `content` terá o texto do feedback e o usuário pra quem ele foi dado. **Não retornar feedbacks privados.**
 
-# /interest
+- ## PATCH /profile/{id_user}
 
-- ## POST /interest/{id}
+  - ## Front-end
+  
+    ### Path:
+    ```
+    id_user
+    ```
+
+    ### Body:
+    ```
+    {
+        password : string | null
+        name : string | null
+        email : string | null
+        github : string | null
+        bio : string | null
+    }
+    ```
+
+  - ## Back-end
+    ```
+    {
+        password : string
+        name : string
+        email : string
+        github : string
+        bio : string
+    }
+    ```
+
+- ## POST /profile/skill/{id_user}
+
+  - ## Front-end
+  
+    ### Path:
+    ```
+    id_user
+    ```
+
+    ### Body
+    ```
+    {
+        id : number
+    }
+    ```
+
+  - ## Back-end
+    ```
+    {
+        id : number
+        image : string
+        title : string
+    }
+    ```
+
+- ## DELETE /profile/skill/{id_user}
+  
+  - ## Front-end
+
+    ### Path:
+    ```
+    id_user
+    ```
+
+    ### Body
+    ```
+    {
+        id : number
+    }
+    ```
+
+  - ## Back-end
+    ```
+    mensagem de sucesso
+    ```
+
+- ## POST /profile/interest/{id_user}
 
   - ## Front-end
 
+    ### Path:
+    ```
+    id_user
+    ```
+
+    ### Body
+    ```
+    {
+        name : string
+    }
+    ```
+
   - ## Back-end
+    ```
+    {
+        id : number
+        name : string
+    }
+    ```
+
+- ## DELETE /profile/interest/{id_user}
+  
+  - ## Front-end
+
+    ### Path:
+    ```
+    id_user
+    ```
+
+    ### Body
+    ```
+    {
+        id : number
+    }
+    ```
+
+  - ## Back-end
+    ```
+    mensagem de sucesso
+    ```
+
+# /skill
+
+- ## POST /skill
+
+  - ## Front-end
+    ```
+    {
+        id : number
+        image : string
+        title : string
+    }
+    ```
+    
+
+  - ## Back-end
+    ```
+    {
+        id : number
+        image : string
+        title : string
+    }
+    ```
+
+- ## GET /skill
+  
+  - ## Front-end
+
+
+  - ## Back-end
+    ```
+    [
+        {
+            id : number
+            image : string
+            title : string
+        },
+        ...
+    ]
+    ```
+
+- ## DELETE /skill
+  
+  - ## Front-end
+    ```
+    {
+        id : number
+    }
+    ```
+
+  - ## Back-end
+    ```
+    mensagem de sucesso
+    ```
