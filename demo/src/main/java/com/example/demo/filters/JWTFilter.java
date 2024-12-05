@@ -7,7 +7,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.demo.dto.Token;
 import com.example.demo.interfaces.JWTInterface;
-import com.example.demo.services.JWTService;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

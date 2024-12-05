@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,5 +56,17 @@ public class SkillsController {
         }
 
         return new ResponseEntity<>(allSkills, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<SkillDataDto>> getById(@PathVariable Long id) {
+        
+        var results = repo.queryByUser(id);
+
+        if (results == null) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(results, HttpStatus.ACCEPTED);
     }
 }
