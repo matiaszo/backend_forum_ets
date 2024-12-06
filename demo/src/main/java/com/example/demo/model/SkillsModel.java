@@ -19,9 +19,20 @@ public class SkillsModel {
     
     @Column
     private String name;
+    
+    @Column
+    private String image;
 
     @OneToMany(mappedBy="skill", orphanRemoval = true)
     private List<UserSkillModel> Users;  
+    
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
     
     public String getName() {
         return name;

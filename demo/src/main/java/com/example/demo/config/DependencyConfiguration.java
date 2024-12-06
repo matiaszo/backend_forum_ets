@@ -9,12 +9,16 @@ import com.example.demo.interfaces.AuthInterface;
 import com.example.demo.interfaces.EncoderInterface;
 import com.example.demo.interfaces.JWTInterface;
 import com.example.demo.interfaces.SectionInterface;
+import com.example.demo.interfaces.SkillsInterface;
 import com.example.demo.interfaces.UserInterface;
+import com.example.demo.interfaces.UserSkillInterface;
 import com.example.demo.services.AuthService;
 import com.example.demo.services.EncoderService;
 import com.example.demo.services.JWTService;
 import com.example.demo.services.SectionService;
+import com.example.demo.services.SkillsService;
 import com.example.demo.services.UserService;
+import com.example.demo.services.UserSkillService;
 
 @Configuration
 public class DependencyConfiguration {
@@ -43,7 +47,17 @@ public class DependencyConfiguration {
     public UserInterface userInterface() {
         return new UserService();
     }
-
+   
+    @Bean
+    public UserSkillInterface userSkillInterface() {
+        return new UserSkillService();
+    }
+   
+    @Bean
+    public SkillsInterface skillInterface() {
+        return new SkillsService();
+    }
+   
     @Bean
     public SectionInterface sectionInterface() {
         return new SectionService();

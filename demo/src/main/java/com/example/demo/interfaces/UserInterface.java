@@ -10,4 +10,6 @@ public interface UserInterface {
     Boolean validateEDV(String edv);
 
     Boolean validatePassword(String pass);
+
+    Boolean validateUser(Long id);
 }

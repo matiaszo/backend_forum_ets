@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -66,6 +67,15 @@ public class UserService implements UserInterface {
         if (results.size() > 0) {
             return false;
         }
+
+        return true;
+    }
+
+    @Override
+    public Boolean validateUser(Long id) {
+        
+        Optional<UserModel> model = repo.findById(id);
+        if(!model.isPresent()) {return false;}
 
         return true;
     }
