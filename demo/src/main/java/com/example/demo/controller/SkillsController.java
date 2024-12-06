@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -24,7 +25,7 @@ import com.example.demo.repositories.SkillsRepository;
 @RestController
 @RequestMapping("/skills")
 public class SkillsController {
-    
+
     @Autowired
     SkillsInterface service;
 
@@ -33,18 +34,18 @@ public class SkillsController {
 
     @PostMapping
     public ResponseEntity<SkillDataDto> create(@RequestBody SkillDataDto skill) {
-        
+
         if (!service.validateName(skill.name()) || skill.name() == null || skill.image() == null) {
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
-        
-        service.Register(skill.name().toUpperCase(), skill.image());
+
+        service.Register(skill);
         return new ResponseEntity<>(skill, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<SkillDataDto>> getAll() {
-        
+
         var results = repo.findAll();
 
         if (results == null) {
@@ -55,7 +56,7 @@ public class SkillsController {
 
         for (SkillsModel skillsModel : results) {
             SkillDataDto newSkill = new SkillDataDto(skillsModel.getName(), skillsModel.getImage());
-            
+
             allSkills.add(newSkill);
         }
 
@@ -64,7 +65,7 @@ public class SkillsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<SkillDataDto>> getById(@PathVariable Long id) {
-        
+
         var results = repo.queryByUser(id);
 
         if (results == null) {
@@ -85,8 +86,17 @@ public class SkillsController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(res, HttpStatus.OK);
+
+    }
         
-        
+    @PatchMapping("/{id}")
+    public ResponseEntity<SkillsModel> patchSkill(@RequestAttribute("token") Token token, @PathVariable Long id, @RequestBody SkillDataDto data) {
+        if (!token.instructor())
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+
+        var res = service.update(id, data);
+
+        return new ResponseEntity<>(res, HttpStatus.OK);
         
 
     }
