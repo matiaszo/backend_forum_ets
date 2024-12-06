@@ -23,6 +23,10 @@ public class FeedbackModel {
     @Column
     private String feedback;
 
+    @Column
+    private Integer stars;
+
+    
     @ManyToOne
     @JoinColumn(name = "id_interaction")
     private InteractionModel interaction;
@@ -34,8 +38,16 @@ public class FeedbackModel {
     @ManyToOne
     @JoinColumn(name = "id_project")
     private ProjectModel project;
-
+    
     //! GETTERS AND SETTERS
+    
+    public Integer getStars() {
+        return stars;
+    }
+
+    public void setStars(Integer stars) {
+        this.stars = stars;
+    }
     public Boolean getVisibility() {
         return visibility;
     }
