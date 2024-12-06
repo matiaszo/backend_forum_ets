@@ -583,7 +583,6 @@
         title : string
     }
     ```
-    
 
   - ## Back-end:
     
@@ -655,7 +654,7 @@
         ...
     ]
     ```
-    
+
 - ## GET /chat/{idChat}
 
   - ## Front-end:
@@ -728,4 +727,125 @@
     {
         text : string
     }
+    ```
+
+  - ## Back-end:
+    
+    ### Text:
+    ```
+    mensagem de sucesso / erro
+    ```
+
+# /project
+
+- ## GET /project/{idProject}
+
+  - ## Front-end:
+    
+    ### Path:
+    ```
+    idProject
+    ```
+
+  - ## Back-end:
+
+    ### Json:
+    ```
+    {
+        id : number
+        name : string
+
+        messages : [
+            {
+                id : number
+                text : string
+
+                user : {
+                    id : number
+                    image : string
+                    name : string
+                    instructor : boolean
+                }
+            },
+            ...
+        ]
+    }
+    ```
+
+- ## POST /project
+
+  > Cria um novo projeto
+
+  - ## Front-end:
+    
+    ### Body:
+    ```
+    {
+        name : string
+        goals : string[]
+        description : string
+
+        users : number[]
+    }
+    ```
+
+    > O campo `users` se refere aos id's dos usuários adicionados ao projeto.
+
+  - ## Back-end:
+    
+    ### Json:
+    ```
+    {
+        id : number
+        name : string
+    }
+    ```
+
+- ## POST /project/{idProject}
+
+  > Posta uma nova mensagem no chat do projeto
+  - ## Front-end:
+    
+    ### Path:
+    ```
+    idProject
+    ```
+
+    ### Body:
+    ```
+    {
+        text : string
+    }
+    ```
+
+  - ## Back-end:
+    
+    ### Text:
+    ```
+    mensagem de sucesso / erro
+    ```
+
+# /feedback
+
+- ## POST /feedback
+
+  - ## Front-end:
+
+    ### Body:
+    ```
+    {
+        idSender : number
+        idReceptor : number
+        idProject : number
+        public : boolean
+        text : string
+        stars : number
+    }
+    ```
+  
+  - ## Back-end:
+
+    ### Text:
+    ```
+    mensagem de sucesso / erro
     ```
