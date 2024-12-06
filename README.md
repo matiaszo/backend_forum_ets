@@ -8,11 +8,13 @@
     token: string
 }
 ```
-# /auth
+# /auth:
 
 - ## POST /auth ✅
 
-  - ## Front-end
+  - ## Front-end:
+
+    ### Body:
     ```
     {
         edv : string
@@ -20,22 +22,23 @@
     }
     ```
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Json:
     ```
     {
         token : string
     }
     ```
 
-# /register ✅
+# /register ✅:
 
 - ## POST /register
 
   ### Requirements:
   Bcrypt, 8 characters;
   
-  > [!IMPORTANT]  
-  > retornos do backend:  
+  > [!IMPORTANT] retornos do backend:  
   > 0: algum dos parâmetros é nulo  
   > 1: e-mail inválido  
   > 2: senha inválida  
@@ -43,7 +46,9 @@
   > 10: OK!  
 
 
-  - ## Front-end
+  - ## Front-end:
+
+    ### Body:
     ```
     {
         edv : string
@@ -54,50 +59,87 @@
     }
     ```
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Text:
     ```
     number
     ```
 
-# /forum
+# /section:
 
-- ## GET /forum
+- ## GET /section
 
-  - ## Front-end
+  - ## Front-end:
 
-    ### Query
+    ### Query:
     ```
     page
     title
     ```
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Json:
     ```
     [
         {
             id : number
             title : string
             image : string
-            mainComment : string
+            description : string
         },
         ...
     ]
     ```
 
-- ## POST /forum/create
+- ## GET /section/{idSection}
 
-  - ## Front-end
+  - ## Front-end:
+
+    ### Path:
+    ```
+    idSection
     ```
 
+  - ## Back-end:
+    
+    ### Json:
+    ```
     {
+        id : number
+        title : string
+        image : string
+        description : string
+
+        topics : [
+            {
+                id : number
+                title : string
+                mainComment : string
+            },
+            ...
+        ]
+    }
+    ```
+
+- ## POST /section
+
+  - ## Front-end:
+
+    ### Body:
+    ```
+    {
+        id : number
         title : string
         image : string
         description: string
     }
-
     ```
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Json:
     ```
     {
         section: {
@@ -110,18 +152,183 @@
     }
     ```
 
-# /profile
+# /topic
 
-- ## GET /profile/{id_user}
+- ## GET /topic/{idTopic}
 
-  - ## Front-end
-
-    ### Path
+  - ## Front-end:
+    
+    ### Path:
     ```
-    id_user - id do usuário
+    idTopic
     ```
 
-  - ## Back-end
+    ### Query:
+    ```
+    page
+    ```
+
+  - ## Back-end:
+    
+    ### Json:
+    ```
+    {
+        id : number
+        title : string
+        idSection : number
+
+        comments : [
+            {
+                id : number
+                content : string
+
+                user : {
+                    id : string
+                    name : string
+                    instructor : boolean
+                    image : string
+                }
+
+                mention : {
+                    id : number
+                    username : string
+                    content : string
+                } | null
+            },
+            ...
+        ]
+    }
+    ```
+
+> Esta requisição retorna o título do tópico e alguns dos comentários.  
+> Os comentários enviados são afetados pela paginação.  
+> Cada comentário tem seu conteúdo e dados do usuário para exibição.  
+> Se um comentário fizer menção à outro, ele terá o usuário mencionado e seu comentario.
+
+- ## POST /topic
+
+  - ## Front-end:
+
+    ### Body:
+    ```
+    {
+        idSection : number
+        title : string
+        mainComment : string
+    }
+    ```
+
+  - ## Back-end:
+
+    ### Json:
+    ```
+    {
+        id : number
+        idSection : number
+        title : string
+        mainComment : string
+    }
+    ```
+
+# /comment
+
+- ## GET /comment/{idComment}
+
+  - ## Front-end:
+
+    ### Path:
+    ```
+    idComment
+    ```
+
+  - ## Back-end:
+
+    ### Json:
+    ```
+    {
+        id : number
+        content : string
+
+        user : {
+            id : string
+            name : string
+            instructor : boolean
+            image : string
+        }
+
+        mention : {
+            id : number
+            username : string
+            content : string
+        } | null
+    }
+    ```
+
+- ## POST /comment
+
+  - ## Front-end:
+
+    ### Body:
+    ```
+    {
+        content : string
+        idMention : number
+    }
+    ```
+
+  - ## Back-end:
+
+    ### Json:
+    ```
+    {
+        id : number
+        content : string
+
+        user : {
+            id : string
+            name : string
+            instructor : boolean
+            image : string
+        }
+
+        mention : {
+            id : number
+            username : string
+            content : string
+        } | null
+    }
+    ```
+
+- ## DELETE /comment/{idComment}
+
+  - ## Front-end:
+
+    ### Path:
+    ```
+    idComment
+    ```
+
+  - ## Back-end:
+    
+    ### Text:
+    ```
+    mensagem de sucesso / erro
+    ```
+
+# /profile:
+
+- ## GET /profile/{idUser}
+
+  - ## Front-end:
+
+    ### Path:
+    ```
+    idUser
+    ```
+
+  - ## Back-end:
+    
+    ### Json:
     ```
     {
         edv : string
@@ -131,6 +338,7 @@
         intructor : boolean
         github : string
         bio : string
+        image : string
 
         skills: [
             {
@@ -152,16 +360,18 @@
 
 > Obs: Para a criação do perfil, não é necassário uma bio ou um github, caso o usuário não tenha estes dados, eles voltarão como string vazia
 
-- ## GET /profile/feedback/{id_user}
+- ## GET /profile/feedback/{idUser}
 
-  - ## Front-end
+  - ## Front-end:
 
-    ### Path
+    ### Path:
     ```
-    id_user - id do usuário
+    idUser
     ```
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Json:
     ```
     [
         {
@@ -179,16 +389,18 @@
     ]
     ```
 
-- ## GET /profile/interactions/{id_user}
+- ## GET /profile/interactions/{idUser}
 
-  - ## Front-end
+  - ## Front-end:
 
-    ### Path
+    ### Path:
     ```
-    id_user - id do usuário
+    idUser
     ```
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Json:
     ```
     [
         {
@@ -212,13 +424,13 @@
     >
     > `feedback` - `content` terá o texto do feedback e o usuário pra quem ele foi dado. **Não retornar feedbacks privados.**
 
-- ## PATCH /profile/{id_user}
+- ## PATCH /profile/{idUser}
 
-  - ## Front-end
+  - ## Front-end:
   
     ### Path:
     ```
-    id_user
+    idUser
     ```
 
     ### Body:
@@ -229,10 +441,13 @@
         email : string | null
         github : string | null
         bio : string | null
+        image : string | null
     }
     ```
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Json:
     ```
     {
         password : string
@@ -243,23 +458,25 @@
     }
     ```
 
-- ## POST /profile/skill/{id_user}
+- ## POST /profile/skill/{idUser}
 
-  - ## Front-end
+  - ## Front-end:
   
     ### Path:
     ```
-    id_user
+    idUser
     ```
 
-    ### Body
+    ### Body:
     ```
     {
         id : number
     }
     ```
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Json:
     ```
     {
         id : number
@@ -268,44 +485,48 @@
     }
     ```
 
-- ## DELETE /profile/skill/{id_user}
+- ## DELETE /profile/skill/{idUser}
   
-  - ## Front-end
+  - ## Front-end:
 
     ### Path:
     ```
-    id_user
+    idUser
     ```
 
-    ### Body
+    ### Body:
     ```
     {
         id : number
     }
     ```
 
-  - ## Back-end
+  - ## Back-end:
+
+    ### Text:
     ```
-    mensagem de sucesso
+    mensagem de sucesso / erro
     ```
 
-- ## POST /profile/interest/{id_user}
+- ## POST /profile/interest/{idUser}
 
-  - ## Front-end
+  - ## Front-end:
 
     ### Path:
     ```
-    id_user
+    idUser
     ```
 
-    ### Body
+    ### Body:
     ```
     {
         name : string
     }
     ```
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Json:
     ```
     {
         id : number
@@ -313,32 +534,36 @@
     }
     ```
 
-- ## DELETE /profile/interest/{id_user}
+- ## DELETE /profile/interest/{idUser}
   
-  - ## Front-end
+  - ## Front-end:
 
     ### Path:
     ```
-    id_user
+    idUser
     ```
 
-    ### Body
+    ### Body:
     ```
     {
         id : number
     }
     ```
 
-  - ## Back-end
+  - ## Back-end:
+
+    ### Text:
     ```
-    mensagem de sucesso
+    mensagem de sucesso / erro
     ```
 
-# /skill
+# /skill:
 
 - ## POST /skill
 
-  - ## Front-end
+  - ## Front-end:
+
+    ### Body:
     ```
     {
         id : number
@@ -348,7 +573,9 @@
     ```
     
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Json:
     ```
     {
         id : number
@@ -359,10 +586,12 @@
 
 - ## GET /skill
   
-  - ## Front-end
+  - ## Front-end:
 
 
-  - ## Back-end
+  - ## Back-end:
+    
+    ### Json:
     ```
     [
         {
@@ -374,16 +603,18 @@
     ]
     ```
 
-- ## DELETE /skill
+- ## DELETE /skill/{idSkill}
   
-  - ## Front-end
+  - ## Front-end:
+
+    ### Path:
     ```
-    {
-        id : number
-    }
+    idSkill
     ```
 
-  - ## Back-end
+  - ## Back-end:
+
+    ### Text:
     ```
-    mensagem de sucesso
+    mensagem de sucesso / erro
     ```
