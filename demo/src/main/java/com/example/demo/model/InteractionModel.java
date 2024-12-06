@@ -23,6 +23,9 @@ public class InteractionModel {
     
     @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private Timestamp date;
+
+    @Column
+    private String type;
     
     @ManyToOne
     @JoinColumn(name = "id_user")

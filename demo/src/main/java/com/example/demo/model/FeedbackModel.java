@@ -26,7 +26,6 @@ public class FeedbackModel {
     @Column
     private Integer stars;
 
-    
     @ManyToOne
     @JoinColumn(name = "id_interaction")
     private InteractionModel interaction;

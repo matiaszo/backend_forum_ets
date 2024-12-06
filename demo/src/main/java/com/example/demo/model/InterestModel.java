@@ -24,6 +24,14 @@ public class InterestModel {
     @JoinColumn(name = "id_user")
     private UserModel user;
     
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+
     public Long getId_interest() {
         return id_interest;
     }
