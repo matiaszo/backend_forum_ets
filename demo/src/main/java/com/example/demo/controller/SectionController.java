@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.Token;
 import com.example.demo.dto.section.CreateSectionDTO;
+import com.example.demo.dto.section.SectionCreationResponseDTO;
 import com.example.demo.interfaces.SectionInterface;
 
 @RestController
@@ -21,14 +22,20 @@ public class SectionController {
     SectionInterface service;
 
     @PostMapping("/create")
-    public ResponseEntity<Integer> create(@RequestAttribute("token") Token token, @RequestBody CreateSectionDTO data) {
+    public ResponseEntity<SectionCreationResponseDTO> create(@RequestAttribute("token") Token token, @RequestBody CreateSectionDTO data) {
         
-        var res = service.createSection(data, token.userId());
+        if (!token.instructor())
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
-        if (res != 10)
-            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        var res = service.verify(data);
+        if (res != 10) {
+            SectionCreationResponseDTO finalRes = new SectionCreationResponseDTO(null, res.toString());
+            return new ResponseEntity<>(finalRes, HttpStatus.BAD_REQUEST);
+        }
 
-        return new ResponseEntity<>(res, HttpStatus.CREATED);
+        var created = service.createSection(data);
+        SectionCreationResponseDTO finalRes = new SectionCreationResponseDTO(created, "Section created succesfully!");
+        return new ResponseEntity<>(finalRes, HttpStatus.CREATED);
         
     }
 }

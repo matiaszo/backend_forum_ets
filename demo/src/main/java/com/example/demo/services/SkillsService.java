@@ -61,6 +61,8 @@ public class SkillsService implements SkillsInterface{
 
         if (data.name()!= null)
             skill.setName(data.name()); 
+        
+        repo.save(skill);
 
         return skill;
     }

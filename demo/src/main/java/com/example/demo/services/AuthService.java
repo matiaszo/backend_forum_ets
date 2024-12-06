@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.demo.dto.Token;
 import com.example.demo.dto.auth.LoginDto;
+import com.example.demo.dto.auth.LoginResponse;
 import com.example.demo.interfaces.AuthInterface;
 import com.example.demo.interfaces.EncoderInterface;
 import com.example.demo.interfaces.JWTInterface;
@@ -22,7 +23,7 @@ public class AuthService implements AuthInterface {
     JWTInterface<Token> jwtService;
 
     @Override
-    public String login(LoginDto info) {
+    public LoginResponse login(LoginDto info) {
         UserModel user = userRepo.findByEdv(info.edv()).get(0);
         
         // verifica se os campos estão preenchidos
@@ -42,7 +43,7 @@ public class AuthService implements AuthInterface {
 
         String jwt = jwtService.generateJWT(newToken);
 
-        return jwt;
+        return new LoginResponse(jwt, user.getInstructor() == true ? 1 : 0 , user.getUserId());
 
     }
 
