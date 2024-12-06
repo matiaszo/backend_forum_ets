@@ -23,11 +23,24 @@ public class SectionModel {
     @Column
     private String description;
 
+    @Column
+    private String image;
+
+    
     
     @OneToMany(mappedBy="section", orphanRemoval = true)
     private List<TopicModel> topics;  
     
     //! GETTERS AND SETTERS
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+    
     public String getDescription() {
         return description;
     }

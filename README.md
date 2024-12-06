@@ -91,7 +91,6 @@
 
     {
         title : string
-        id : number
         image : string
         description: string
     }
