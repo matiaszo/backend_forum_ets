@@ -176,6 +176,18 @@
         title : string
         idSection : number
 
+        mainComment : {
+            id : number
+            content : string
+
+            user : {
+                id : string
+                name : string
+                instructor : boolean
+                image : string
+            }
+        }
+
         comments : [
             {
                 id : number
@@ -616,4 +628,103 @@
     ### Text:
     ```
     mensagem de sucesso / erro
+    ```
+
+# /chat
+
+- ## GET /chat
+  
+  - ## Front-end:
+
+    ### Query:
+    ```
+    page
+    name
+    ```
+
+  - ## Back-end:
+
+    ### Json:
+    ```
+    [
+        {
+            id : number
+            name : string
+        },
+        ...
+    ]
+    ```
+    
+- ## GET /chat/{idChat}
+
+  - ## Front-end:
+    
+    ### Path:
+    ```
+    idChat
+    ```
+
+  - ## Back-end:
+
+    ### Json:
+    ```
+    {
+        id : number
+        name : string
+
+        messages : [
+            {
+                id : number
+                text : string
+
+                user : {
+                    id : number
+                    image : string
+                    name : string
+                    instructor : boolean
+                }
+            },
+            ...
+        ]
+    }
+    ```
+
+- ## POST /chat
+
+  > Cria um novo chat
+
+  - ## Front-end:
+    
+    ### Body:
+    ```
+    {
+        name : string
+    }
+    ```
+
+  - ## Back-end:
+    
+    ### Json:
+    ```
+    {
+        id : number
+        name : string
+    }
+    ```
+
+- ## POST /chat/{idChat}
+
+  > Posta uma nova mensagem no chat
+  - ## Front-end:
+    
+    ### Path:
+    ```
+    idChat
+    ```
+
+    ### Body:
+    ```
+    {
+        text : string
+    }
     ```
