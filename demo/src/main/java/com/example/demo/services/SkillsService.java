@@ -31,5 +31,19 @@ public class SkillsService implements SkillsInterface{
 
         repo.save(skl);
     }
+
+    @Override
+    public SkillsModel delete(Long id) {
+        var found = repo.findById(id);
+
+        if (found.isEmpty())
+            return null;
+
+        SkillsModel skill = found.get(); 
+
+        repo.delete(skill);
+        return skill;
+
+    }
     
 }
