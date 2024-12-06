@@ -1,10 +1,11 @@
 > para abrir use ctrl + shift + v
 
-### Token:
+### LoginResponse:
 ```
 {
-    userId : number
-    instructor : boolean
+    id : number
+    instructor: number
+    token: string
 }
 ```
 # /auth

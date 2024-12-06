@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.auth.LoginDto;
+import com.example.demo.dto.auth.LoginResponse;
 import com.example.demo.interfaces.AuthInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,14 @@ public class AuthController {
     AuthInterface authService;
 
     @PostMapping("/auth")
-    public ResponseEntity<String> login(@RequestBody LoginDto info) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginDto info) {
         
         var res = authService.login(info);
 
         if (res == null)
-            return new ResponseEntity<String>(res, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<LoginResponse>(res, HttpStatus.UNAUTHORIZED);
         
-        return new ResponseEntity<String>(res, HttpStatus.OK);
+        return new ResponseEntity<LoginResponse>(res, HttpStatus.OK);
     }
     
     

@@ -33,7 +33,7 @@ public class SkillsController {
     SkillsRepository repo;
 
     @PostMapping
-    public ResponseEntity<SkillDataDto> create(@RequestAttribute("token") Token token,@RequestBody SkillDataDto skill) {
+    public ResponseEntity<SkillDataDto> create(@RequestAttribute("token") Token token,  @RequestBody SkillDataDto skill) {
 
         if (!service.validateName(skill.name()) || skill.name() == null || skill.image() == null) {
             return new ResponseEntity<>(null, HttpStatus.OK);
@@ -76,7 +76,7 @@ public class SkillsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SkillsModel> deletSkill(@RequestAttribute("token") Token token, @PathVariable Long id) {
+    public ResponseEntity<SkillsModel> deletSkill(@RequestAttribute("token") Token token, @PathVariable  Long id) {
         if (!token.instructor())
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 

@@ -1,7 +1,8 @@
 package com.example.demo.interfaces;
 
 import com.example.demo.dto.auth.LoginDto;
+import com.example.demo.dto.auth.LoginResponse;
 
 public interface AuthInterface {
-    String login(LoginDto info);
+    LoginResponse login(LoginDto info);
 }
