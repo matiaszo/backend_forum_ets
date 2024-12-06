@@ -8,6 +8,6 @@ import com.example.demo.model.TopicModel;
 
 public interface TopicRepository extends JpaRepository<TopicModel, Long>{
 
-    public List<TopicModel> findById_Section(Long id);
+    public List<TopicModel> findBySectionId(Long id);
     
 }

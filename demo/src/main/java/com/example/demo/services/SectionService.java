@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Retry.Topic;
 import org.springframework.data.domain.PageRequest;
 
 import com.example.demo.dto.section.CreateSectionDTO;
@@ -51,7 +50,7 @@ public class SectionService implements SectionInterface {
 
     private SectionDTO transformToDTO(SectionModel section) {
         return new SectionDTO(
-            section.getSectionId(),
+            section.getId(),
             section.getTitle(),
             section.getDescription(),
             section.getImage()
@@ -67,7 +66,7 @@ public class SectionService implements SectionInterface {
 
         repo.save(newSection);
 
-        SectionDTO sec = new SectionDTO(newSection.getSectionId(), newSection.getTitle(), newSection.getDescription(), newSection.getImage());
+        SectionDTO sec = new SectionDTO(newSection.getId(), newSection.getTitle(), newSection.getDescription(), newSection.getImage());
         return sec;
     }
 
@@ -116,7 +115,7 @@ public class SectionService implements SectionInterface {
         if (found.isEmpty())
             return null;
             
-        var topics = topicRepo.findById_Section(id);
+        var topics = topicRepo.findBySectionId(id);
 
         System.out.println(topics);
 
