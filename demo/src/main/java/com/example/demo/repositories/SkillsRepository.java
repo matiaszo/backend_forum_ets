@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.demo.dto.skills.SkillDataDto;
-import com.example.demo.dto.skills.SkillProfileDto;
 import com.example.demo.model.SkillsModel;
 
 public interface SkillsRepository extends JpaRepository<SkillsModel, Long>{

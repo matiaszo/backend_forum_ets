@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,11 @@ import com.example.demo.dto.user.ProfileDto;
 import com.example.demo.interfaces.SkillsInterface;
 import com.example.demo.interfaces.UserInterface;
 import com.example.demo.interfaces.UserSkillInterface;
-import com.example.demo.model.SkillsModel;
+import com.example.demo.model.InterestModel;
+import com.example.demo.model.UserModel;
+import com.example.demo.model.UserSkillModel;
+import com.example.demo.repositories.FeedbackRepository;
+import com.example.demo.repositories.InterestRepository;
 import com.example.demo.repositories.SkillsRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.UserSkillRepository;
@@ -83,7 +88,7 @@ public class ProfileController {
         return new UserSkillDto(id, skill);
     }
 
-    //! GET TODO O USUÁRIO
+    //! GET TODOS O USUÁRIO
     @GetMapping("/{id}")
     public ResponseEntity<ProfileDto> getAll(@PathVariable Long id) {
 
