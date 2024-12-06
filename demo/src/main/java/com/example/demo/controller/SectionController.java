@@ -15,7 +15,7 @@ import com.example.demo.dto.section.SectionCreationResponseDTO;
 import com.example.demo.interfaces.SectionInterface;
 
 @RestController
-@RequestMapping("/forum")
+@RequestMapping("/section")
 public class SectionController {
     
     @Autowired

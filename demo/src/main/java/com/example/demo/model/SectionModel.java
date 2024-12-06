@@ -27,7 +27,6 @@ public class SectionModel {
     private String image;
 
     
-    
     @OneToMany(mappedBy="section", orphanRemoval = true)
     private List<TopicModel> topics;  
     
