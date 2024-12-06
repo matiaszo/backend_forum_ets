@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 public class SectionModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sectionId;
+    private Long id;
     
     @Column
     private String title;
@@ -26,7 +26,6 @@ public class SectionModel {
     @Column
     private String image;
 
-    
     
     @OneToMany(mappedBy="section", orphanRemoval = true)
     private List<TopicModel> topics;  
@@ -64,11 +63,11 @@ public class SectionModel {
         this.title = name;
     }
 
-    public Long getSectionId() {
-        return sectionId;
+    public Long getId() {
+        return id;
     }
 
-    public void setSectionId(Long id_section) {
-        this.sectionId = id_section;
+    public void setId(Long id_section) {
+        this.id = id_section;
     }
 }
