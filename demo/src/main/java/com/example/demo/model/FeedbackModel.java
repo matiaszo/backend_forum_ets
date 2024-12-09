@@ -23,22 +23,48 @@ public class FeedbackModel {
     @Column
     private String feedback;
 
+
     @Column
     private Integer stars;
 
     @ManyToOne
     @JoinColumn(name = "id_interaction")
     private InteractionModel interaction;
-    
+
+
     @ManyToOne
     @JoinColumn(name = "id_receptor")
     private UserModel receptor;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_project")
     private ProjectModel project;
     
     //! GETTERS AND SETTERS
+    
+    public ProjectModel getProject() {
+        return project;
+    }
+
+    public void setProject(ProjectModel project) {
+        this.project = project;
+    }
+
+    public UserModel getReceptor() {
+        return receptor;
+    }
+
+    public void setReceptor(UserModel receptor) {
+        this.receptor = receptor;
+    }
+    
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
     
     public Integer getStars() {
         return stars;
@@ -61,5 +87,14 @@ public class FeedbackModel {
 
     public void setFeedbackId(Long feedbackId) {
         this.feedbackId = feedbackId;
+    }
+
+        
+    public InteractionModel getInteraction() {
+        return interaction;
+    }
+
+    public void setInteraction(InteractionModel interaction) {
+        this.interaction = interaction;
     }
 }
