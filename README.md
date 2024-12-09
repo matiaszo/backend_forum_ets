@@ -235,12 +235,13 @@
     ### Json:
     ```
     {
-        id : number
-        idSection : number
-        title : string
-        mainComment : string
+      message: number
     }
     ```
+
+    - 1: já existe um tópico com esse nome
+    - 2: campos não preenchidos
+    - 10: tópico criado com sucesso
 
 # /comment
 
