@@ -41,4 +41,20 @@ public class TopicModel {
     public void setId_topic(Long id_topic) {
         this.id_topic = id_topic;
     }
+
+    public SectionModel getSection() {
+        return section;
+    }
+
+    public void setSection(SectionModel section) {
+        this.section = section;
+    }
+
+    public CommentModel getComment() {
+        return comment;
+    }
+
+    public void setComment(CommentModel comment) {
+        this.comment = comment;
+    }
 }

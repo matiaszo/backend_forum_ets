@@ -63,4 +63,20 @@ public class EventModel {
     public void setId_event(Long id_event) {
         this.id_event = id_event;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
 }

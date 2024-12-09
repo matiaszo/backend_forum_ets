@@ -62,4 +62,36 @@ public class FeedbackModel {
     public void setFeedbackId(Long feedbackId) {
         this.feedbackId = feedbackId;
     }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public InteractionModel getInteraction() {
+        return interaction;
+    }
+
+    public void setInteraction(InteractionModel interaction) {
+        this.interaction = interaction;
+    }
+
+    public UserModel getReceptor() {
+        return receptor;
+    }
+
+    public void setReceptor(UserModel receptor) {
+        this.receptor = receptor;
+    }
+
+    public ProjectModel getProject() {
+        return project;
+    }
+
+    public void setProject(ProjectModel project) {
+        this.project = project;
+    }
 }

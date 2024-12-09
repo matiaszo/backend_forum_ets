@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,7 +24,7 @@ public class MessageModel {
     @JoinColumn(name = "id_chat")
     private ChatModel chat;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_interaction")
     private InteractionModel interaction;
 
@@ -33,6 +34,30 @@ public class MessageModel {
 
     public void setId_message(Long id_message) {
         this.id_message = id_message;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public ChatModel getChat() {
+        return chat;
+    }
+
+    public void setChat(ChatModel chat) {
+        this.chat = chat;
+    }
+
+    public InteractionModel getInteraction() {
+        return interaction;
+    }
+
+    public void setInteraction(InteractionModel interaction) {
+        this.interaction = interaction;
     }
 
 }

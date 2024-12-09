@@ -19,14 +19,22 @@ public class ProjectModel {
     private Long id_project;
 
     @Column
-    private String title;
+    private String name;
+
+    @Column
+    private String description;
     
     @OneToMany(mappedBy="project", orphanRemoval = true)
     private List<FeedbackModel> feedbacks;
     
     @OneToMany(mappedBy="project", orphanRemoval = true)
-    private List<ProjectMessageModel> Projects;
+    private List<ProjectMessageModel> projects;
 
+    @OneToMany(mappedBy="project", orphanRemoval = true)
+    private List<ProjectGoalModel> goals;
+
+
+    //! GETTERS AND SETTERS
     public Long getId_project() {
         return id_project;
     }
@@ -35,12 +43,36 @@ public class ProjectModel {
         this.id_project = id_project;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<FeedbackModel> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<FeedbackModel> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
+
+    public List<ProjectMessageModel> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<ProjectMessageModel> projects) {
+        this.projects = projects;
     }
 
 }
