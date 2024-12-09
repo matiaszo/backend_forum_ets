@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.Token;
 import com.example.demo.dto.topics.CreateTopicDTO;
 import com.example.demo.dto.topics.TopicCreationResponseDTO;
-import com.example.demo.services.TopicService;
+import com.example.demo.interfaces.TopicInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class TopicController {
 
     @Autowired
-    TopicService service;
+    TopicInterface service;
     
     @PostMapping
     public ResponseEntity<TopicCreationResponseDTO> create(@RequestAttribute("token") Token token, @RequestBody CreateTopicDTO info) {
