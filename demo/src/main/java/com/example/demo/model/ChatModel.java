@@ -38,4 +38,12 @@ public class ChatModel {
     public void setId_chat(Long id_chat) {
         this.id_chat = id_chat;
     }
+
+    public List<MessageModel> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<MessageModel> messages) {
+        this.messages = messages;
+    }
 }

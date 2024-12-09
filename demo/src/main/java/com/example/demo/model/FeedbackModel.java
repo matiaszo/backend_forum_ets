@@ -89,7 +89,6 @@ public class FeedbackModel {
         this.feedbackId = feedbackId;
     }
 
-        
     public InteractionModel getInteraction() {
         return interaction;
     }

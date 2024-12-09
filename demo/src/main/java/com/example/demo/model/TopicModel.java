@@ -21,18 +21,11 @@ public class TopicModel {
     @ManyToOne
     @JoinColumn(name = "id_section")
     private SectionModel section;
-    
-    public SectionModel getSection() {
-        return section;
-    }
-
-    public void setSection(SectionModel section) {
-        this.section = section;
-    }
 
     @ManyToOne
     @JoinColumn(name = "id_main_comment")
     private CommentModel comment;
+
 
     public CommentModel getComment() {
         return comment;
@@ -57,4 +50,13 @@ public class TopicModel {
     public void setId_topic(Long id_topic) {
         this.id_topic = id_topic;
     }
+    
+    public SectionModel getSection() {
+        return section;
+    }
+
+    public void setSection(SectionModel section) {
+        this.section = section;
+    }
+
 }

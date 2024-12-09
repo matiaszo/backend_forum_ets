@@ -130,7 +130,6 @@
     ### Body:
     ```
     {
-        id : number
         title : string
         image : string
         description: string
@@ -390,7 +389,7 @@
         {
             stars : number
             text : string
-            public : boolean
+            visibility : boolean
             projectName : string
             user : {
                 id : number
@@ -463,7 +462,6 @@
     ### Json:
     ```
     {
-        password : string
         name : string
         email : string
         github : string
@@ -838,7 +836,7 @@
         idSender : number
         idReceptor : number
         idProject : number
-        public : boolean
+        visibility : boolean
         text : string
         stars : number
     }

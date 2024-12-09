@@ -64,9 +64,6 @@ public class UserModel {
     private List<InteractionModel> interactions;  
     
     @OneToMany(mappedBy="user", orphanRemoval = true)
-    private List<ProjectMessageModel> projectMessages;  
-    
-    @OneToMany(mappedBy="user", orphanRemoval = true)
     private List<EventModel> events;  
     
     //! GETTERS E SETTERS
@@ -132,5 +129,53 @@ public class UserModel {
     
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(Long id_user) {
+        this.id_user = id_user;
+    }
+
+    public List<InterestModel> getInterest() {
+        return interest;
+    }
+
+    public void setInterest(List<InterestModel> interest) {
+        this.interest = interest;
+    }
+
+    public List<FeedbackModel> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<FeedbackModel> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
+
+    public List<UserSkillModel> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<UserSkillModel> skills) {
+        this.skills = skills;
+    }
+
+    public List<InteractionModel> getInteractions() {
+        return interactions;
+    }
+
+    public void setInteractions(List<InteractionModel> interactions) {
+        this.interactions = interactions;
+    }
+
+    public List<EventModel> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<EventModel> events) {
+        this.events = events;
     }
 }

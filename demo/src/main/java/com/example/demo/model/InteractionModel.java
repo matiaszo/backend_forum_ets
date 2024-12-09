@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,33 +32,6 @@ public class InteractionModel {
     @JoinColumn(name = "id_user")
     private UserModel user;
 
-    // public UserModel getUser() {
-    //     return user;
-    // }
-
-    // public void setUser(UserModel user) {
-    //     this.user = user;
-    // }
-
-    @OneToMany(mappedBy="interaction", orphanRemoval = true)
-    private List<MessageModel> messages;  
-    
-    public UserModel getUser() {
-        return user;
-    }
-
-    public void setUser(UserModel user) {
-        this.user = user;
-    }
-    
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public Long getId_interaction() {
         return id_interaction;
     }
@@ -72,5 +46,21 @@ public class InteractionModel {
 
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 }

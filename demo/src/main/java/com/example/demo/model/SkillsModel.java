@@ -49,4 +49,12 @@ public class SkillsModel {
     public void setId_skills(Long id_skills) {
         this.id_skills = id_skills;
     }
+
+    public List<UserSkillModel> getUsers() {
+        return Users;
+    }
+
+    public void setUsers(List<UserSkillModel> users) {
+        Users = users;
+    }
 }

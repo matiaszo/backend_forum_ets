@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,23 +20,28 @@ public class CommentModel {
     private Long id_comment;
 
     @Column
-    private TopicModel topic;
-
-    @Column
     private String content;
     
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_interaction")
     private InteractionModel interaction;
     
     @ManyToOne
     @JoinColumn(name = "id_topic")
-    private CommentModel comment;
+    private TopicModel topic;
 
-    @OneToMany(mappedBy="comment", orphanRemoval = true)
-    private List<TopicModel> topics;
+    @OneToOne(orphanRemoval = false)
+    @JoinColumn(name = "id_mention")
+    private CommentModel mention;
     
     //! GETTERS AND SETTERS
+    public CommentModel getMention() {
+        return mention;
+    }
+
+    public void setMention(CommentModel mention) {
+        this.mention = mention;
+    }
 
     public TopicModel getTopic() {
         return topic;
@@ -43,14 +49,6 @@ public class CommentModel {
 
     public void setTopic(TopicModel topic) {
         this.topic = topic;
-    }
-
-    public CommentModel getComment() {
-        return comment;
-    }
-
-    public void setComment(CommentModel comment) {
-        this.comment = comment;
     }
 
     public InteractionModel getInteraction() {
