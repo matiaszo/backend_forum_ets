@@ -29,7 +29,6 @@ import com.example.demo.dto.skills.*;
 import com.example.demo.dto.user.GiverDto;
 import com.example.demo.dto.user.ProfileDto;
 import com.example.demo.dto.user.UpdateDto;
-import com.example.demo.dto.user.UserDataDto;
 import com.example.demo.interfaces.SkillsInterface;
 import com.example.demo.interfaces.UserInterface;
 import com.example.demo.interfaces.UserSkillInterface;
@@ -210,7 +209,7 @@ public class ProfileController {
 
         for (FeedbackModel model : feeds) {
 
-            ProjectDataDto project = new ProjectDataDto(model.getProject().getId_project(), model.getProject().getName());
+            ProjectDataDto project = new ProjectDataDto(model.getProject().getId_project(), model.getProject().getTitle());
 
             UserModel findUser = model.getInteraction().getUser();
 
