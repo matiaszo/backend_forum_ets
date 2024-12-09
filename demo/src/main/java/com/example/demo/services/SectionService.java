@@ -105,21 +105,27 @@ public class SectionService implements SectionInterface {
 
     }
 
-    @Override
-    public ArrayList<TopicDTO> getTopics(Long id) {
+    // @Override
+    // public ArrayList<TopicDTO> getTopics(Long id) {
 
         // ! FALTA IMPLEMENTAR
 
-        var found = repo.findById(id);
+        // var found = repo.findById(id);
 
-        if (found.isEmpty())
-            return null;
+        // if (found.isEmpty())
+        //     return null;
             
-        var topics = topicRepo.findBySectionId(id);
+        // var topics = topicRepo.findBySectionId(id);
 
-        System.out.println(topics);
+        // System.out.println(topics);
 
-        return null;
+        // return null;
+    // }
+
+    @Override
+    public ArrayList<TopicDTO> getSingleSection(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSingleSection'");
     }
     
 }

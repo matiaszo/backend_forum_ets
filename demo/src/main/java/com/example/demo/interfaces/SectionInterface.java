@@ -13,7 +13,8 @@ public interface SectionInterface {
     public ArrayList<SectionDTO> getSection(String name, Integer page, Integer limit);
     public SectionDTO delete(Long id);
     public SectionDTO update(Long id, CreateSectionDTO info);
-    public ArrayList<TopicDTO> getTopics(Long id);
+    public ArrayList<TopicDTO> getSingleSection(Long id);
+    
     
     
     

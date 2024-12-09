@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +21,8 @@ import com.example.demo.dto.section.CreateSectionDTO;
 import com.example.demo.dto.section.SectionCreationResponseDTO;
 import com.example.demo.dto.section.SectionDTO;
 import com.example.demo.interfaces.SectionInterface;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/section")
@@ -74,13 +77,19 @@ public class SectionController {
     }
 
     @GetMapping
-    public ResponseEntity<ArrayList<SectionDTO>> getAllSections(String title, Integer page) {
+    public ResponseEntity<ArrayList<SectionDTO>> getAllSections(@DefaultValue("")String title,@DefaultValue("1") Integer page) {
         
-        var res = service.getSection(title, page, 3);
+        var res = service.getSection(title, page, 10);
 
         return new ResponseEntity<>(res, HttpStatus.OK);
 
     }
+
+    @GetMapping("/{id}")
+    public String getMethodName(@PathVariable Long id) {
+        return new String();
+    }
+    
 
 
 }
