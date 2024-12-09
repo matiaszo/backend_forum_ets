@@ -30,7 +30,7 @@ public class UserService implements UserInterface {
         Usr.setGitUsername(null);
         Usr.setImage(null);
         repo.save(Usr);
-    } 
+    }
 
     @Override
     public Boolean validateEmail(String email) {
@@ -78,5 +78,15 @@ public class UserService implements UserInterface {
         if(!model.isPresent()) {return false;}
 
         return true;
+    }
+
+    @Override
+    public List<UserModel> getUsers(String name)
+    {
+        if(name == null)
+        {
+            return repo.findAll();
+        }
+        return repo.findByNameContainingIgnoreCase(name);
     }
 }

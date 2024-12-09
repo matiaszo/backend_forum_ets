@@ -7,5 +7,6 @@ import java.util.List;
 
 
 public interface UserRepository extends JpaRepository<UserModel, Long> {
-    List<UserModel> findByEdv(String edv); 
+    List<UserModel> findByEdv(String edv);
+    List<UserModel> findByNameContainingIgnoreCase(String name);
 }
