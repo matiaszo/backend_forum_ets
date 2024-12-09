@@ -28,6 +28,7 @@ import com.example.demo.dto.project.ProjectDataDto;
 import com.example.demo.dto.skills.*;
 import com.example.demo.dto.user.GiverDto;
 import com.example.demo.dto.user.ProfileDto;
+import com.example.demo.dto.user.UpdateDto;
 import com.example.demo.dto.user.UserDataDto;
 import com.example.demo.interfaces.SkillsInterface;
 import com.example.demo.interfaces.UserInterface;

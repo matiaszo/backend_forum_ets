@@ -1,5 +1,5 @@
 package com.example.demo.dto.interest;
 
-public record BodyInterestDto(
+public record BodyInterest(
     String name
 ) {}
