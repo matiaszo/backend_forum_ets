@@ -14,6 +14,7 @@ import com.example.demo.dto.user.UserCommentDto;
 import com.example.demo.model.CommentModel;
 import com.example.demo.repositories.CommentRepository;
 import com.example.demo.repositories.TopicRepository;
+import com.example.demo.services.TopicService;
 import com.example.demo.interfaces.TopicInterface;
 
 import java.util.ArrayList;
@@ -34,7 +35,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class TopicController {
 
     @Autowired
-    TopicService service;
+    TopicInterface service;
+
+    @Autowired
+    CommentRepository comRepo;
+
+    @Autowired
+    TopicRepository repo;
     
     @PostMapping
     public ResponseEntity<TopicCreationResponseDTO> create(@RequestAttribute("token") Token token, @RequestBody CreateTopicDTO info) {
