@@ -209,7 +209,7 @@ public class ProfileController {
 
         for (FeedbackModel model : feeds) {
 
-            ProjectDataDto project = new ProjectDataDto(model.getProject().getId_project(), model.getProject().getTitle());
+            ProjectDataDto project = new ProjectDataDto(model.getProject().getId_project(), model.getProject().getName());
 
             UserModel findUser = model.getInteraction().getUser();
 
