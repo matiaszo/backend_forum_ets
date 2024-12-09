@@ -3,6 +3,7 @@ package com.example.demo.services;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.demo.dto.topics.CreateTopicDTO;
+import com.example.demo.dto.topics.CreateTopicFullInfoDTO;
 import com.example.demo.dto.topics.TopicDTO;
 import com.example.demo.interfaces.TopicInterface;
 import com.example.demo.model.CommentModel;
@@ -12,6 +13,7 @@ import com.example.demo.repositories.CommentRepository;
 import com.example.demo.repositories.InteractionRepository;
 import com.example.demo.repositories.SectionRepository;
 import com.example.demo.repositories.TopicRepository;
+import com.example.demo.repositories.UserRepository;
 
 public class TopicService implements TopicInterface {
 
@@ -23,41 +25,48 @@ public class TopicService implements TopicInterface {
 
     @Autowired
     InteractionRepository interactionRepo;
-
+    
     @Autowired 
     CommentRepository commentRepo;
 
-
+    @Autowired
+    UserRepository userRepo;
+    
+    
     @Override
-    public TopicDTO create(CreateTopicDTO info) {
-
-        // cria o tópico
+    public TopicDTO create(CreateTopicFullInfoDTO info) {
+        
         TopicModel topic = new TopicModel();
-        topic.setTitle(info.title());
+        repo.save(topic); 
 
-        // acha a sessão do tópico pelo idSection
-        var sec = sectionRepo.findById(info.idSection()).get();
-        topic.setSection(sec);
-        
-        // cria um comentário 
-        CommentModel comment = new CommentModel();
-        comment.setContent(info.mainComment());
-        comment.setTopic(topic);
-
-        // seta o main coment dso novo tópico como o comentário que acabou de criar
-        topic.setComment(comment);
-        
-        // cria uma interação para guardar o comentário
         InteractionModel interaction = new InteractionModel();
-        interaction.setDate(null);
-        interaction.setUser(null);
+        interaction.setUser(null); 
+        interaction.setType("COMMENT");
+    
+        var user = userRepo.findById(info.id());
+        if (user.isPresent()) {
+            var useruou = user.get();
+            interaction.setUser(useruou);
+        } else {
+            interaction.setUser(null);
+        }
+    
+        interactionRepo.save(interaction); 
 
-        repo.save(topic);
+        CommentModel comment = new CommentModel();
+        comment.setContent(info.info().mainComment());
+        comment.setTopic(topic);
+        comment.setInteraction(interaction); 
+        commentRepo.save(comment); 
+    
+        var sec = sectionRepo.findById(info.info().idSection()).get();
+        topic.setSection(sec);
+        topic.setTitle(info.info().title());
+        topic.setComment(comment);
+    
         sectionRepo.save(sec);
-        commentRepo.save(comment);
-        interactionRepo.save(interaction);
-
-        // deu boa fml só corre rpro abraço
+        repo.save(topic); 
+    
         return new TopicDTO(topic.getId_topic(), topic.getTitle(), topic.getComment().getContent(), topic.getSection().getId());
 
     }
@@ -67,9 +76,9 @@ public class TopicService implements TopicInterface {
         var found = repo.findByTitle(title);
 
         if (found == null)
-            return false;
+            return true;
 
-        return true;
+        return false;
     }
 
     @Override
