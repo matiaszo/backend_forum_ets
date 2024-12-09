@@ -8,7 +8,7 @@
     token: string
 }
 ```
-# /auth:
+# ✅ /auth:
 
 - ## POST /auth ✅
 
@@ -31,20 +31,24 @@
     }
     ```
 
-# /register ✅:
+# ✅ /register
 
-- ## POST /register
+- ## POST /register ✅
 
   ### Requirements:
   Bcrypt, 8 characters;
-  
-  > [!IMPORTANT] retornos do backend:  
-  > 0: algum dos parâmetros é nulo  
-  > 1: e-mail inválido  
-  > 2: senha inválida  
-  > 3: edv repetido  
-  > 10: OK!  
 
+    > [!IMPORTANT] retornos do backend:  
+    >
+    > `0` - campos não completamente preenchidos pelo usuário, erro 400
+    >
+    > `1` - email inválido
+    >
+    > `2` - senha inválida
+    >
+    > `3` - edv não pode ser igual a um já cadastrado
+    >
+    > `10` - conta criada com sucesso
 
   - ## Front-end:
 
@@ -66,9 +70,9 @@
     number
     ```
 
-# /section:
+# ✅ /section:
 
-- ## GET /section
+- ## GET /section ✅
 
   - ## Front-end:
 
@@ -93,7 +97,7 @@
     ]
     ```
 
-- ## GET /section/{idSection}
+- ## GET /section/{idSection} ✅
 
   - ## Front-end:
 
@@ -123,7 +127,7 @@
     }
     ```
 
-- ## POST /section
+- ## POST /section ✅
 
   - ## Front-end:
 
@@ -151,9 +155,9 @@
     }
     ```
 
-# /topic
+# ✅ /topic
 
-- ## GET /topic/{idTopic}
+- ## GET /topic/{idTopic} ✅
 
   - ## Front-end:
     
@@ -211,12 +215,12 @@
     }
     ```
 
-> Esta requisição retorna o título do tópico e alguns dos comentários.  
-> Os comentários enviados são afetados pela paginação.  
-> Cada comentário tem seu conteúdo e dados do usuário para exibição.  
-> Se um comentário fizer menção à outro, ele terá o usuário mencionado e seu comentario.
+    > esta requisição retorna o título do tópico e alguns dos comentários  
+    > os comentários enviados são afetados pela paginação
+    > cada comentário tem seu conteúdo e dados do usuário para exibição
+    > se um comentário fizer menção à outro, ele terá o usuário mencionado e seu comentário
 
-- ## POST /topic
+- ## POST /topic ✅
 
   - ## Front-end:
 
@@ -238,13 +242,17 @@
     }
     ```
 
-    - 1: já existe um tópico com esse nome
-    - 2: campos não preenchidos
-    - 10: tópico criado com sucesso
+    > [!IMPORTANT] possíveis `retornos` e o que cada um significa:
+    >
+    > `1` - já existe um tópico com esse nome, erro 422
+    >
+    > `2` - campos não completamente preenchidos pelo usuário, erro 400
+    >
+    > `10` - tópico criado com sucesso
 
-# /comment
+# ✅ /comment
 
-- ## GET /comment/{idComment}
+- ## GET /comment/{idComment} ⁉️
 
   - ## Front-end:
 
@@ -276,7 +284,7 @@
     }
     ```
 
-- ## POST /comment/{idTopic}
+- ## POST /comment/{idTopic} ✅
 
   - ## Front-end:
 
@@ -311,7 +319,7 @@
     }
     ```
 
-- ## DELETE /comment/{idComment}
+- ## DELETE /comment/{idComment} ✅
 
   - ## Front-end:
 
@@ -327,7 +335,7 @@
     mensagem de sucesso / erro
     ```
 
-# /profile:
+# ✅ /profile
 
 - ## GET /profile/{idUser}
 
@@ -370,9 +378,9 @@
     }
     ```
 
-> Obs: Para a criação do perfil, não é necassário uma bio ou um github, caso o usuário não tenha estes dados, eles voltarão como string vazia
+> **obs: para a criação do perfil, não é necassário uma bio ou um github, caso o usuário não tenha estes dados, eles voltarão como string vazia**
 
-- ## GET /profile/feedback/{idUser}
+- ## GET /profile/feedback/{idUser} ✅
 
   - ## Front-end:
 
@@ -401,7 +409,7 @@
     ]
     ```
 
-- ## GET /profile/interactions/{idUser}
+- ## GET /profile/interactions/{idUser} ✅
 
   - ## Front-end:
 
@@ -436,7 +444,7 @@
     >
     > `feedback` - `content` terá o texto do feedback e o usuário pra quem ele foi dado. **Não retornar feedbacks privados.**
 
-- ## PATCH /profile/{idUser}
+- ## PATCH /profile/{idUser} ✅
 
   - ## Front-end:
   
@@ -469,7 +477,7 @@
     }
     ```
 
-- ## POST /profile/skill/{idUser}
+- ## POST /profile/skill/{idUser} ✅
 
   - ## Front-end:
   
@@ -496,7 +504,7 @@
     }
     ```
 
-- ## DELETE /profile/skill/{idUser}
+- ## DELETE /profile/skill/{idUser} ✅
   
   - ## Front-end:
 
@@ -519,7 +527,7 @@
     mensagem de sucesso / erro
     ```
 
-- ## POST /profile/interest/{idUser}
+- ## POST /profile/interest/{idUser} ✅
 
   - ## Front-end:
 
@@ -545,7 +553,7 @@
     }
     ```
 
-- ## DELETE /profile/interest/{idUser}
+- ## DELETE /profile/interest/{idUser} ✅
   
   - ## Front-end:
 
@@ -568,9 +576,9 @@
     mensagem de sucesso / erro
     ```
 
-# /skill:
+# ✅ /skill:
 
-- ## POST /skill
+- ## POST /skill ✅
 
   - ## Front-end:
 
@@ -594,7 +602,7 @@
     }
     ```
 
-- ## GET /skill
+- ## GET /skill ✅
   
   - ## Front-end:
 
@@ -613,7 +621,7 @@
     ]
     ```
 
-- ## DELETE /skill/{idSkill}
+- ## DELETE /skill/{idSkill} ✅
   
   - ## Front-end:
 
