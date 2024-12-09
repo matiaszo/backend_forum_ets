@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,22 +23,16 @@ import com.example.demo.dto.project.ProjectDataDto;
 import com.example.demo.dto.skills.*;
 import com.example.demo.dto.user.GiverDto;
 import com.example.demo.dto.user.ProfileDto;
-import com.example.demo.dto.user.UserDataDto;
 import com.example.demo.interfaces.SkillsInterface;
 import com.example.demo.interfaces.UserInterface;
 import com.example.demo.interfaces.UserSkillInterface;
 import com.example.demo.model.FeedbackModel;
 import com.example.demo.model.InterestModel;
-import com.example.demo.model.InterestModel;
-import com.example.demo.model.UserModel;
-import com.example.demo.model.UserSkillModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserSkillModel;
 import com.example.demo.repositories.FeedbackRepository;
 import com.example.demo.repositories.InterestRepository;
 import com.example.demo.repositories.ProjectRepository;
-import com.example.demo.repositories.FeedbackRepository;
-import com.example.demo.repositories.InterestRepository;
 import com.example.demo.repositories.SkillsRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.UserSkillRepository;
@@ -179,7 +172,7 @@ public class ProfileController {
 
         for (FeedbackModel model : feeds) {
 
-            ProjectDataDto project = new ProjectDataDto(model.getProject().getId_project(), model.getProject().getTitle());
+            ProjectDataDto project = new ProjectDataDto(model.getProject().getId_project(), model.getProject().getName());
 
             UserModel findUser = model.getInteraction().getUser();
 
