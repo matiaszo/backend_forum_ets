@@ -276,7 +276,7 @@
     }
     ```
 
-- ## POST /comment
+- ## POST /comment/{idTopic}
 
   - ## Front-end:
 

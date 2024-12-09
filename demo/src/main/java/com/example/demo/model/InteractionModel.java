@@ -31,6 +31,14 @@ public class InteractionModel {
     @JoinColumn(name = "id_user")
     private UserModel user;
     
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+
     @OneToMany(mappedBy="interaction", orphanRemoval = true)
     private List<MessageModel> messages;  
 
