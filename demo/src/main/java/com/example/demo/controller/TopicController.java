@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.Token;
-import com.example.demo.dto.comment.CommentDataDto;
 import com.example.demo.dto.comment.MentionDto;
+import com.example.demo.dto.comments.CommentDataDto;
 import com.example.demo.dto.topics.CreateTopicDTO;
 import com.example.demo.dto.topics.CreateTopicFullInfoDTO;
 import com.example.demo.dto.topics.TopicCreationResponseDTO;
@@ -85,7 +85,7 @@ public class TopicController {
             countTopic++;
         }
 
-        return new TopicDataDto(topicCurrent.getId_topic(), 
+        return new TopicDataDto(topicCurrent.getTopicId(), 
             topicCurrent.getTitle(), topicCurrent.getSection().getId(), 
             new CommentDataDto(topicCurrent.getComment().getId_comment(), topicCurrent.getComment().getContent(), 
             new UserCommentDto(topicCurrent.getComment().getInteraction().getUser().getId_user(), topicCurrent.getComment().getInteraction().getUser().getName(), topicCurrent.getComment().getInteraction().getUser().getInstructor(), topicCurrent.getComment().getInteraction().getUser().getImage()), null), 

@@ -1,4 +1,4 @@
-package com.example.demo.dto.comment;
+package com.example.demo.dto.comments;
 
 import com.example.demo.dto.user.UserCommentDto;
 import com.example.demo.dto.comment.MentionDto;;

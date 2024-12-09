@@ -1,12 +1,16 @@
 package com.example.demo.model;
 
 
+import java.util.ArrayList;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -31,8 +35,19 @@ public class CommentModel {
     @OneToOne(orphanRemoval = false)
     @JoinColumn(name = "id_mention")
     private CommentModel mention;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    private ArrayList<LikeModel> likes;
     
     //! GETTERS AND SETTERS
+    
+    public ArrayList<LikeModel> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(ArrayList<LikeModel> likes) {
+        this.likes = likes;
+    }
     public CommentModel getMention() {
         return mention;
     }

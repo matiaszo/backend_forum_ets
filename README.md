@@ -335,6 +335,30 @@
     mensagem de sucesso / erro
     ```
 
+- ## POST /comment/like/{idComment}
+
+  - ## Front-end:
+
+    ### Path:
+    ```
+    idComment
+    ```
+
+    ### Body:
+    ```
+    {
+      userId: number
+    }
+    ```
+
+  - ## Back-end:
+    
+    ### Json:
+    ```
+    likes: number,
+
+    ```
+
 # ✅ /profile
 
 - ## GET /profile/{idUser}

@@ -67,7 +67,7 @@ public class TopicService implements TopicInterface {
         sectionRepo.save(sec);
         repo.save(topic); 
     
-        return new TopicDTO(topic.getId_topic(), topic.getTitle(), topic.getComment().getContent(), topic.getSection().getId());
+        return new TopicDTO(topic.getTopicId(), topic.getTitle(), topic.getComment().getContent(), topic.getSection().getId());
 
     }
 

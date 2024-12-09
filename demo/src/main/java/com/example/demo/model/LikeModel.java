@@ -24,6 +24,7 @@ public class LikeModel {
     @JoinColumn(name = "id_comment")
     private CommentModel comment;
     
+    
     //! GETTERS AND SETTERS
     public CommentModel getComment() {
         return comment;

@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class TopicModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_topic;
+    private Long topicId;
     
     @Column
     private String title;
@@ -44,12 +44,12 @@ public class TopicModel {
         this.title = title;
     }
 
-    public Long getId_topic() {
-        return id_topic;
+    public Long getTopicId() {
+        return topicId;
     }
 
-    public void setId_topic(Long id_topic) {
-        this.id_topic = id_topic;
+    public void setTopicId(Long id_topic) {
+        this.topicId = id_topic;
     }
     
     public SectionModel getSection() {

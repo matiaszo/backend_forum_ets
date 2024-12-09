@@ -1,12 +1,16 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.demo.dto.comments.CommentDTO;
+import com.example.demo.dto.comments.CommentLike;
 import com.example.demo.dto.comments.CreateCommentDTO;
 import com.example.demo.interfaces.CommentInterface;
 import com.example.demo.model.CommentModel;
 import com.example.demo.model.InteractionModel;
+import com.example.demo.model.LikeModel;
 import com.example.demo.repositories.CommentRepository;
 import com.example.demo.repositories.InteractionRepository;
 import com.example.demo.repositories.TopicRepository;
@@ -58,6 +62,33 @@ public class CommentService implements CommentInterface {
         commentRepo.save(comment);
 
         return new CommentDTO(data.userId(), data.topicId(), data.content(), comment.getMention().getId_comment());
+    }
+
+    @Override
+    public ArrayList<LikeModel> like(CommentLike like) {
+        InteractionModel interaction = new InteractionModel();
+        var found = userRepo.findById(like.userId());
+
+        if (found.isPresent())
+            interaction.setUser(found.get());
+
+        interaction.setType("LIKE");
+
+        LikeModel likeuou = new LikeModel();
+        likeuou.setInteraction(interaction);
+
+        var comment = commentRepo.findById(like.commentId());
+
+        if (comment.isPresent())
+            likeuou.setComment(comment.get());
+
+        var likes = comment.get().getLikes();
+
+        System.out.println(likes);
+
+        return new ArrayList<>(likes);
+
+
     }
     
 }
