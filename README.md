@@ -55,7 +55,7 @@
         password : string
         name : string
         email : string
-        intructor : boolean
+        instructor : boolean
     }
     ```
 
@@ -347,7 +347,7 @@
         password : string
         name : string
         email : string
-        intructor : boolean
+        instructor : boolean
         github : string
         bio : string
         image : string
@@ -737,6 +737,26 @@
 
 # /project
 
+- ## GET /project
+  
+  > Retornar os projetos que o usuário faz parte, baseado no JWT
+
+  - ## Front-end:
+    ```
+    ```
+  
+  - ## Back-end:
+
+    ### Json:
+    [
+        {
+            id : number
+            name : string
+            description : string
+            image : string
+        },
+    ]
+
 - ## GET /project/{idProject}
 
   - ## Front-end:
@@ -847,4 +867,31 @@
     ### Text:
     ```
     mensagem de sucesso / erro
+    ```
+
+# /user
+
+> Busca dados do usuário de forma mais simplificada que /profile
+
+- ## GET /user
+
+  - ## Front-end:
+
+    ### Query:
+    ```
+    name
+    ```
+
+  - ## Back-end:
+    
+    ### Json:
+    ```
+    [
+        {
+            id : number
+            name : string
+            image : string
+        },
+        ...
+    ]
     ```

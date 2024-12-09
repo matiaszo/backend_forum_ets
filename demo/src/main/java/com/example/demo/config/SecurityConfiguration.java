@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                 // permite acesso aos endpoints de login e register livremente
                 .requestMatchers("/auth").permitAll()
                 .requestMatchers("/register").permitAll()
+                .requestMatchers("/user").permitAll()
 
                 // qualquer outra requisição precisa de autenticação
                 .anyRequest().authenticated())
