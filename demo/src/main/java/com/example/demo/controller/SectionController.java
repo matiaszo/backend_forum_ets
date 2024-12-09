@@ -21,7 +21,6 @@ import com.example.demo.dto.section.CreateSectionDTO;
 import com.example.demo.dto.section.SectionCreationResponseDTO;
 import com.example.demo.dto.section.SectionDTO;
 import com.example.demo.interfaces.SectionInterface;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController

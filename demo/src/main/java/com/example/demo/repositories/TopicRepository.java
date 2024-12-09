@@ -9,5 +9,6 @@ import com.example.demo.model.TopicModel;
 public interface TopicRepository extends JpaRepository<TopicModel, Long>{
 
     public List<TopicModel> findBySectionId(Long id);
+    public TopicModel findByTitle(String title);
     
 }

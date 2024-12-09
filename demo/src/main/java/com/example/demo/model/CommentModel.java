@@ -19,6 +19,9 @@ public class CommentModel {
     private Long id_comment;
 
     @Column
+    private TopicModel topic;
+
+    @Column
     private String content;
     
     @ManyToOne
@@ -33,6 +36,15 @@ public class CommentModel {
     private List<TopicModel> topics;
     
     //! GETTERS AND SETTERS
+
+    public TopicModel getTopic() {
+        return topic;
+    }
+
+    public void setTopic(TopicModel topic) {
+        this.topic = topic;
+    }
+
     public CommentModel getComment() {
         return comment;
     }
