@@ -26,13 +26,29 @@ public class InteractionModel {
 
     @Column
     private String type;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_user")
     private UserModel user;
-    
+
     @OneToMany(mappedBy="interaction", orphanRemoval = true)
     private List<MessageModel> messages;  
+    
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+    
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public Long getId_interaction() {
         return id_interaction;
