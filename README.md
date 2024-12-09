@@ -748,6 +748,7 @@
   - ## Back-end:
 
     ### Json:
+    ```
     [
         {
             id : number
@@ -756,6 +757,7 @@
             image : string
         },
     ]
+    ```
 
 - ## GET /project/{idProject}
 

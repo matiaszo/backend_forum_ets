@@ -23,7 +23,10 @@ public class ProjectModel {
 
     @Column
     private String description;
-    
+
+    @Column
+    private String image;
+
     @OneToMany(mappedBy="project", orphanRemoval = true)
     private List<FeedbackModel> feedbacks;
     
@@ -73,6 +76,14 @@ public class ProjectModel {
 
     public void setProjects(List<ProjectMessageModel> projects) {
         this.projects = projects;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 }
