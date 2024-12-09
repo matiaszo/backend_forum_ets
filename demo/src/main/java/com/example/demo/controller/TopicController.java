@@ -14,7 +14,6 @@ import com.example.demo.dto.user.UserCommentDto;
 import com.example.demo.model.CommentModel;
 import com.example.demo.repositories.CommentRepository;
 import com.example.demo.repositories.TopicRepository;
-import com.example.demo.services.TopicService;
 import com.example.demo.interfaces.TopicInterface;
 
 import java.util.ArrayList;
@@ -55,15 +54,13 @@ public class TopicController {
         if (!service.verifyTopicInputs(info))
             return new ResponseEntity<>(new TopicCreationResponseDTO(null, "2"), HttpStatus.BAD_REQUEST);
 
-        
-
         var created = service.create(new CreateTopicFullInfoDTO(info, token.userId()));
 
         return new ResponseEntity<TopicCreationResponseDTO>(new TopicCreationResponseDTO(created, "10"), HttpStatus.CREATED);        
     }
     
     @GetMapping("/{idTopic}")
-    public TopicDataDto getComments(@PathVariable Long idTopic) {
+    public TopicDataDto getComments(@PathVariable Long idTopic, Integer page) {
         var topicCurrent = repo.findById(idTopic).get();
 
         var allComments = comRepo.findByTopic(topicCurrent.getComment().getId_comment(), idTopic);
@@ -72,12 +69,20 @@ public class TopicController {
 
         MentionDto mention = null;
 
+        Integer countPage = 0;
+        Integer countTopic = 0;
         for (CommentModel model : allComments) {
-            if (model.getMention() != null ) {
-                mention = new MentionDto(model.getMention().getId_comment(), model.getMention().getInteraction().getUser().getName(), model.getMention().getContent());
-            }
-
-            comments.add(new CommentDataDto(model.getId_comment(), model.getContent(), new UserCommentDto(model.getInteraction().getUser().getId_user(), model.getInteraction().getUser().getName(), model.getInteraction().getUser().getInstructor(), model.getInteraction().getUser().getImage()), mention));
+            
+            if (countTopic==10)
+                countPage++;
+                
+            if (page == countPage)
+                if (model.getMention() != null )
+                    mention = new MentionDto(model.getMention().getId_comment(), model.getMention().getInteraction().getUser().getName(), model.getMention().getContent());
+    
+                comments.add(new CommentDataDto(model.getId_comment(), model.getContent(), new UserCommentDto(model.getInteraction().getUser().getId_user(), model.getInteraction().getUser().getName(), model.getInteraction().getUser().getInstructor(), model.getInteraction().getUser().getImage()), mention));
+            
+            countTopic++;
         }
 
         return new TopicDataDto(topicCurrent.getId_topic(), 
