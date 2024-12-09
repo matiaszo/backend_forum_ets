@@ -10,6 +10,7 @@ import com.example.demo.interfaces.EncoderInterface;
 import com.example.demo.interfaces.JWTInterface;
 import com.example.demo.interfaces.SectionInterface;
 import com.example.demo.interfaces.SkillsInterface;
+import com.example.demo.interfaces.TopicInterface;
 import com.example.demo.interfaces.UserInterface;
 import com.example.demo.interfaces.UserSkillInterface;
 import com.example.demo.services.AuthService;
@@ -17,6 +18,7 @@ import com.example.demo.services.EncoderService;
 import com.example.demo.services.JWTService;
 import com.example.demo.services.SectionService;
 import com.example.demo.services.SkillsService;
+import com.example.demo.services.TopicService;
 import com.example.demo.services.UserService;
 import com.example.demo.services.UserSkillService;
 
@@ -61,5 +63,10 @@ public class DependencyConfiguration {
     @Bean
     public SectionInterface sectionInterface() {
         return new SectionService();
+    }
+
+    @Bean
+    public TopicInterface topicInterface() {
+        return new TopicService();
     }
 }
