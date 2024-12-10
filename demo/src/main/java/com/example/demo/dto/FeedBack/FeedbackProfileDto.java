@@ -5,11 +5,9 @@ import com.example.demo.dto.project.ProjectDataDto;
 import com.example.demo.dto.user.GiverDto;
 
 public record FeedbackProfileDto(
-    Long id,
-    String feedback,
     Integer stars,
+    String text,
     Boolean visibility,
-    InteractionDataDto interaction,
-    GiverDto giver,
-    ProjectDataDto project
+    String projectName,
+    GiverDto giver
 ) {}
