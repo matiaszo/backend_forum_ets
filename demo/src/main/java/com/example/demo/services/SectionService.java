@@ -53,7 +53,8 @@ public class SectionService implements SectionInterface {
             section.getId(),
             section.getTitle(),
             section.getDescription(),
-            section.getImage()
+            section.getImage(),
+            section.getCreator().getName()
         );
     }
 
@@ -63,10 +64,11 @@ public class SectionService implements SectionInterface {
         newSection.setTitle(info.title());
         newSection.setDescription(info.description());
         newSection.setImage(info.image());
+        newSection.setCreator(null);
 
         repo.save(newSection);
 
-        SectionDTO sec = new SectionDTO(newSection.getId(), newSection.getTitle(), newSection.getDescription(), newSection.getImage());
+        SectionDTO sec = new SectionDTO(newSection.getId(), newSection.getTitle(), newSection.getDescription(), newSection.getImage(), newSection.getCreator().getName());
         return sec;
     }
 
@@ -80,7 +82,7 @@ public class SectionService implements SectionInterface {
                 SectionModel sct = found.get(); 
 
                 repo.delete(sct);
-                return new SectionDTO(id, sct.getTitle(), sct.getDescription(), sct.getImage());
+                return new SectionDTO(id, sct.getTitle(), sct.getDescription(), sct.getImage(), sct.getCreator().getName());
     }
 
     @Override
@@ -101,7 +103,7 @@ public class SectionService implements SectionInterface {
 
         repo.save(found.get());
 
-        return new SectionDTO(id, found.get().getTitle(), found.get().getDescription(), found.get().getImage());
+        return new SectionDTO(id, found.get().getTitle(), found.get().getDescription(), found.get().getImage(), found.get().getCreator().getName());
 
     }
 

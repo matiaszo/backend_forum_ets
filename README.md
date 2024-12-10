@@ -115,6 +115,7 @@
         title : string
         image : string
         description : string
+        creator: string
 
         topics : [
             {

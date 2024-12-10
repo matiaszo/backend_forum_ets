@@ -26,12 +26,24 @@ public class SectionModel {
     @Column
     private String image;
 
+    @Column
+    private UserModel creator;
+
+    
     
     @OneToMany(mappedBy="section", orphanRemoval = true)
     private List<TopicModel> topics;  
     
     //! GETTERS AND SETTERS
+    
+    public UserModel getCreator() {
+        return creator;
+    }
 
+    public void setCreator(UserModel creator) {
+        this.creator = creator;
+    }
+    
     public String getImage() {
         return image;
     }
