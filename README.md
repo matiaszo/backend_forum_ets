@@ -179,6 +179,7 @@
         mainComment : {
             id : number
             content : string
+            likes : number
 
             user : {
                 id : string
@@ -192,6 +193,7 @@
             {
                 id : number
                 content : string
+                likes : number
 
                 user : {
                     id : string
@@ -234,7 +236,7 @@
     ### Json:
     ```
     {
-      message: number
+        message: number
     }
     ```
 
@@ -260,6 +262,7 @@
     {
         id : number
         content : string
+        likes : number
 
         user : {
             id : string
@@ -775,6 +778,8 @@
     {
         id : number
         name : string
+        description : string
+        goals : string[]
 
         messages : [
             {

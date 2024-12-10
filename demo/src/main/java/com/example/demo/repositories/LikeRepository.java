@@ -12,4 +12,7 @@ public interface LikeRepository extends JpaRepository<LikeModel, Long>
 {
     @Query(value = "select top(1) * from tb_like where id_interaction = :interaction", nativeQuery = true)
     Optional<LikeModel> findByInteraction(@Param("interaction") Long id_interaction);
+
+    @Query(value = "select count(*) from tb_like where id_comment = :id_comment", nativeQuery = true)
+    Integer countFromComment(@Param("id_comment") Long id_comment);
 }

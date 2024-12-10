@@ -12,14 +12,22 @@ import com.example.demo.dto.topics.TopicCreationResponseDTO;
 import com.example.demo.dto.topics.TopicDataDto;
 import com.example.demo.dto.user.UserCommentDto;
 import com.example.demo.model.CommentModel;
+import com.example.demo.model.TopicModel;
+import com.example.demo.model.UserModel;
 import com.example.demo.repositories.CommentRepository;
+import com.example.demo.repositories.LikeRepository;
 import com.example.demo.repositories.TopicRepository;
 import com.example.demo.interfaces.TopicInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +49,9 @@ public class TopicController {
 
     @Autowired
     TopicRepository repo;
+
+    @Autowired
+    LikeRepository LikeRep;
     
     @PostMapping
     public ResponseEntity<TopicCreationResponseDTO> create(@RequestAttribute("token") Token token, @RequestBody CreateTopicDTO info) {
@@ -61,7 +72,73 @@ public class TopicController {
     }
     
     @GetMapping("/{idTopic}")
-    public TopicDataDto getComments(@PathVariable Long idTopic, Integer page) {
+    public TopicDataDto getComments(@PathVariable Long idTopic, Integer page)
+    {
+        Optional<TopicModel> Topic = repo.findById(idTopic);
+
+        
+        if(Topic.isPresent())
+        {
+            List<CommentDataDto> Comments = new ArrayList<>();
+
+            TopicModel T = Topic.get();
+
+            CommentModel C = new CommentModel();
+            C.setTopic(T);
+
+            Page<CommentModel> AllComments = comRepo.findAll(Example.of(C), PageRequest.of(page, 20));
+
+            AllComments.get().forEach((item) ->
+            {
+                UserModel Usr = item.getInteraction().getUser();
+                CommentModel Mention = item.getMention();
+                Comments.add(new CommentDataDto
+                (
+                    item.getId_comment(),
+                    item.getContent(),
+                    LikeRep.countFromComment(item.getId_comment()),
+                    new UserCommentDto
+                    (
+                        Usr.getId_user(),
+                        Usr.getName(),
+                        Usr.getInstructor(),
+                        Usr.getImage()
+                    ),
+                    new MentionDto
+                    (
+                        Mention.getId_comment(), 
+                        Mention.getInteraction().getUser().getName(), 
+                        Mention.getContent()
+                    )
+                ));
+            });
+
+            CommentModel MainComment = T.getComment();
+            UserModel Usr = MainComment.getInteraction().getUser();
+            return new TopicDataDto
+            (
+                idTopic,
+                T.getTitle(),
+                T.getSection().getId(),
+                new CommentDataDto
+                (
+                    MainComment.getId_comment(),
+                    MainComment.getContent(),
+                    LikeRep.countFromComment(MainComment.getId_comment()),
+                    new UserCommentDto
+                    (
+                        Usr.getId_user(),
+                        Usr.getName(),
+                        Usr.getInstructor(),
+                        Usr.getImage()
+                    ),
+                    null),
+                Comments
+            );
+        }
+        return null;
+
+        /*
         var topicCurrent = repo.findById(idTopic).get();
 
         var allComments = comRepo.findByTopic(topicCurrent.getComment().getId_comment(), idTopic);
@@ -91,5 +168,6 @@ public class TopicController {
             new CommentDataDto(topicCurrent.getComment().getId_comment(), topicCurrent.getComment().getContent(), 
             new UserCommentDto(topicCurrent.getComment().getInteraction().getUser().getId_user(), topicCurrent.getComment().getInteraction().getUser().getName(), topicCurrent.getComment().getInteraction().getUser().getInstructor(), topicCurrent.getComment().getInteraction().getUser().getImage()), null), 
             comments);
+        */
     }
 }
