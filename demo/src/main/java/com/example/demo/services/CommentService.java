@@ -76,7 +76,7 @@ public class CommentService implements CommentInterface {
     public ArrayList<LikeModel> like(CommentLike like) {
 
         var foundLike = likeRepo.findByCommentAndUser(like.commentId(), like.userId());
-        
+        //System.out.println(foundLike.toString());
         if (!foundLike.isEmpty()) {
             likeRepo.deleteById(foundLike.get(0).getId_like());
             interactionRepo.deleteById(foundLike.get(0).getInteraction().getId_interaction());
@@ -88,6 +88,8 @@ public class CommentService implements CommentInterface {
     
             if (found.isPresent())
                 interaction.setUser(found.get());
+                
+            interaction.setDate(new Timestamp(new Date().getTime()));
     
             interaction.setType("LIKE");
             interactionRepo.save(interaction);
