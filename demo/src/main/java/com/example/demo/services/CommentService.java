@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
 import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,6 +45,8 @@ public class CommentService implements CommentInterface {
         var found = userRepo.findById(data.userId());
         if (found.isPresent()) 
             interaction.setUser(found.get());
+
+        interaction.setDate(new Timestamp(new Date().getTime()));
 
         interactionRepo.save(interaction);
 

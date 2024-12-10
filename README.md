@@ -183,6 +183,7 @@
         mainComment : {
             id : number
             content : string
+            likes : number
 
             user : {
                 id : string
@@ -196,6 +197,7 @@
             {
                 id : number
                 content : string
+                likes : number
 
                 user : {
                     id : string
@@ -238,7 +240,7 @@
     ### Json:
     ```
     {
-      message: number
+        message: number
     }
     ```
 
@@ -268,6 +270,7 @@
     {
         id : number
         content : string
+        likes : number
 
         user : {
             id : string
@@ -780,6 +783,7 @@
   - ## Back-end:
 
     ### Json:
+    ```
     [
         {
             id : number
@@ -788,6 +792,7 @@
             image : string
         },
     ]
+    ```
 
 - ## GET /project/{idProject}
 
@@ -805,6 +810,8 @@
     {
         id : number
         name : string
+        description : string
+        goals : string[]
 
         messages : [
             {

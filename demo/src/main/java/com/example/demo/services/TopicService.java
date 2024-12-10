@@ -1,5 +1,8 @@
 package com.example.demo.services;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.demo.dto.topics.CreateTopicDTO;
@@ -42,6 +45,7 @@ public class TopicService implements TopicInterface {
         InteractionModel interaction = new InteractionModel();
         interaction.setUser(null); 
         interaction.setType("COMMENT");
+        interaction.setDate(new Timestamp(new Date().getTime()));
     
         var user = userRepo.findById(info.id());
         if (user.isPresent()) {

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.Token;
 import com.example.demo.dto.FeedBack.FeedbackProfileDto;
 import com.example.demo.dto.interaction.InteractionDataDto;
+import com.example.demo.dto.interaction.InteractionExtra;
+import com.example.demo.dto.interaction.InteractionFullDto;
 import com.example.demo.dto.interest.BodyInterestDto;
 import com.example.demo.dto.interest.DeleteInterestDto;
 import com.example.demo.dto.interest.InterestProfileDto;
@@ -32,12 +35,17 @@ import com.example.demo.dto.user.UpdateDto;
 import com.example.demo.interfaces.SkillsInterface;
 import com.example.demo.interfaces.UserInterface;
 import com.example.demo.interfaces.UserSkillInterface;
+import com.example.demo.model.CommentModel;
 import com.example.demo.model.FeedbackModel;
 import com.example.demo.model.InterestModel;
+import com.example.demo.model.LikeModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserSkillModel;
+import com.example.demo.repositories.CommentRepository;
 import com.example.demo.repositories.FeedbackRepository;
+import com.example.demo.repositories.InteractionRepository;
 import com.example.demo.repositories.InterestRepository;
+import com.example.demo.repositories.LikeRepository;
 import com.example.demo.repositories.ProjectRepository;
 import com.example.demo.repositories.SkillsRepository;
 import com.example.demo.repositories.UserRepository;
@@ -77,6 +85,15 @@ public class ProfileController {
 
     @Autowired
     EncoderService encoder;
+
+    @Autowired
+    InteractionRepository InteractionRep;
+
+    @Autowired
+    CommentRepository CommentRep;
+
+    @Autowired
+    LikeRepository LikeRep;
 
     //! PARTE DAS SKILLS
     @PostMapping("/skill/{id}")
@@ -267,5 +284,70 @@ public class ProfileController {
         userRepo.save(found.get());
 
         return new ResponseEntity<>("Atualizado com sucesso", HttpStatus.OK);
+    }
+
+    @GetMapping("/interactions/{id}")
+    public ResponseEntity<List<InteractionFullDto>> getUserInteractions(@RequestAttribute Token token, @PathVariable Long id)
+    {
+        List<InteractionFullDto> ret = new ArrayList<>();
+
+        InteractionRep.findLatest(id).forEach((item) -> 
+        {
+            switch(item.getType())
+            {
+                case "COMMENT":
+                {
+                    Optional<CommentModel> Comment = CommentRep.findByInteraction(item.getId_interaction());
+                    if(Comment.isPresent())
+                    {
+                        CommentModel c = Comment.get();
+                        ret.add(new InteractionFullDto
+                        (
+                            item.getType(),
+                            new Date(item.getDate().getTime()),
+                            new InteractionExtra(c.getContent(), null, c.getTopic().getTitle())
+                        ));
+                    }
+                }
+                break;
+                case "FEEDBACK":
+                {
+                    Optional<FeedbackModel> Feedback = feedRepo.findByInteraction(item.getId_interaction());
+                    if(Feedback.isPresent())
+                    {
+                        FeedbackModel f = Feedback.get();
+                        if(f.getVisibility())
+                        {
+                            ret.add(new InteractionFullDto
+                            (
+                                item.getType(),
+                                new Date(item.getDate().getTime()),
+                                new InteractionExtra(f.getFeedback(), f.getReceptor().getName(), null)
+                            ));
+                        }
+                    }
+                }
+                break;
+                case "LIKE":
+                {
+                    Optional<LikeModel> Like = LikeRep.findByInteraction(item.getId_interaction());
+                    if(Like.isPresent())
+                    {
+                        LikeModel l = Like.get();
+                        ret.add(new InteractionFullDto
+                        (
+                            item.getType(),
+                            new Date(item.getDate().getTime()),
+                            new InteractionExtra(null, l.getComment().getInteraction().getUser().getName(), null)
+                        ));
+                    }
+                }
+                break;
+
+                default:
+                break;
+            }
+        });
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 }

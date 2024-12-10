@@ -9,6 +9,7 @@ import com.example.demo.interfaces.AuthInterface;
 import com.example.demo.interfaces.CommentInterface;
 import com.example.demo.interfaces.EncoderInterface;
 import com.example.demo.interfaces.JWTInterface;
+import com.example.demo.interfaces.ProjectInterface;
 import com.example.demo.interfaces.SectionInterface;
 import com.example.demo.interfaces.SkillsInterface;
 import com.example.demo.interfaces.TopicInterface;
@@ -18,6 +19,7 @@ import com.example.demo.services.AuthService;
 import com.example.demo.services.CommentService;
 import com.example.demo.services.EncoderService;
 import com.example.demo.services.JWTService;
+import com.example.demo.services.ProjectService;
 import com.example.demo.services.SectionService;
 import com.example.demo.services.SkillsService;
 import com.example.demo.services.TopicService;
@@ -72,6 +74,12 @@ public class DependencyConfiguration {
         return new TopicService();
     }
 
+    @Bean
+    public ProjectInterface projectInterface()
+    {
+        return new ProjectService();
+    }
+    
     @Bean
     public CommentInterface commentInterface() {
         return new CommentService();
