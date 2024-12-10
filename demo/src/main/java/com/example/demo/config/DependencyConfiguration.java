@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import com.example.demo.dto.Token;
 import com.example.demo.filters.JWTFilter;
 import com.example.demo.interfaces.AuthInterface;
+import com.example.demo.interfaces.CommentInterface;
 import com.example.demo.interfaces.EncoderInterface;
 import com.example.demo.interfaces.JWTInterface;
 import com.example.demo.interfaces.ProjectInterface;
@@ -15,6 +16,7 @@ import com.example.demo.interfaces.TopicInterface;
 import com.example.demo.interfaces.UserInterface;
 import com.example.demo.interfaces.UserSkillInterface;
 import com.example.demo.services.AuthService;
+import com.example.demo.services.CommentService;
 import com.example.demo.services.EncoderService;
 import com.example.demo.services.JWTService;
 import com.example.demo.services.ProjectService;
@@ -76,5 +78,9 @@ public class DependencyConfiguration {
     public ProjectInterface projectInterface()
     {
         return new ProjectService();
+    }
+    
+    public CommentInterface commentInterface() {
+        return new CommentService();
     }
 }

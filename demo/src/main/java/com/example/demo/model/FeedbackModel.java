@@ -23,7 +23,6 @@ public class FeedbackModel {
     @Column
     private String feedback;
 
-
     @Column
     private Integer stars;
 
