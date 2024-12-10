@@ -10,7 +10,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.example.demo.dto.Token;
 import com.example.demo.filters.JWTFilter;
+import com.example.demo.interfaces.JWTInterface;
 import com.example.demo.services.JWTService;
 
 @Configuration
@@ -18,7 +20,7 @@ import com.example.demo.services.JWTService;
 public class SecurityConfiguration {
     
     @Autowired
-    JWTService jwtService;
+    JWTInterface<Token> jwtService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,7 +32,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/register").permitAll()
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new JWTFilter(jwtService), UsernamePasswordAuthenticationFilter.class)
             .cors(config -> {
                 CorsConfiguration configuration = new CorsConfiguration();
                 configuration.addAllowedOrigin("http://localhost:3000");
