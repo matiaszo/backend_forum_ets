@@ -66,7 +66,8 @@ public class SectionService implements SectionInterface {
         newSection.setTitle(info.title());
         newSection.setDescription(info.description());
         newSection.setImage(info.image());
-        newSection.setCreator(null);
+
+        newSection.setCreator(userRepo.findById(info.userId()).get());
 
         repo.save(newSection);
 
@@ -113,6 +114,7 @@ public class SectionService implements SectionInterface {
     public SectionTopicsDTO getSingleSection(Long id) {
         
         var found = repo.findById(id);
+        System.out.println(found);
 
         if (found.isEmpty())
             return null;

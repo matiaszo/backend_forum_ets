@@ -89,6 +89,7 @@ public class SectionController {
     public ResponseEntity<SectionTopicsDTO> getSingleSectionContoller(@PathVariable Long id) {
         
         var found = service.getSingleSection(id);
+        System.out.println(found);
 
         return new ResponseEntity<>(found, HttpStatus.OK);
     }
