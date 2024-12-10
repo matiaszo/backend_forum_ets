@@ -18,9 +18,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JWTFilter extends OncePerRequestFilter{
 
-    @Autowired
     private JWTInterface<Token> jwtService;
 
+    public JWTFilter(JWTInterface<Token> jwtService)
+    {
+        this.jwtService = jwtService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

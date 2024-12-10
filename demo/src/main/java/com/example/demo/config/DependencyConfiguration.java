@@ -37,11 +37,6 @@ public class DependencyConfiguration {
     }
     
     @Bean
-    public JWTFilter jwtFilter() {
-        return new JWTFilter();
-    }
-    
-    @Bean
     public AuthInterface authInterface() {
         return new AuthService();
     }
