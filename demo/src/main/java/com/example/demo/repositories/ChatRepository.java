@@ -11,6 +11,5 @@ import com.example.demo.model.ChatModel;
 public interface ChatRepository extends JpaRepository<ChatModel, Long> {
     public List<ChatModel> findByName(String name);
 
-    @Query(value = "select * from tb_chat where name like '%'+ :name +'%'", nativeQuery = true)
-    List<ChatModel> ShearchName(@Param("name") String name);
+    List<ChatModel> findByNameContains(String name);
 }

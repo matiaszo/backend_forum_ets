@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -15,8 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.Token;
 import com.example.demo.dto.chat.ChatDataDto;
+import com.example.demo.dto.chat.ChatMessagesDto;
+import com.example.demo.dto.chat.MessageDataDto;
 import com.example.demo.dto.chat.NameChatDto;
 import com.example.demo.dto.message.MessageBodyDto;
+import com.example.demo.dto.user.UserCommentDto;
 import com.example.demo.interfaces.ChatInterface;
 import com.example.demo.model.ChatModel;
 import com.example.demo.model.InteractionModel;
@@ -70,23 +76,34 @@ public class ChatController {
         model.setText(message.text());
         
         InteractionModel inter = new InteractionModel();
-        inter.setType("MESSAGE");
+        inter.setType(null);
         inter.setUser(userRepo.findById(token.userId()).get());
 
         interRepo.save(inter);
         model.setInteraction(inter);
 
         messageRepo.save(model);
-        return new ResponseEntity<>("Nova mensagem", HttpStatus.OK);
+        return new ResponseEntity<>(userRepo.findById(token.userId()).get().getName() + " mandou uma mensagem", HttpStatus.OK);
     }
 
     @GetMapping
-    public  List<ChatDataDto> getchats(@RequestAttribute Token token, Integer page, String name) {
+    public List<ChatDataDto> getchats(@RequestAttribute Token token, Integer page, String name) {
 
-        var chats = repo.ShearchName(name);
+        List<ChatModel> chats;
+
+        if (name != null) {
+            chats = repo.findByNameContains(name);
+            System.out.println(chats);
+        } else {
+            chats = repo.findByNameContains("");
+            System.out.println(chats);
+        }
+
 
         Integer countModel = 0;
-        Integer countPage = 0;
+        Integer countPage = 1;
+
+        List<ChatDataDto> returnDto = new ArrayList<>();
 
         for (ChatModel chatModel : chats) {
             
@@ -95,10 +112,31 @@ public class ChatController {
                 countModel = 0;
             }
 
-            if (countPage == page) {
-            }
+            if (countPage == page)
+                returnDto.add(new ChatDataDto(chatModel.getId_chat(), chatModel.getName()));
+            
 
             countModel++;
         }
+
+        return returnDto;
+    }
+
+    @GetMapping("/{idchat}")
+    public ChatMessagesDto getMessages(@PathVariable Long idchat) {
+
+        ChatModel model = repo.findById(idchat).get();
+
+        List<MessageDataDto> messages = new ArrayList<>();
+
+        List<MessageModel> listMessages = messageRepo.findByChat(idchat);
+
+        for (MessageModel messageModel : listMessages) {
+            messages.add(new MessageDataDto(messageModel.getId_message(), 
+            messageModel.getText(), 
+            new UserCommentDto(messageModel.getInteraction().getUser().getId_user(), messageModel.getInteraction().getUser().getName(), messageModel.getInteraction().getUser().getInstructor(), messageModel.getInteraction().getUser().getImage())));
+        }
+
+        return new ChatMessagesDto(idchat, model.getName(), messages);
     }
 }
