@@ -38,7 +38,6 @@ import com.example.demo.interfaces.UserSkillInterface;
 import com.example.demo.model.CommentModel;
 import com.example.demo.model.FeedbackModel;
 import com.example.demo.model.InterestModel;
-import com.example.demo.model.SkillsModel;
 import com.example.demo.model.LikeModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserSkillModel;
@@ -98,37 +97,39 @@ public class ProfileController {
 
     //! PARTE DAS SKILLS
     @PostMapping("/skill/{id}")
-    public ResponseEntity<UserSkillDto> createSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody SkillIdDto skill) {
+    public ResponseEntity<UserSkillDto> createSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody Long skill) {
 
         if (token.userId() != id)
             return null;
 
-        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill.id());
+        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill);
 
-        if (userSkillModel != null) 
+        if (userSkillModel != null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
 
-        userSkillService.Register(id, skill.id());
+        userSkillService.Register(id, skill);
+
+
         
-        SkillsModel returnSkill = repo.findById(skill.id()).get();
-
-        return new ResponseEntity<>(new UserSkillDto(returnSkill.getId_skills(), returnSkill.getImage(), returnSkill.getName()), HttpStatus.OK);
+        return new ResponseEntity<UserSkillDto>(new UserSkillDto(id, null, null), HttpStatus.OK);
     }
 
     @DeleteMapping("/skill/{id}")
-    public ResponseEntity<Integer> deleteSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody SkillIdDto skill) {
+    public UserSkillDto deleteSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody Long skill) {
         
         if (token.userId() != id)
-            return new ResponseEntity<>(2, HttpStatus.FORBIDDEN);
+            return null;
 
-        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill.id());
+        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill);
 
-        if (userSkillModel == null) 
-            return new ResponseEntity<>(1, HttpStatus.NOT_FOUND);
+        if (userSkillModel == null) {
+            return null;
+        }
 
         userSkillRepo.deleteById(userSkillModel.getId_user_skills());
 
-        return new ResponseEntity<>(10, HttpStatus.OK);
+        return new UserSkillDto(id, null, null);
     }
 
     //! GET TODOS OS DADOS DO USUÁRIO
@@ -199,20 +200,22 @@ public class ProfileController {
     }
 
     @DeleteMapping("/interest/{id}")
-    public ResponseEntity<Integer> deleteInterest(@RequestAttribute Token token, @PathVariable Long id, @RequestBody DeleteInterestDto interest) {
+    public InterestProfileDto deleteInterest(@RequestAttribute Token token, @PathVariable Long id, @RequestBody DeleteInterestDto interest) {
         
         if (token.userId() != id)
-            return new ResponseEntity<>(2, HttpStatus.FORBIDDEN);
+            return null;
 
         Optional<InterestModel> optionalInter = interRepo.findById(interest.id());
 
         if(!optionalInter.isPresent()) {
-            return new ResponseEntity<>(1, HttpStatus.NOT_FOUND);
+            return null;
         }
+
+        InterestModel model = optionalInter.get();
 
         interRepo.deleteById(interest.id());
 
-        return new ResponseEntity<>(10, HttpStatus.OK);
+        return new InterestProfileDto(interest.id(), model.getName());
     }
 
     //! FEEDBACK
@@ -225,14 +228,10 @@ public class ProfileController {
 
         for (FeedbackModel model : feeds) {
 
-            UserModel findUser = model.getInteraction().getUser();
-
-            GiverDto user = new GiverDto(findUser.getUserId(), findUser.getEdv(), findUser.getName(), findUser.getInstructor(), findUser.getImage());
-
             if (token.userId() != id && !model.getVisibility()) 
                 continue;
             
-            feeddto.add(new FeedbackProfileDto(model.getStars(), model.getFeedback(), model.getVisibility(), model.getProject().getName(), user));
+            feeddto.add(new FeedbackProfileDto(model.getStars(), model.getFeedback(), model.getVisibility(), model.getProject().getName(), new GiverDto(model.getInteraction().getUser().getId_user(), model.getInteraction().getUser().getEdv(), model.getInteraction().getUser().getName(), model.getInteraction().getUser().getInstructor(), model.getInteraction().getUser().getImage())));
         }
 
         return feeddto;
@@ -240,7 +239,7 @@ public class ProfileController {
 
     //! UPDATA
     @PatchMapping("/{id}")
-    public ResponseEntity<Integer> updateUser(@RequestAttribute Token token, @PathVariable Long id, @RequestBody UpdateDto dtoUp){
+    public ResponseEntity<String> updateUser(@RequestAttribute Token token, @PathVariable Long id, @RequestBody UpdateDto dtoUp){
         
         if (token.userId() != id)
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
@@ -258,7 +257,7 @@ public class ProfileController {
             if (userService.validateEmail(dtoUp.email())) {
                 found.get().setEmail(dtoUp.email());
             } else {
-                return new ResponseEntity<>(1, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Email inválido", HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -272,13 +271,13 @@ public class ProfileController {
             if (userService.validatePassword(dtoUp.password())) {
                 found.get().setPassword(encoder.encode(dtoUp.password()));
             } else {
-                return new ResponseEntity<>(2, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Senha inválida", HttpStatus.BAD_REQUEST);
             }
         }
 
         userRepo.save(found.get());
 
-        return new ResponseEntity<>(10, HttpStatus.OK);
+        return new ResponseEntity<>("Atualizado com sucesso", HttpStatus.OK);
     }
 
     @GetMapping("/interactions/{id}")
@@ -345,69 +344,4 @@ public class ProfileController {
         });
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
-
-    // @GetMapping("/interactions/{id}")
-    // public ResponseEntity<List<InteractionFullDto>> getUserInteractions(@RequestAttribute Token token, @PathVariable Long id)
-    // {
-    //     List<InteractionFullDto> ret = new ArrayList<>();
-
-    //     InteractionRep.findLatest(id).forEach((item) -> 
-    //     {
-    //         switch(item.getType())
-    //         {
-    //             case "COMMENT":
-    //             {
-    //                 Optional<CommentModel> Comment = CommentRep.findByInteraction(item.getId_interaction());
-    //                 if(Comment.isPresent())
-    //                 {
-    //                     CommentModel c = Comment.get();
-    //                     ret.add(new InteractionFullDto
-    //                     (
-    //                         item.getType(),
-    //                         new Date(item.getDate().getTime()),
-    //                         new InteractionExtra(c.getContent(), null, c.getTopic().getTitle())
-    //                     ));
-    //                 }
-    //             }
-    //             break;
-    //             case "FEEDBACK":
-    //             {
-    //                 Optional<FeedbackModel> Feedback = feedRepo.findByInteraction(item.getId_interaction());
-    //                 if(Feedback.isPresent())
-    //                 {
-    //                     FeedbackModel f = Feedback.get();
-    //                     if(f.getVisibility())
-    //                     {
-    //                         ret.add(new InteractionFullDto
-    //                         (
-    //                             item.getType(),
-    //                             new Date(item.getDate().getTime()),
-    //                             new InteractionExtra(f.getFeedback(), f.getReceptor().getName(), null)
-    //                         ));
-    //                     }
-    //                 }
-    //             }
-    //             break;
-    //             case "LIKE":
-    //             {
-    //                 Optional<LikeModel> Like = LikeRep.findByInteraction(item.getId_interaction());
-    //                 if(Like.isPresent())
-    //                 {
-    //                     LikeModel l = Like.get();
-    //                     ret.add(new InteractionFullDto
-    //                     (
-    //                         item.getType(),
-    //                         new Date(item.getDate().getTime()),
-    //                         new InteractionExtra(null, l.getComment().getInteraction().getUser().getName(), null)
-    //                     ));
-    //                 }
-    //             }
-    //             break;
-
-    //             default:
-    //             break;
-    //         }
-    //     });
-    //     return new ResponseEntity<>(ret, HttpStatus.OK);
-    // }
 }
