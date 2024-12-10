@@ -21,13 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.Token;
 import com.example.demo.dto.FeedBack.FeedbackProfileDto;
-import com.example.demo.dto.interaction.InteractionDataDto;
 import com.example.demo.dto.interaction.InteractionExtra;
 import com.example.demo.dto.interaction.InteractionFullDto;
 import com.example.demo.dto.interest.BodyInterestDto;
 import com.example.demo.dto.interest.DeleteInterestDto;
 import com.example.demo.dto.interest.InterestProfileDto;
-import com.example.demo.dto.project.ProjectDataDto;
 import com.example.demo.dto.skills.*;
 import com.example.demo.dto.user.GiverDto;
 import com.example.demo.dto.user.ProfileDto;
