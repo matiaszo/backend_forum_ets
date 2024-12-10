@@ -13,6 +13,7 @@ import com.example.demo.model.InteractionModel;
 import com.example.demo.model.LikeModel;
 import com.example.demo.repositories.CommentRepository;
 import com.example.demo.repositories.InteractionRepository;
+import com.example.demo.repositories.LikeRepository;
 import com.example.demo.repositories.TopicRepository;
 import com.example.demo.repositories.UserRepository;
 
@@ -29,6 +30,9 @@ public class CommentService implements CommentInterface {
 
     @Autowired
     CommentRepository commentRepo;
+
+    @Autowired
+    LikeRepository likeRepo;
 
     @Override
     public CommentDTO post(CreateCommentDTO data) {
@@ -66,6 +70,7 @@ public class CommentService implements CommentInterface {
 
     @Override
     public ArrayList<LikeModel> like(CommentLike like) {
+        
         InteractionModel interaction = new InteractionModel();
         var found = userRepo.findById(like.userId());
 
@@ -73,6 +78,7 @@ public class CommentService implements CommentInterface {
             interaction.setUser(found.get());
 
         interaction.setType("LIKE");
+        interactionRepo.save(interaction);
 
         LikeModel likeuou = new LikeModel();
         likeuou.setInteraction(interaction);
@@ -81,6 +87,8 @@ public class CommentService implements CommentInterface {
 
         if (comment.isPresent())
             likeuou.setComment(comment.get());
+
+        likeRepo.save(likeuou);
 
         var likes = comment.get().getLikes();
 

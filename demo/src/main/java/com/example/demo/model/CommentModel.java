@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
-
-import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -37,15 +36,15 @@ public class CommentModel {
     private CommentModel mention;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    private ArrayList<LikeModel> likes;
+    private List<LikeModel> likes;
     
     //! GETTERS AND SETTERS
     
-    public ArrayList<LikeModel> getLikes() {
+    public List<LikeModel> getLikes() {
         return likes;
     }
 
-    public void setLikes(ArrayList<LikeModel> likes) {
+    public void setLikes(List<LikeModel> likes) {
         this.likes = likes;
     }
     public CommentModel getMention() {

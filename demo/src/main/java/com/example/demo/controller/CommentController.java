@@ -26,7 +26,7 @@ public class CommentController {
     @Autowired
     CommentInterface service;
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<CommentDTO> postMethodName(@RequestBody CreateCommentDTO data) {
         
         var post = service.post(data);
@@ -34,11 +34,11 @@ public class CommentController {
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
     
-    @PostMapping("/like/{idComment}")
-    public ResponseEntity<Integer> like(@RequestAttribute("token") Token token, @RequestParam Long idComment) {
+    @PostMapping("/like")
+    public ResponseEntity<Integer> like(@RequestBody CommentLike like) {
         
-        var like = service.like(new CommentLike(token.userId(), idComment));
-        return new ResponseEntity<>(like.size(), HttpStatus.OK);
+        var likes = service.like(like);
+        return new ResponseEntity<>(likes.size(), HttpStatus.OK);
 
     }
     
