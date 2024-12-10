@@ -20,6 +20,7 @@ import com.example.demo.dto.Token;
 import com.example.demo.dto.section.CreateSectionDTO;
 import com.example.demo.dto.section.SectionCreationResponseDTO;
 import com.example.demo.dto.section.SectionDTO;
+import com.example.demo.dto.section.SectionTopicsDTO;
 import com.example.demo.interfaces.SectionInterface;
 
 
@@ -85,8 +86,12 @@ public class SectionController {
     }
 
     @GetMapping("/{id}")
-    public String getMethodName(@PathVariable Long id) {
-        return new String();
+    public ResponseEntity<SectionTopicsDTO> getSingleSectionContoller(@PathVariable Long id) {
+        
+        var found = service.getSingleSection(id);
+        System.out.println(found);
+
+        return new ResponseEntity<>(found, HttpStatus.OK);
     }
     
 

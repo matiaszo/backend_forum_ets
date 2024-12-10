@@ -8,9 +8,11 @@ import org.springframework.data.domain.PageRequest;
 
 import com.example.demo.dto.section.CreateSectionDTO;
 import com.example.demo.dto.section.SectionDTO;
+import com.example.demo.dto.section.SectionTopicsDTO;
 import com.example.demo.dto.topics.TopicDTO;
 import com.example.demo.interfaces.SectionInterface;
 import com.example.demo.model.SectionModel;
+import com.example.demo.model.TopicModel;
 import com.example.demo.repositories.SectionRepository;
 import com.example.demo.repositories.TopicRepository;
 import com.example.demo.repositories.UserRepository;
@@ -64,7 +66,8 @@ public class SectionService implements SectionInterface {
         newSection.setTitle(info.title());
         newSection.setDescription(info.description());
         newSection.setImage(info.image());
-        newSection.setCreator(null);
+
+        newSection.setCreator(userRepo.findById(info.userId()).get());
 
         repo.save(newSection);
 
@@ -76,13 +79,13 @@ public class SectionService implements SectionInterface {
     public SectionDTO delete(Long id) {
         var found = repo.findById(id);
 
-                if (found.isEmpty())
-                    return null;
+        if (found.isEmpty())
+            return null;
 
-                SectionModel sct = found.get(); 
+        SectionModel sct = found.get(); 
 
-                repo.delete(sct);
-                return new SectionDTO(id, sct.getTitle(), sct.getDescription(), sct.getImage(), sct.getCreator().getName());
+        repo.delete(sct);
+        return new SectionDTO(id, sct.getTitle(), sct.getDescription(), sct.getImage(), sct.getCreator().getName());
     }
 
     @Override
@@ -107,27 +110,33 @@ public class SectionService implements SectionInterface {
 
     }
 
-    // @Override
-    // public ArrayList<TopicDTO> getTopics(Long id) {
-
-        // ! FALTA IMPLEMENTAR
-
-        // var found = repo.findById(id);
-
-        // if (found.isEmpty())
-        //     return null;
-            
-        // var topics = topicRepo.findBySectionId(id);
-
-        // System.out.println(topics);
-
-        // return null;
-    // }
-
     @Override
-    public ArrayList<TopicDTO> getSingleSection(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSingleSection'");
+    public SectionTopicsDTO getSingleSection(Long id) {
+        
+        var found = repo.findById(id);
+        System.out.println(found);
+
+        if (found.isEmpty())
+            return null;
+
+        SectionDTO sec = new SectionDTO(id, found.get().getTitle(), found.get().getDescription(), found.get().getImage(), found.get().getCreator().getName());
+
+        var topics = found.get().getTopics();
+
+        var res = topics.stream()
+        .map(this::transformTopicToDTO) 
+        .collect(Collectors.toCollection(ArrayList::new));
+
+        return new SectionTopicsDTO(sec, new ArrayList<>(res));
+    }
+
+    private TopicDTO transformTopicToDTO(TopicModel topic) {
+        return new TopicDTO(
+        topic.getTopicId(),
+        topic.getTitle(),
+        topic.getComment().getContent(),
+        topic.getSection().getId()
+        );
     }
     
 }
