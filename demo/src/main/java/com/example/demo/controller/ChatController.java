@@ -130,6 +130,7 @@ public class ChatController {
 
         for (MessageModel messageModel : listMessages) {
             messages.add(new MessageDataDto(messageModel.getId_message(), 
+            messageModel.getInteraction().getDate(),
             messageModel.getText(), 
             new UserCommentDto(messageModel.getInteraction().getUser().getId_user(), messageModel.getInteraction().getUser().getName(), messageModel.getInteraction().getUser().getInstructor(), messageModel.getInteraction().getUser().getImage())));
         }

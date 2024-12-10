@@ -155,7 +155,7 @@ public class ProfileController {
             InterestDto.add(new InterestProfileDto(inter.getId_interest(), inter.getName()));
         }
         
-        return new ResponseEntity<>(new ProfileDto(model.getUserId(), model.getBio(), model.getEdv(), model.getEmail(), model.getGitUsername(), model.getImage(), model.getName(), model.getInstructor(), skillsProfile, InterestDto), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ProfileDto(model.getUserId(), model.getBio(), model.getEdv(), model.getEmail(), model.getGitUsername(), model.getImage(), model.getName(), model.getInstructor(), skillsProfile, InterestDto), HttpStatus.OK);
     }
 
     //! PARTE DOS INTERESSES
@@ -234,6 +234,9 @@ public class ProfileController {
 
         return feeddto;
     }
+
+    // @PostMapping("/feedback")
+    // Esperar a nicolle finalizar
 
     //! UPDATA
     @PatchMapping("/{id}")
