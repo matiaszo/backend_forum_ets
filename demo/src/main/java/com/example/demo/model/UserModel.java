@@ -65,6 +65,9 @@ public class UserModel {
     
     @OneToMany(mappedBy="user", orphanRemoval = true)
     private List<EventModel> events;  
+
+    @OneToMany
+    private List<SectionModel> sections;
     
     //! GETTERS E SETTERS
     public String getGitUsername() {

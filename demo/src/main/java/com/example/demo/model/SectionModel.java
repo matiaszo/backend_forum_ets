@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -26,11 +27,9 @@ public class SectionModel {
     @Column
     private String image;
 
-    @Column
+    @ManyToOne
     private UserModel creator;
 
-    
-    
     @OneToMany(mappedBy="section", orphanRemoval = true)
     private List<TopicModel> topics;  
     
