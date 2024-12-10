@@ -70,27 +70,37 @@ public class CommentService implements CommentInterface {
 
     @Override
     public ArrayList<LikeModel> like(CommentLike like) {
+
+        var foundLike = likeRepo.findByCommentAndUser(like.commentId(), like.userId());
         
-        InteractionModel interaction = new InteractionModel();
-        var found = userRepo.findById(like.userId());
+        if (!foundLike.isEmpty()) {
+            likeRepo.deleteById(foundLike.get(0).getId_like());
+            interactionRepo.deleteById(foundLike.get(0).getInteraction().getId_interaction());
+            
+        } else {
 
-        if (found.isPresent())
-            interaction.setUser(found.get());
-
-        interaction.setType("LIKE");
-        interactionRepo.save(interaction);
-
-        LikeModel likeuou = new LikeModel();
-        likeuou.setInteraction(interaction);
-
-        var comment = commentRepo.findById(like.commentId());
-
-        if (comment.isPresent())
-            likeuou.setComment(comment.get());
-
-        likeRepo.save(likeuou);
-
-        var likes = comment.get().getLikes();
+            InteractionModel interaction = new InteractionModel();
+            var found = userRepo.findById(like.userId());
+    
+            if (found.isPresent())
+                interaction.setUser(found.get());
+    
+            interaction.setType("LIKE");
+            interactionRepo.save(interaction);
+    
+            LikeModel likeuou = new LikeModel();
+            likeuou.setInteraction(interaction);
+    
+            var comment = commentRepo.findById(like.commentId());
+    
+            if (comment.isPresent())
+                likeuou.setComment(comment.get());
+    
+            likeRepo.save(likeuou);
+    
+        }
+        
+        var likes = commentRepo.findById(like.commentId()).get().getLikes();
 
         System.out.println(likes);
 
