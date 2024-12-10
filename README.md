@@ -491,14 +491,11 @@
 
   - ## Back-end:
     
-    ### Json:
+    ### message:
     ```
-    {
-        name : string
-        email : string
-        github : string
-        bio : string
-    }
+    1 - email inválido
+    2 - Senha inválida
+    10 - Deu certo
     ```
 
 - ## POST /profile/skill/{idUser} ✅
@@ -549,6 +546,10 @@
     ### Text:
     ```
     mensagem de sucesso / erro
+
+    1 - UserSkill não existe
+    2 - Usuário bloqueado
+    10 - Deu certo
     ```
 
 - ## POST /profile/interest/{idUser} ✅
@@ -598,6 +599,10 @@
     ### Text:
     ```
     mensagem de sucesso / erro
+
+    1 - Interesse não existe
+    2 - Usuário bloqueado
+    10 - Deu Certo
     ```
 
 # ✅ /skill:
@@ -661,7 +666,7 @@
     mensagem de sucesso / erro
     ```
 
-# /chat
+# /chat ✅ 
 
 - ## GET /chat
   
@@ -686,7 +691,7 @@
     ]
     ```
 
-- ## GET /chat/{idChat}
+- ## GET /chat/{idChat} ✅ 
 
   - ## Front-end:
     
@@ -720,7 +725,7 @@
     }
     ```
 
-- ## POST /chat
+- ## POST /chat ✅ 
 
   > Cria um novo chat
 
@@ -743,7 +748,7 @@
     }
     ```
 
-- ## POST /chat/{idChat}
+- ## POST /chat/{idChat} ✅ 
 
   > Posta uma nova mensagem no chat
   - ## Front-end:

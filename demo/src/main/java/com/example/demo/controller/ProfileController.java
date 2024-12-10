@@ -34,6 +34,7 @@ import com.example.demo.interfaces.UserInterface;
 import com.example.demo.interfaces.UserSkillInterface;
 import com.example.demo.model.FeedbackModel;
 import com.example.demo.model.InterestModel;
+import com.example.demo.model.SkillsModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserSkillModel;
 import com.example.demo.repositories.FeedbackRepository;
@@ -80,37 +81,37 @@ public class ProfileController {
 
     //! PARTE DAS SKILLS
     @PostMapping("/skill/{id}")
-    public ResponseEntity<UserSkillDto> createSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody Long skill) {
+    public ResponseEntity<UserSkillDto> createSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody SkillIdDto skill) {
 
         if (token.userId() != id)
             return null;
 
-        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill);
+        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill.id());
 
-        if (userSkillModel != null) {
+        if (userSkillModel != null) 
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
 
-        userSkillService.Register(id, skill);
+        userSkillService.Register(id, skill.id());
         
-        return new ResponseEntity<>(new UserSkillDto(id, skill), HttpStatus.OK);
+        SkillsModel returnSkill = repo.findById(skill.id()).get();
+
+        return new ResponseEntity<>(new UserSkillDto(returnSkill.getId_skills(), returnSkill.getImage(), returnSkill.getName()), HttpStatus.OK);
     }
 
     @DeleteMapping("/skill/{id}")
-    public UserSkillDto deleteSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody Long skill) {
+    public ResponseEntity<Integer> deleteSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody SkillIdDto skill) {
         
         if (token.userId() != id)
-            return null;
+            return new ResponseEntity<>(2, HttpStatus.FORBIDDEN);
 
-        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill);
+        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill.id());
 
-        if (userSkillModel == null) {
-            return null;
-        }
+        if (userSkillModel == null) 
+            return new ResponseEntity<>(1, HttpStatus.NOT_FOUND);
 
         userSkillRepo.deleteById(userSkillModel.getId_user_skills());
 
-        return new UserSkillDto(id, skill);
+        return new ResponseEntity<>(10, HttpStatus.OK);
     }
 
     //! GET TODOS OS DADOS DO USUÁRIO
@@ -181,22 +182,20 @@ public class ProfileController {
     }
 
     @DeleteMapping("/interest/{id}")
-    public InterestProfileDto deleteInterest(@RequestAttribute Token token, @PathVariable Long id, @RequestBody DeleteInterestDto interest) {
+    public ResponseEntity<Integer> deleteInterest(@RequestAttribute Token token, @PathVariable Long id, @RequestBody DeleteInterestDto interest) {
         
         if (token.userId() != id)
-            return null;
+            return new ResponseEntity<>(2, HttpStatus.FORBIDDEN);
 
         Optional<InterestModel> optionalInter = interRepo.findById(interest.id());
 
         if(!optionalInter.isPresent()) {
-            return null;
+            return new ResponseEntity<>(1, HttpStatus.NOT_FOUND);
         }
-
-        InterestModel model = optionalInter.get();
 
         interRepo.deleteById(interest.id());
 
-        return new InterestProfileDto(interest.id(), model.getName());
+        return new ResponseEntity<>(10, HttpStatus.OK);
     }
 
     //! FEEDBACK
@@ -209,18 +208,14 @@ public class ProfileController {
 
         for (FeedbackModel model : feeds) {
 
-            ProjectDataDto project = new ProjectDataDto(model.getProject().getId_project(), model.getProject().getName());
-
             UserModel findUser = model.getInteraction().getUser();
 
             GiverDto user = new GiverDto(findUser.getUserId(), findUser.getEdv(), findUser.getName(), findUser.getInstructor(), findUser.getImage());
 
-            InteractionDataDto inter = new InteractionDataDto(model.getInteraction().getId_interaction(), model.getInteraction().getType(), model.getInteraction().getDate());
-
             if (token.userId() != id && !model.getVisibility()) 
                 continue;
             
-            feeddto.add(new FeedbackProfileDto(model.getFeedbackId(), model.getFeedback(), model.getStars(), model.getVisibility(), inter, user, project));
+            feeddto.add(new FeedbackProfileDto(model.getStars(), model.getFeedback(), model.getVisibility(), model.getProject().getName(), user));
         }
 
         return feeddto;
@@ -228,7 +223,7 @@ public class ProfileController {
 
     //! UPDATA
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateUser(@RequestAttribute Token token, @PathVariable Long id, @RequestBody UpdateDto dtoUp){
+    public ResponseEntity<Integer> updateUser(@RequestAttribute Token token, @PathVariable Long id, @RequestBody UpdateDto dtoUp){
         
         if (token.userId() != id)
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
@@ -246,7 +241,7 @@ public class ProfileController {
             if (userService.validateEmail(dtoUp.email())) {
                 found.get().setEmail(dtoUp.email());
             } else {
-                return new ResponseEntity<>("Email inválido", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(1, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -260,12 +255,12 @@ public class ProfileController {
             if (userService.validatePassword(dtoUp.password())) {
                 found.get().setPassword(encoder.encode(dtoUp.password()));
             } else {
-                return new ResponseEntity<>("Senha inválida", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(2, HttpStatus.BAD_REQUEST);
             }
         }
 
         userRepo.save(found.get());
 
-        return new ResponseEntity<>("Atualizado com sucesso", HttpStatus.OK);
+        return new ResponseEntity<>(10, HttpStatus.OK);
     }
 }
