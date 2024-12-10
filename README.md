@@ -330,12 +330,20 @@
     ```
     idComment
     ```
+    
+    ### Attribute:
+    ```
+    token
+    ```
 
   - ## Back-end:
     
     ### Text:
     ```
     mensagem de sucesso / erro
+
+    1 - o usuário não é o dono do comentário
+    10 - Deu certo
     ```
 
 - ## POST /comment/like/{idComment}
@@ -346,7 +354,7 @@
     ```
     idComment
     ```
-
+    
     ### Body:
     ```
     {

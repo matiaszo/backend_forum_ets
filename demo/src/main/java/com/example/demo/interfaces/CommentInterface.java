@@ -10,5 +10,4 @@ import com.example.demo.model.LikeModel;
 public interface CommentInterface {
     public CommentDTO post(CreateCommentDTO data);
     public ArrayList<LikeModel> like(CommentLike like);
-
 }
