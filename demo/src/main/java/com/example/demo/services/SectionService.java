@@ -78,13 +78,13 @@ public class SectionService implements SectionInterface {
     public SectionDTO delete(Long id) {
         var found = repo.findById(id);
 
-                if (found.isEmpty())
-                    return null;
+        if (found.isEmpty())
+            return null;
 
-                SectionModel sct = found.get(); 
+        SectionModel sct = found.get(); 
 
-                repo.delete(sct);
-                return new SectionDTO(id, sct.getTitle(), sct.getDescription(), sct.getImage(), sct.getCreator().getName());
+        repo.delete(sct);
+        return new SectionDTO(id, sct.getTitle(), sct.getDescription(), sct.getImage(), sct.getCreator().getName());
     }
 
     @Override
@@ -108,23 +108,6 @@ public class SectionService implements SectionInterface {
         return new SectionDTO(id, found.get().getTitle(), found.get().getDescription(), found.get().getImage(), found.get().getCreator().getName());
 
     }
-
-    // @Override
-    // public ArrayList<TopicDTO> getTopics(Long id) {
-
-        // ! FALTA IMPLEMENTAR
-
-        // var found = repo.findById(id);
-
-        // if (found.isEmpty())
-        //     return null;
-            
-        // var topics = topicRepo.findBySectionId(id);
-
-        // System.out.println(topics);
-
-        // return null;
-    // }
 
     @Override
     public SectionTopicsDTO getSingleSection(Long id) {
