@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.Token;
 import com.example.demo.dto.FeedBack.FeedbackProfileDto;
+import com.example.demo.dto.FeedBack.FeedBackPostDto;
 import com.example.demo.dto.interaction.InteractionExtra;
 import com.example.demo.dto.interaction.InteractionFullDto;
 import com.example.demo.dto.interest.BodyInterestDto;
@@ -35,6 +36,7 @@ import com.example.demo.interfaces.UserInterface;
 import com.example.demo.interfaces.UserSkillInterface;
 import com.example.demo.model.CommentModel;
 import com.example.demo.model.FeedbackModel;
+import com.example.demo.model.InteractionModel;
 import com.example.demo.model.InterestModel;
 import com.example.demo.model.LikeModel;
 import com.example.demo.model.UserModel;
@@ -92,6 +94,9 @@ public class ProfileController {
 
     @Autowired
     LikeRepository LikeRep;
+
+    @Autowired
+    ProjectRepository projRepo;
 
     //! PARTE DAS SKILLS
     @PostMapping("/skill/{id}")
@@ -237,8 +242,23 @@ public class ProfileController {
         return feeddto;
     }
 
-    // @PostMapping("/feedback")
-    // Esperar a nicolle finalizar
+    @PostMapping("/feedback")
+    public void createFeedback (@RequestAttribute Token token, @RequestBody FeedBackPostDto ids) {
+
+        UserModel receptor = userRepo.findById(ids.idUser()).get();
+
+        InteractionModel inter = new InteractionModel();
+        inter.setType("FEEDBACK");
+        inter.setUser(userRepo.findById(token.userId()).get());
+
+        FeedbackModel model = new FeedbackModel();
+        model.setFeedback(ids.text());
+        model.setProject(projectRepo.findById(ids.idProject()).get());
+        model.setReceptor(receptor);
+        model.setStars(ids.stars());
+        model.setVisibility(true);
+        model.setInteraction(inter);
+    }
 
     //! UPDATA
     @PatchMapping("/{id}")
