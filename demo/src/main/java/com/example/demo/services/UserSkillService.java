@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.example.demo.dto.skills.SkillDataDto;
 import com.example.demo.interfaces.UserSkillInterface;
 import com.example.demo.model.SkillsModel;
 import com.example.demo.model.UserModel;
@@ -24,7 +25,7 @@ public class UserSkillService implements UserSkillInterface {
     UserSkillRepository userSkillRepo;
 
     @Override
-    public void Register(Long user, Long skill) {
+    public SkillDataDto Register(Long user, Long skill) {
         UserSkillModel model = new UserSkillModel();
 
         Optional<UserModel> userModel = userRepo.findById(user); 
@@ -34,6 +35,8 @@ public class UserSkillService implements UserSkillInterface {
         model.setSkill(skillModel.get());
 
         userSkillRepo.save(model);
+
+        return new SkillDataDto(skillModel.get().getId_skills(), skillModel.get().getName(), skillModel.get().getImage());
     }
     
 }

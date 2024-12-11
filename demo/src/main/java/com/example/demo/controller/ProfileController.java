@@ -100,31 +100,29 @@ public class ProfileController {
 
     //! PARTE DAS SKILLS
     @PostMapping("/skill/{id}")
-    public ResponseEntity<UserSkillDto> createSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody Long skill) {
-
-        System.out.println("CHAMOOU O BACKENDEEEE");
+    public ResponseEntity<UserSkillDto> createSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody LongRecord skill) {
 
         if (token.userId() != id)
             return null;
 
-        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill);
+        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill.skill());
 
         if (userSkillModel != null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-        userSkillService.Register(id, skill);
+        SkillDataDto data = userSkillService.Register(id, skill.skill());
         
-        return new ResponseEntity<UserSkillDto>(new UserSkillDto(id, null, null), HttpStatus.OK);
+        return new ResponseEntity<UserSkillDto>(new UserSkillDto(id,data.image(), data.name()), HttpStatus.OK);
     }
 
     @DeleteMapping("/skill/{id}")
-    public UserSkillDto deleteSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody Long skill) {
+    public ResponseEntity<UserSkillDto> deleteSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody LongRecord skill) {
         
         if (token.userId() != id)
             return null;
 
-        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill);
+        UserSkillModel userSkillModel = userSkillRepo.findByUserSkill(id, skill.skill());
 
         if (userSkillModel == null) {
             return null;
@@ -132,7 +130,7 @@ public class ProfileController {
 
         userSkillRepo.deleteById(userSkillModel.getId_user_skills());
 
-        return new UserSkillDto(id, null, null);
+        return new ResponseEntity<>(new UserSkillDto(id, null, null), HttpStatus.OK);
     }
 
     //! GET TODOS OS DADOS DO USUÁRIO
