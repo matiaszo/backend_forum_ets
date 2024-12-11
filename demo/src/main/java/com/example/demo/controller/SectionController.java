@@ -77,8 +77,17 @@ public class SectionController {
     }
 
     @GetMapping
-    public ResponseEntity<ArrayList<SectionDTO>> getAllSections(@DefaultValue("")String title,@DefaultValue("1") Integer page) {
-        
+    public ResponseEntity<ArrayList<SectionDTO>> getAllSections(String title, Integer page) {
+        System.out.println("Searching for title: " + title);
+        if(title == null)
+        {
+            title = "";
+        }
+        if(page == null)
+        {
+            page = 0;
+        }
+
         var res = service.getSection(title, page, 10);
 
         return new ResponseEntity<>(res, HttpStatus.OK);
@@ -89,6 +98,7 @@ public class SectionController {
     public ResponseEntity<SectionTopicsDTO> getSingleSectionContoller(@PathVariable Long id) {
         
         var found = service.getSingleSection(id);
+        System.out.println(found);
 
         return new ResponseEntity<>(found, HttpStatus.OK);
     }

@@ -24,26 +24,28 @@ public class AuthService implements AuthInterface {
 
     @Override
     public LoginResponse login(LoginDto info) {
-        UserModel user = userRepo.findByEdv(info.edv()).get(0);
+
+
+        var user = userRepo.findByEdv(info.edv());
         
+        if (user.isEmpty())
+            return null;
+
         // verifica se os campos estão preenchidos
         if (!verifyFieldsLogin(info)) 
             return null;
         
-        // verifica s eo usuário foi achado no banco
-        if (user == null)           
-            return null;
 
         // verifica se as senhas conferem
-        if (!encoder.validate(info.password(), user.getPassword()))
+        if (!encoder.validate(info.password(), user.get(0).getPassword()))
             return null;
 
         // cria um novo token e transforma-o em JWT (string)
-        Token newToken = new Token(user.getUserId(), user.getInstructor());
+        Token newToken = new Token(user.get(0).getUserId(), user.get(0).getInstructor());
 
         String jwt = jwtService.generateJWT(newToken);
 
-        return new LoginResponse(jwt, user.getInstructor() == true ? 1 : 0 , user.getUserId());
+        return new LoginResponse(jwt, user.get(0).getInstructor() == true ? 1 : 0 , user.get(0).getUserId());
 
     }
 

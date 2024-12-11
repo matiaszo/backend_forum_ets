@@ -44,7 +44,9 @@ public class SectionService implements SectionInterface {
 
     @Override
     public ArrayList<SectionDTO> getSection(String name, Integer page, Integer limit) {
-        var results = repo.findByTitleContains(name, PageRequest.of(page, limit)); 
+        System.out.println("Searching for title: " + name);
+
+        var results = repo.findByTitleContainsIgnoreCase(name, PageRequest.of(page, limit));
          return results.stream()
                   .map(this::transformToDTO) 
                   .collect(Collectors.toCollection(ArrayList::new));
@@ -66,7 +68,8 @@ public class SectionService implements SectionInterface {
         newSection.setTitle(info.title());
         newSection.setDescription(info.description());
         newSection.setImage(info.image());
-        newSection.setCreator(null);
+
+        newSection.setCreator(userRepo.findById(info.userId()).get());
 
         repo.save(newSection);
 
@@ -113,6 +116,7 @@ public class SectionService implements SectionInterface {
     public SectionTopicsDTO getSingleSection(Long id) {
         
         var found = repo.findById(id);
+        System.out.println(found);
 
         if (found.isEmpty())
             return null;

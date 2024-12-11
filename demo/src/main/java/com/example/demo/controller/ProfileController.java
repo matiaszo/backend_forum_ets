@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.Token;
 import com.example.demo.dto.FeedBack.FeedbackProfileDto;
+import com.example.demo.dto.FeedBack.FeedBackPostDto;
 import com.example.demo.dto.interaction.InteractionExtra;
 import com.example.demo.dto.interaction.InteractionFullDto;
 import com.example.demo.dto.interest.BodyInterestDto;
@@ -35,6 +36,7 @@ import com.example.demo.interfaces.UserInterface;
 import com.example.demo.interfaces.UserSkillInterface;
 import com.example.demo.model.CommentModel;
 import com.example.demo.model.FeedbackModel;
+import com.example.demo.model.InteractionModel;
 import com.example.demo.model.InterestModel;
 import com.example.demo.model.LikeModel;
 import com.example.demo.model.UserModel;
@@ -93,9 +95,14 @@ public class ProfileController {
     @Autowired
     LikeRepository LikeRep;
 
+    @Autowired
+    ProjectRepository projRepo;
+
     //! PARTE DAS SKILLS
     @PostMapping("/skill/{id}")
     public ResponseEntity<UserSkillDto> createSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody Long skill) {
+
+        System.out.println("CHAMOOU O BACKENDEEEE");
 
         if (token.userId() != id)
             return null;
@@ -107,8 +114,6 @@ public class ProfileController {
         }
 
         userSkillService.Register(id, skill);
-
-
         
         return new ResponseEntity<UserSkillDto>(new UserSkillDto(id, null, null), HttpStatus.OK);
     }
@@ -132,7 +137,7 @@ public class ProfileController {
 
     //! GET TODOS OS DADOS DO USUÁRIO
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileDto> getAll(@PathVariable Long id) {
+    public ResponseEntity<ProfileDto> getAll(@RequestAttribute("token") Token token, @PathVariable Long id) {
 
         Optional<UserModel> optionalModel = userRepo.findById(id);
         UserModel model = optionalModel.get();
@@ -154,8 +159,10 @@ public class ProfileController {
         for (InterestModel inter : interestsProfile) {
             InterestDto.add(new InterestProfileDto(inter.getId_interest(), inter.getName()));
         }
+
+        var isUser = token.userId() == id ? true : false;
         
-        return new ResponseEntity<>(new ProfileDto(model.getUserId(), model.getBio(), model.getEdv(), model.getEmail(), model.getGitUsername(), model.getImage(), model.getName(), model.getInstructor(), skillsProfile, InterestDto), HttpStatus.OK);
+        return new ResponseEntity<>(new ProfileDto(model.getUserId(), model.getBio(), model.getEdv(), model.getEmail(), model.getGitUsername(), model.getImage(), model.getName(), model.getInstructor(), isUser, skillsProfile, InterestDto), HttpStatus.OK);
     }
 
     //! PARTE DOS INTERESSES
@@ -235,8 +242,23 @@ public class ProfileController {
         return feeddto;
     }
 
-    // @PostMapping("/feedback")
-    // Esperar a nicolle finalizar
+    @PostMapping("/feedback")
+    public void createFeedback (@RequestAttribute Token token, @RequestBody FeedBackPostDto ids) {
+
+        UserModel receptor = userRepo.findById(ids.idUser()).get();
+
+        InteractionModel inter = new InteractionModel();
+        inter.setType("FEEDBACK");
+        inter.setUser(userRepo.findById(token.userId()).get());
+
+        FeedbackModel model = new FeedbackModel();
+        model.setFeedback(ids.text());
+        model.setProject(projectRepo.findById(ids.idProject()).get());
+        model.setReceptor(receptor);
+        model.setStars(ids.stars());
+        model.setVisibility(true);
+        model.setInteraction(inter);
+    }
 
     //! UPDATA
     @PatchMapping("/{id}")
