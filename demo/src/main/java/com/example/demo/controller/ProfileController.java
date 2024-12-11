@@ -132,7 +132,7 @@ public class ProfileController {
 
     //! GET TODOS OS DADOS DO USUÁRIO
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileDto> getAll(@PathVariable Long id) {
+    public ResponseEntity<ProfileDto> getAll(@RequestAttribute("token") Token token, @PathVariable Long id) {
 
         Optional<UserModel> optionalModel = userRepo.findById(id);
         UserModel model = optionalModel.get();
@@ -154,8 +154,10 @@ public class ProfileController {
         for (InterestModel inter : interestsProfile) {
             InterestDto.add(new InterestProfileDto(inter.getId_interest(), inter.getName()));
         }
+
+        var isUser = token.userId() == id ? true : false;
         
-        return new ResponseEntity<>(new ProfileDto(model.getUserId(), model.getBio(), model.getEdv(), model.getEmail(), model.getGitUsername(), model.getImage(), model.getName(), model.getInstructor(), skillsProfile, InterestDto), HttpStatus.OK);
+        return new ResponseEntity<>(new ProfileDto(model.getUserId(), model.getBio(), model.getEdv(), model.getEmail(), model.getGitUsername(), model.getImage(), model.getName(), model.getInstructor(), isUser, skillsProfile, InterestDto), HttpStatus.OK);
     }
 
     //! PARTE DOS INTERESSES
