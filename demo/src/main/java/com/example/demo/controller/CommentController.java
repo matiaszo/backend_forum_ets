@@ -47,7 +47,7 @@ public class CommentController {
         return new ResponseEntity<>(likes.size(), HttpStatus.OK);
     }
     
-    @DeleteMapping("{idComment}")
+    @DeleteMapping("/{idComment}")
     public ResponseEntity<Integer> deleteComment(@RequestAttribute Token token, @PathVariable Long idComment) {
         CommentModel model = repo.findById(idComment).get();
 

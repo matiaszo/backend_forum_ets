@@ -8,7 +8,6 @@ import com.example.demo.dto.auth.LoginResponse;
 import com.example.demo.interfaces.AuthInterface;
 import com.example.demo.interfaces.EncoderInterface;
 import com.example.demo.interfaces.JWTInterface;
-import com.example.demo.model.UserModel;
 import com.example.demo.repositories.UserRepository;
 
 public class AuthService implements AuthInterface {
@@ -26,26 +25,27 @@ public class AuthService implements AuthInterface {
     public LoginResponse login(LoginDto info) {
 
 
-        var user = userRepo.findByEdv(info.edv());
+        var found = userRepo.findByEdv(info.edv());
         
-        if (user.isEmpty())
+        if (found.isEmpty())
             return null;
 
+        var user = found.get(0);
         // verifica se os campos estão preenchidos
         if (!verifyFieldsLogin(info)) 
             return null;
         
 
         // verifica se as senhas conferem
-        if (!encoder.validate(info.password(), user.get(0).getPassword()))
+        if (!encoder.validate(info.password(), user.getPassword()))
             return null;
 
         // cria um novo token e transforma-o em JWT (string)
-        Token newToken = new Token(user.get(0).getUserId(), user.get(0).getInstructor());
+        Token newToken = new Token(user.getId_user(), user.getInstructor());
 
         String jwt = jwtService.generateJWT(newToken);
 
-        return new LoginResponse(jwt, user.get(0).getInstructor() == true ? 1 : 0 , user.get(0).getUserId());
+        return new LoginResponse(jwt, user.getInstructor() == true ? 1 : 0 , user.getId_user());
 
     }
 

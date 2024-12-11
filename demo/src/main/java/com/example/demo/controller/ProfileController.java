@@ -142,7 +142,7 @@ public class ProfileController {
         Optional<UserModel> optionalModel = userRepo.findById(id);
         UserModel model = optionalModel.get();
 
-        List<Object[]> objectProfile = repo.returnSkillDto(model.getUserId());
+        List<Object[]> objectProfile = repo.returnSkillDto(model.getId_user());
         List<SkillProfileDto> skillsProfile = new ArrayList<>();
 
         if (objectProfile != null) {
@@ -153,7 +153,7 @@ public class ProfileController {
             skillsProfile = new ArrayList<>();
         }
 
-        List<InterestModel> interestsProfile = interRepo.returnInterest(model.getUserId());
+        List<InterestModel> interestsProfile = interRepo.returnInterest(model.getId_user());
         List<InterestProfileDto> InterestDto = new ArrayList<>();
 
         for (InterestModel inter : interestsProfile) {
@@ -162,7 +162,7 @@ public class ProfileController {
 
         var isUser = token.userId() == id ? true : false;
         
-        return new ResponseEntity<>(new ProfileDto(model.getUserId(), model.getBio(), model.getEdv(), model.getEmail(), model.getGitUsername(), model.getImage(), model.getName(), model.getInstructor(), isUser, skillsProfile, InterestDto), HttpStatus.OK);
+        return new ResponseEntity<>(new ProfileDto(model.getId_user(), model.getBio(), model.getEdv(), model.getEmail(), model.getGitUsername(), model.getImage(), model.getName(), model.getInstructor(), isUser, skillsProfile, InterestDto), HttpStatus.OK);
     }
 
     //! PARTE DOS INTERESSES

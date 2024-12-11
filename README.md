@@ -784,9 +784,9 @@
     mensagem de sucesso / erro
     ```
 
-# /project
+# /project ✅
 
-- ## GET /project
+- ## GET /project ✅
   
   > Retornar os projetos que o usuário faz parte, baseado no JWT
 
@@ -808,7 +808,7 @@
     ]
     ```
 
-- ## GET /project/{idProject}
+- ## GET /project/{idProject} ✅
 
   - ## Front-end:
     
@@ -827,24 +827,29 @@
         description : string
         goals : string[]
 
+        users : [
+          {
+              id : number
+              image : string
+              name : string
+              instructor : boolean
+          },
+          ...
+        ]
+
         messages : [
             {
                 id : number
                 text : string
 
-                user : {
-                    id : number
-                    image : string
-                    name : string
-                    instructor : boolean
-                }
+                id_user : number
             },
             ...
         ]
     }
     ```
 
-- ## POST /project
+- ## POST /project ✅
 
   > Cria um novo projeto
 
@@ -873,7 +878,7 @@
     }
     ```
 
-- ## POST /project/{idProject}
+- ## POST /project/{idProject} ✅
 
   > Posta uma nova mensagem no chat do projeto
   - ## Front-end:

@@ -14,7 +14,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.example.demo.dto.Token;
 import com.example.demo.filters.JWTFilter;
 import com.example.demo.interfaces.JWTInterface;
-import com.example.demo.services.JWTService;
 
 @Configuration
 public class SecurityConfiguration {

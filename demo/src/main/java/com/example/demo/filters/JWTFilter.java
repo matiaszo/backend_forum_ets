@@ -2,7 +2,6 @@ package com.example.demo.filters;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.demo.dto.Token;
