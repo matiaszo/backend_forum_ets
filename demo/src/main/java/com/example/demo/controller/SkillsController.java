@@ -55,7 +55,7 @@ public class SkillsController {
         var allSkills = new ArrayList<SkillDataDto>();
 
         for (SkillsModel skillsModel : results) {
-            SkillDataDto newSkill = new SkillDataDto(skillsModel.getName(), skillsModel.getImage());
+            SkillDataDto newSkill = new SkillDataDto(skillsModel.getId_skills() ,skillsModel.getName(), skillsModel.getImage());
 
             allSkills.add(newSkill);
         }
