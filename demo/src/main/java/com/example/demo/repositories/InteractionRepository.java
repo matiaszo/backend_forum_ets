@@ -11,7 +11,7 @@ import com.example.demo.model.InteractionModel;
 public interface InteractionRepository extends JpaRepository<InteractionModel, Long>
 {
     @Query(
-        value = "select top(10) * from tb_interaction i where i.id_user = :id_user and i.type != null order by i.date desc",
+        value = "select top(10) * from tb_interaction i where i.id_user = :id_user and i.type is not null order by i.date desc",
         nativeQuery = true
     )
     List<InteractionModel> findLatest(@Param("id_user") Long id_user);

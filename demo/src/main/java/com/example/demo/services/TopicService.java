@@ -40,7 +40,7 @@ public class TopicService implements TopicInterface {
     public TopicDTO create(CreateTopicFullInfoDTO info) {
         
         TopicModel topic = new TopicModel();
-        repo.save(topic); 
+        topic = repo.save(topic); 
 
         InteractionModel interaction = new InteractionModel();
         interaction.setUser(null); 
@@ -63,12 +63,12 @@ public class TopicService implements TopicInterface {
         comment.setInteraction(interaction); 
         commentRepo.save(comment); 
     
-        var sec = sectionRepo.findById(info.info().idSection()).get();
-        topic.setSection(sec);
+        var sec = sectionRepo.findById(info.info().idSection());
+        topic.setSection(sec.isPresent() ? sec.get() : null);
         topic.setTitle(info.info().title());
         topic.setComment(comment);
     
-        sectionRepo.save(sec);
+        //sectionRepo.save(sec);
         repo.save(topic); 
     
         return new TopicDTO(topic.getTopicId(), topic.getTitle(), topic.getComment().getContent(), topic.getSection().getId());

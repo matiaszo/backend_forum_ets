@@ -31,7 +31,7 @@ public class SectionModel {
     @ManyToOne
     @JoinColumn(name = "id_user")
     private UserModel creator;
-
+    
     @OneToMany(mappedBy="section", orphanRemoval = true)
     private List<TopicModel> topics;  
     

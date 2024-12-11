@@ -36,8 +36,38 @@ public class ProjectModel {
     @OneToMany(mappedBy="project", orphanRemoval = true)
     private List<ProjectGoalModel> goals;
 
+    @OneToMany(mappedBy="project", orphanRemoval = true)
+    private List<UserModel> members;
+
+    @OneToMany(mappedBy="project", orphanRemoval = true)
+    private List<ProjectMessageModel> messages;
+
 
     //! GETTERS AND SETTERS
+    public List<ProjectMessageModel> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<ProjectMessageModel> messages) {
+        this.messages = messages;
+    }
+
+    public List<UserModel> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<UserModel> members) {
+        this.members = members;
+    }
+
+    public List<ProjectGoalModel> getGoals() {
+        return goals;
+    }
+
+    public void setGoals(List<ProjectGoalModel> goals) {
+        this.goals = goals;
+    }
+
     public Long getId_project() {
         return id_project;
     }

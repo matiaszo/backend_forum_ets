@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.example.demo.dto.Token;
-import com.example.demo.filters.JWTFilter;
 import com.example.demo.interfaces.AuthInterface;
 import com.example.demo.interfaces.ChatInterface;
 import com.example.demo.interfaces.CommentInterface;

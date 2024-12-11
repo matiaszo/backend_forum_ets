@@ -44,7 +44,9 @@ public class SectionService implements SectionInterface {
 
     @Override
     public ArrayList<SectionDTO> getSection(String name, Integer page, Integer limit) {
-        var results = repo.findByTitleContains(name, PageRequest.of(page, limit)); 
+        System.out.println("Searching for title: " + name);
+
+        var results = repo.findByTitleContainsIgnoreCase(name, PageRequest.of(page, limit));
          return results.stream()
                   .map(this::transformToDTO) 
                   .collect(Collectors.toCollection(ArrayList::new));
