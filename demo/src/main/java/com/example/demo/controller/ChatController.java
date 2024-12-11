@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +77,7 @@ public class ChatController {
         InteractionModel inter = new InteractionModel();
         inter.setType(null);
         inter.setUser(userRepo.findById(token.userId()).get());
+        inter.setDate(new Timestamp(new Date().getTime()));
 
         interRepo.save(inter);
         model.setInteraction(inter);

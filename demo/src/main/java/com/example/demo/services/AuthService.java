@@ -39,11 +39,11 @@ public class AuthService implements AuthInterface {
             return null;
 
         // cria um novo token e transforma-o em JWT (string)
-        Token newToken = new Token(user.getUserId(), user.getInstructor());
+        Token newToken = new Token(user.getId_user(), user.getInstructor());
 
         String jwt = jwtService.generateJWT(newToken);
 
-        return new LoginResponse(jwt, user.getInstructor() == true ? 1 : 0 , user.getUserId());
+        return new LoginResponse(jwt, user.getInstructor() == true ? 1 : 0 , user.getId_user());
 
     }
 
