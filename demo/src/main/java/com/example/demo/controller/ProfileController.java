@@ -102,6 +102,8 @@ public class ProfileController {
     @PostMapping("/skill/{id}")
     public ResponseEntity<UserSkillDto> createSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody Long skill) {
 
+        System.out.println("CHAMOOU O BACKENDEEEE");
+
         if (token.userId() != id)
             return null;
 
@@ -112,8 +114,6 @@ public class ProfileController {
         }
 
         userSkillService.Register(id, skill);
-
-
         
         return new ResponseEntity<UserSkillDto>(new UserSkillDto(id, null, null), HttpStatus.OK);
     }
