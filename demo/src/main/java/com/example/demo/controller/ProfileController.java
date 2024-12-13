@@ -277,7 +277,7 @@ public class ProfileController {
     }
 
     //! UPDATA
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<String> updateUser(@RequestAttribute Token token, @PathVariable Long id, @RequestBody UpdateDto dtoUp){
         System.out.println("CHAMOU O BACK");
         if (token.userId() != id)
