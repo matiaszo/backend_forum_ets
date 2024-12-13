@@ -300,8 +300,8 @@ public class ProfileController {
             }
         }
 
-        if (dtoUp.gitUserName() != null)
-            found.get().setGitUsername(dtoUp.gitUserName());
+        if (dtoUp.gitUsername() != null)
+            found.get().setGitUsername(dtoUp.gitUsername());
 
         if (dtoUp.name() != null)
             found.get().setName(dtoUp.name());
