@@ -33,7 +33,7 @@ public class UserService implements UserInterface {
     }
 
     @Override
-    public Boolean validateEmail(String email) {
+    public Boolean validateEmail(String email, Long id) {
         List<UserModel> users = repo.findAll();
 
         int at = email.indexOf("@");
@@ -42,7 +42,7 @@ public class UserService implements UserInterface {
         {
             for (int i = 0; i < users.size(); i++)
             {
-                if (users.get(i).getEmail().contentEquals(email))
+                if(users.get(i).getEmail().contentEquals(email) && users.get(i).getId_user() == id)
                 {
                     return false;
                 }

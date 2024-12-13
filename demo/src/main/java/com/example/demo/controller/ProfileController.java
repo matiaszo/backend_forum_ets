@@ -277,7 +277,7 @@ public class ProfileController {
     }
 
     //! UPDATA
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<String> updateUser(@RequestAttribute Token token, @PathVariable Long id, @RequestBody UpdateDto dtoUp){
         System.out.println("CHAMOU O BACK");
         if (token.userId() != id)
@@ -296,7 +296,7 @@ public class ProfileController {
             found.get().setImage(dtoUp.image());
 
         if (dtoUp.email() != null) {
-            if (userService.validateEmail(dtoUp.email())) {
+            if (userService.validateEmail(dtoUp.email(), id)) {
                 found.get().setEmail(dtoUp.email());
             } else {
                 return new ResponseEntity<>("Email inválido", HttpStatus.BAD_REQUEST);

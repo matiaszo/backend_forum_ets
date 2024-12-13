@@ -7,7 +7,7 @@ import java.util.List;
 public interface UserInterface {
     void Register(UserDataDto user);
 
-    Boolean validateEmail(String email);
+    Boolean validateEmail(String email, Long id);
 
     Boolean validateEDV(String edv);
 
