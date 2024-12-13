@@ -445,6 +445,29 @@
     ]
     ```
 
+- ## POST /profile/feedback
+
+  - ## Front-end:
+
+    ### Body:
+    ```
+    {
+        idSender : number
+        idReceptor : number
+        idProject : number
+        visibility : boolean
+        text : string
+        stars : number
+    }
+    ```
+  
+  - ## Back-end:
+
+    ### Text:
+    ```
+    mensagem de sucesso / erro
+    ```
+
 - ## GET /profile/interactions/{idUser} ✅
 
   - ## Front-end:
@@ -897,31 +920,6 @@
 
   - ## Back-end:
     
-    ### Text:
-    ```
-    mensagem de sucesso / erro
-    ```
-
-# /feedback
-
-- ## POST /feedback
-
-  - ## Front-end:
-
-    ### Body:
-    ```
-    {
-        idSender : number
-        idReceptor : number
-        idProject : number
-        visibility : boolean
-        text : string
-        stars : number
-    }
-    ```
-  
-  - ## Back-end:
-
     ### Text:
     ```
     mensagem de sucesso / erro
