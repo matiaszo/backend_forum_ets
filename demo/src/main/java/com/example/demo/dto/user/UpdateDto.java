@@ -4,6 +4,6 @@ public record UpdateDto(
     String bio,
     String name,
     String email,
-    String password,
-    String gitUserName
+    String image,
+    String gituser
 ) {}

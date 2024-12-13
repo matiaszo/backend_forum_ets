@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -204,8 +205,7 @@ public class ProfileController {
     }
 
     @DeleteMapping("/interest/{id}")
-    public InterestProfileDto deleteInterest(@RequestAttribute Token token, @PathVariable Long id, @RequestBody DeleteInterestDto interest) {
-        
+    public ResponseEntity<InterestProfileDto> deleteInterest(@RequestAttribute Token token, @PathVariable Long id, @RequestBody DeleteInterestDto interest) {
         if (token.userId() != id)
             return null;
 
@@ -219,7 +219,7 @@ public class ProfileController {
 
         interRepo.deleteById(interest.id());
 
-        return new InterestProfileDto(interest.id(), model.getName());
+        return new ResponseEntity<>(new InterestProfileDto(interest.id(), model.getName()), HttpStatus.OK);
     }
 
     //! FEEDBACK
@@ -261,9 +261,9 @@ public class ProfileController {
     }
 
     //! UPDATA
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updateUser(@RequestAttribute Token token, @PathVariable Long id, @RequestBody UpdateDto dtoUp){
-        
+        System.out.println("CHAMOU O BACK");
         if (token.userId() != id)
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
@@ -276,6 +276,9 @@ public class ProfileController {
         if (dtoUp.bio() != null)
             found.get().setBio(dtoUp.bio());
 
+        if (dtoUp.image() != null)
+            found.get().setImage(dtoUp.image());
+
         if (dtoUp.email() != null) {
             if (userService.validateEmail(dtoUp.email())) {
                 found.get().setEmail(dtoUp.email());
@@ -284,19 +287,11 @@ public class ProfileController {
             }
         }
 
-        if (dtoUp.gitUserName() != null)
-            found.get().setGitUsername(dtoUp.gitUserName());
+        if (dtoUp.gituser() != null)
+            found.get().setGitUsername(dtoUp.gituser());
 
         if (dtoUp.name() != null)
             found.get().setName(dtoUp.name());
-
-        if (dtoUp.password() != null) {
-            if (userService.validatePassword(dtoUp.password())) {
-                found.get().setPassword(encoder.encode(dtoUp.password()));
-            } else {
-                return new ResponseEntity<>("Senha inválida", HttpStatus.BAD_REQUEST);
-            }
-        }
 
         userRepo.save(found.get());
 

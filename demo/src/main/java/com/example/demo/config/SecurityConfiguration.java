@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                 configuration.addAllowedMethod("POST");
                 configuration.addAllowedMethod("PUT");
                 configuration.addAllowedMethod("DELETE");
+                configuration.addAllowedMethod("PATCH");
                 configuration.setAllowCredentials(true);
         
                 // Registro da configuração CORS
@@ -60,7 +61,7 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://127.0.0.1:5500/"); // Substitua pelo domínio correto do seu frontend
+        config.addAllowedOrigin("http://127.0.0.1:3000/"); // Substitua pelo domínio correto do seu frontend
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
