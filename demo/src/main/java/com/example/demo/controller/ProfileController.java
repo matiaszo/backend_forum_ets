@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -102,7 +103,7 @@ public class ProfileController {
     @PostMapping("/skill/{id}")
     public ResponseEntity<UserSkillDto> createSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody Long skill) {
 
-        System.out.println("CHAMOOU O BACKENDEEEE");
+        //System.out.println("CHAMOOU O BACKENDEEEE");
 
         if (token.userId() != id)
             return null;
@@ -250,6 +251,7 @@ public class ProfileController {
         InteractionModel inter = new InteractionModel();
         inter.setType("FEEDBACK");
         inter.setUser(userRepo.findById(token.userId()).get());
+        inter.setDate(new Timestamp(new Date().getTime()));
 
         FeedbackModel model = new FeedbackModel();
         model.setFeedback(ids.text());
