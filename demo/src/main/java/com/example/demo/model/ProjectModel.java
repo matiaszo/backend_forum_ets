@@ -37,7 +37,7 @@ public class ProjectModel {
     private List<ProjectGoalModel> goals;
 
     @OneToMany(mappedBy="project", orphanRemoval = true)
-    private List<UserModel> members;
+    private List<ProjectMemberModel> members;
 
     @OneToMany(mappedBy="project", orphanRemoval = true)
     private List<ProjectMessageModel> messages;
@@ -52,11 +52,11 @@ public class ProjectModel {
         this.messages = messages;
     }
 
-    public List<UserModel> getMembers() {
+    public List<ProjectMemberModel> getMembers() {
         return members;
     }
 
-    public void setMembers(List<UserModel> members) {
+    public void setMembers(List<ProjectMemberModel> members) {
         this.members = members;
     }
 
