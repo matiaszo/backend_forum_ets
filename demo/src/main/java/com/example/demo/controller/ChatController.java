@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -86,40 +87,51 @@ public class ChatController {
         return new ResponseEntity<>(userRepo.findById(token.userId()).get().getName() + " mandou uma mensagem", HttpStatus.OK);
     }
 
+    private ChatDataDto transformToDTO(ChatModel section) {
+        return new ChatDataDto(
+            section.getId_chat(),
+            section.getName()
+
+        
+        );
+    }
+
     @GetMapping
     public List<ChatDataDto> getchats(@RequestAttribute Token token, Integer page, String name) {
 
-        List<ChatModel> chats;
-
-        if (name != null) {
-            chats = repo.findByNameContains(name);
-            System.out.println(chats);
-        } else {
-            chats = repo.findByNameContains("");
-            System.out.println(chats);
-        }
-
-
-        Integer countModel = 0;
-        Integer countPage = 1;
-
-        List<ChatDataDto> returnDto = new ArrayList<>();
-
-        for (ChatModel chatModel : chats) {
-            
-            if (countModel == 10) {
-                countPage++;
-                countModel = 0;
-            }
-
-            if (countPage == page)
-                returnDto.add(new ChatDataDto(chatModel.getId_chat(), chatModel.getName()));
-            
-
-            countModel++;
-        }
-
-        return returnDto;
+        var results = repo.findAll();
+            return results.stream()
+                    .map(this::transformToDTO) 
+                    .collect(Collectors.toCollection(ArrayList::new));
+                  // List<ChatModel> chats;
+              
+                  // if (name != null) {
+                  //     chats = repo.findByNameContains(name);
+                  //     System.out.println(chats);
+                  // } else {
+                  //     chats = repo.findByNameContains("");
+                  //     System.out.println(chats);
+                  // }
+              
+              
+                  // Integer countModel = 0;
+                  // Integer countPage = 1;
+              
+                  // List<ChatDataDto> returnDto = new ArrayList<>();
+              
+                  // for (ChatModel chatModel : chats) {
+                      
+                  //     if (countModel == 10) {
+                  //         countPage++;
+                  //         countModel = 0;
+                  //     }
+              
+                  //     if (countPage == page)
+                  //         returnDto.add(new ChatDataDto(chatModel.getId_chat(), chatModel.getName()));
+                      
+              
+                  //     countModel++;
+                  // }
     }
 
     @GetMapping("/{idchat}")
