@@ -41,30 +41,40 @@ public class CommentService implements CommentInterface {
 
         InteractionModel interaction = new InteractionModel();
         interaction.setType("COMMENT");
-
-        var found = userRepo.findById(data.userId());
-        if (found.isPresent()) 
-            interaction.setUser(found.get());
-
         interaction.setDate(new Timestamp(new Date().getTime()));
 
-        interactionRepo.save(interaction);
+        var found = userRepo.findById(data.userId());
+        if(found.isPresent()) 
+        {
+            interaction.setUser(found.get());
+        }else
+        {
+            return null;
+        }
 
         CommentModel comment = new CommentModel();
         comment.setContent(data.content());
-        comment.setInteraction(interaction);
-        
+
         var topic = topicRepo.findById(data.topicId());
+        if(topic.isPresent())
+        {
+            comment.setTopic(topic.get());
+        }else
+        {
+            return null;
+        }
 
-        if (topic.isPresent()) 
-            comment.setTopic(topic.get());        
+        interaction = interactionRepo.save(interaction);
+        comment.setInteraction(interaction);
 
-        if (data.mentionId() != null) {
+        if(data.mentionId() != null)
+        {
             var foundComment = commentRepo.findById(data.mentionId());
 
-            if (foundComment.isPresent())
+            if(foundComment.isPresent())
+            {
                 comment.setMention(foundComment.get());
-
+            }
         }
 
         commentRepo.save(comment);
@@ -76,43 +86,51 @@ public class CommentService implements CommentInterface {
     public ArrayList<LikeModel> like(CommentLike like) {
 
         var foundLike = likeRepo.findByCommentAndUser(like.commentId(), like.userId());
-        //System.out.println(foundLike.toString());
-        if (!foundLike.isEmpty()) {
-            likeRepo.deleteById(foundLike.get(0).getId_like());
-            interactionRepo.deleteById(foundLike.get(0).getInteraction().getId_interaction());
-            
-        } else {
 
-            InteractionModel interaction = new InteractionModel();
-            var found = userRepo.findById(like.userId());
-    
-            if (found.isPresent())
-                interaction.setUser(found.get());
-                
-            interaction.setDate(new Timestamp(new Date().getTime()));
-    
-            interaction.setType("LIKE");
-            interactionRepo.save(interaction);
-    
+        //System.out.println(foundLike.toString());
+
+        if(!foundLike.isEmpty())
+        {
+            likeRepo.deleteById(foundLike.get(0).getId_like());
+            interactionRepo.deleteById(foundLike.get(0).getInteraction().getId_interaction());  
+        }else
+        {
             LikeModel likeuou = new LikeModel();
-            likeuou.setInteraction(interaction);
-    
+            InteractionModel interaction = new InteractionModel();
+
+            var found = userRepo.findById(like.userId());
+            if(found.isPresent())
+            {
+                interaction.setUser(found.get());
+            }else
+            {
+                return null;
+            }
+
             var comment = commentRepo.findById(like.commentId());
-    
-            if (comment.isPresent())
+            if(comment.isPresent())
+            {
                 likeuou.setComment(comment.get());
-    
+            }else
+            {
+                return null;
+            }
+            
+            interaction.setDate(new Timestamp(new Date().getTime()));
+            interaction.setType("LIKE");
+            
+            interaction = interactionRepo.save(interaction);
+            
+            likeuou.setInteraction(interaction);
+            
             likeRepo.save(likeuou);
-    
         }
         
         var likes = commentRepo.findById(like.commentId()).get().getLikes();
 
-        System.out.println(likes);
+        //System.out.println(likes);
 
         return new ArrayList<>(likes);
-
-
     }
     
 }

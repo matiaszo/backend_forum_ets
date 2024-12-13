@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.example.demo.dto.topics.TopicDTO;
 import com.example.demo.interfaces.SectionInterface;
 import com.example.demo.model.SectionModel;
 import com.example.demo.model.TopicModel;
+import com.example.demo.model.UserModel;
 import com.example.demo.repositories.SectionRepository;
 import com.example.demo.repositories.TopicRepository;
 import com.example.demo.repositories.UserRepository;
@@ -29,8 +31,8 @@ public class SectionService implements SectionInterface {
     TopicRepository topicRepo;
 
     @Override
-    public Integer verify(CreateSectionDTO info) {
-        
+    public Integer verify(CreateSectionDTO info)
+    {
         if (info.description().equals("") || info.title().equals(""))
             return 1;       // campos vazios
 
@@ -43,16 +45,24 @@ public class SectionService implements SectionInterface {
     }
 
     @Override
-    public ArrayList<SectionDTO> getSection(String name, Integer page, Integer limit) {
+    public ArrayList<SectionDTO> getSection(String name, Integer page, Integer limit)
+    {
         System.out.println("Searching for title: " + name);
 
         var results = repo.findByTitleContainsIgnoreCase(name, PageRequest.of(page, limit));
-         return results.stream()
+
+        if(results.isEmpty())
+        {
+            return null;
+        }
+
+        return results.stream()
                   .map(this::transformToDTO) 
                   .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private SectionDTO transformToDTO(SectionModel section) {
+    private SectionDTO transformToDTO(SectionModel section)
+    {
         return new SectionDTO(
             section.getId(),
             section.getTitle(),
@@ -63,18 +73,33 @@ public class SectionService implements SectionInterface {
     }
 
     @Override
-    public SectionDTO createSection(CreateSectionDTO info) {
+    public SectionDTO createSection(CreateSectionDTO info)
+    {
         SectionModel newSection = new SectionModel();
         newSection.setTitle(info.title());
         newSection.setDescription(info.description());
         newSection.setImage(info.image());
 
-        newSection.setCreator(userRepo.findById(info.userId()).get());
+        Optional<UserModel> User = userRepo.findById(info.userId());
 
-        repo.save(newSection);
+        if(User.isPresent())
+        {
+            newSection.setCreator(User.get());
+        }else
+        {
+            return null;
+        }
 
-        SectionDTO sec = new SectionDTO(newSection.getId(), newSection.getTitle(), newSection.getDescription(), newSection.getImage(), newSection.getCreator().getName());
-        return sec;
+        newSection = repo.save(newSection);
+
+        return new SectionDTO
+        (
+            newSection.getId(),
+            newSection.getTitle(),
+            newSection.getDescription(),
+            newSection.getImage(),
+            newSection.getCreator().getName()
+        );
     }
 
     @Override
@@ -97,18 +122,20 @@ public class SectionService implements SectionInterface {
         if (found.isEmpty())
             return null;
 
+        SectionModel section = found.get();
+
         if (info.title() != null)
-            found.get().setTitle(info.title());
+            section.setTitle(info.title());
 
         if (info.description() != null)
-        found.get().setDescription(info.description());
+            section.setDescription(info.description());
 
         if (info.image() != null)
-        found.get().setImage(info.image());
+            section.setImage(info.image());
 
-        repo.save(found.get());
+        section = repo.save(section);
 
-        return new SectionDTO(id, found.get().getTitle(), found.get().getDescription(), found.get().getImage(), found.get().getCreator().getName());
+        return new SectionDTO(id, section.getTitle(), section.getDescription(), section.getImage(), section.getCreator().getName());
 
     }
 
@@ -121,9 +148,11 @@ public class SectionService implements SectionInterface {
         if (found.isEmpty())
             return null;
 
-        SectionDTO sec = new SectionDTO(id, found.get().getTitle(), found.get().getDescription(), found.get().getImage(), found.get().getCreator().getName());
+        SectionModel section = found.get();
 
-        var topics = found.get().getTopics();
+        SectionDTO sec = new SectionDTO(id, section.getTitle(), section.getDescription(), section.getImage(), section.getCreator().getName());
+
+        var topics = section.getTopics();
 
         var res = topics.stream()
         .map(this::transformTopicToDTO) 
