@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import com.example.demo.interfaces.ChatInterface;
 import com.example.demo.model.ChatModel;
 import com.example.demo.model.InteractionModel;
 import com.example.demo.model.MessageModel;
+import com.example.demo.model.UserModel;
 import com.example.demo.repositories.ChatRepository;
 import com.example.demo.repositories.InteractionRepository;
 import com.example.demo.repositories.MessageRepository;
@@ -69,23 +71,37 @@ public class ChatController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<String> createMessage(@RequestAttribute Token token, @PathVariable Long id, @RequestBody MessageBodyDto message) {
-        
+    public ResponseEntity<String> createMessage(@RequestAttribute Token token, @PathVariable Long id, @RequestBody MessageBodyDto message)
+    {    
         MessageModel model = new MessageModel();
-        model.setChat(repo.findById(id).get());
+
+        Optional<ChatModel> Chat = repo.findById(id);
+        if(Chat.isEmpty())
+        {
+            return new ResponseEntity<>("O chat da requisição não existe", HttpStatus.NOT_FOUND);
+        }
+
+        Optional<UserModel> User = userRepo.findById(token.userId());
+        if(User.isEmpty())
+        {
+            return new ResponseEntity<>("O usuário não existe", HttpStatus.NOT_FOUND);
+        }
+
+        model.setChat(Chat.get());
         model.setText(message.text());
         
         InteractionModel inter = new InteractionModel();
         inter.setType(null);
-        inter.setUser(userRepo.findById(token.userId()).get());
+        inter.setUser(User.get());
         inter.setDate(new Timestamp(new Date().getTime()));
 
-        interRepo.save(inter);
+        inter = interRepo.save(inter);
         model.setInteraction(inter);
 
         messageRepo.save(model);
-        return new ResponseEntity<>(userRepo.findById(token.userId()).get().getName() + " mandou uma mensagem", HttpStatus.OK);
+        return new ResponseEntity<>(User.get().getName() + " mandou uma mensagem", HttpStatus.OK);
     }
+
 
     private ChatDataDto transformToDTO(ChatModel section) {
         return new ChatDataDto(

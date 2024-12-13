@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,7 @@ import com.example.demo.model.FeedbackModel;
 import com.example.demo.model.InteractionModel;
 import com.example.demo.model.InterestModel;
 import com.example.demo.model.LikeModel;
+import com.example.demo.model.ProjectModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserSkillModel;
 import com.example.demo.repositories.CommentRepository;
@@ -139,6 +141,10 @@ public class ProfileController {
     public ResponseEntity<ProfileDto> getAll(@RequestAttribute("token") Token token, @PathVariable Long id) {
 
         Optional<UserModel> optionalModel = userRepo.findById(id);
+        if(optionalModel.isEmpty())
+        {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
         UserModel model = optionalModel.get();
 
         List<Object[]> objectProfile = repo.returnSkillDto(model.getId_user());
@@ -204,8 +210,7 @@ public class ProfileController {
     }
 
     @DeleteMapping("/interest/{id}")
-    public InterestProfileDto deleteInterest(@RequestAttribute Token token, @PathVariable Long id, @RequestBody DeleteInterestDto interest) {
-        
+    public ResponseEntity<InterestProfileDto> deleteInterest(@RequestAttribute Token token, @PathVariable Long id, @RequestBody DeleteInterestDto interest) {
         if (token.userId() != id)
             return null;
 
@@ -219,7 +224,7 @@ public class ProfileController {
 
         interRepo.deleteById(interest.id());
 
-        return new InterestProfileDto(interest.id(), model.getName());
+        return new ResponseEntity<>(new InterestProfileDto(interest.id(), model.getName()), HttpStatus.OK);
     }
 
     //! FEEDBACK
@@ -242,28 +247,39 @@ public class ProfileController {
     }
 
     @PostMapping("/feedback")
-    public void createFeedback (@RequestAttribute Token token, @RequestBody FeedBackPostDto ids) {
+    public ResponseEntity<String> createFeedback (@RequestAttribute Token token, @RequestBody FeedBackPostDto ids) {
 
-        UserModel receptor = userRepo.findById(ids.idUser()).get();
+        Optional<UserModel> receptor = userRepo.findById(ids.idUser());
+        Optional<UserModel> sender = userRepo.findById(token.userId());
+        Optional<ProjectModel> project = projectRepo.findById(ids.idProject());
 
-        InteractionModel inter = new InteractionModel();
-        inter.setType("FEEDBACK");
-        inter.setUser(userRepo.findById(token.userId()).get());
-        inter.setDate(new Timestamp(new Date().getTime()));
+        if(receptor.isPresent() && sender.isPresent() && project.isPresent())
+        {
+            InteractionModel inter = new InteractionModel();
+            inter.setType("FEEDBACK");
+            inter.setUser(sender.get());
+            inter.setDate(new Timestamp(new Date().getTime()));
 
-        FeedbackModel model = new FeedbackModel();
-        model.setFeedback(ids.text());
-        model.setProject(projectRepo.findById(ids.idProject()).get());
-        model.setReceptor(receptor);
-        model.setStars(ids.stars());
-        model.setVisibility(true);
-        model.setInteraction(inter);
+            inter = InteractionRep.save(inter);
+    
+            FeedbackModel model = new FeedbackModel();
+            model.setFeedback(ids.text());
+            model.setProject(project.get());
+            model.setReceptor(receptor.get());
+            model.setStars(ids.stars());
+            model.setVisibility(true);
+            model.setInteraction(inter);
+
+            feedRepo.save(model);
+            return new ResponseEntity<>("Inserido com sucesso", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     //! UPDATA
     @PatchMapping("/{id}")
     public ResponseEntity<String> updateUser(@RequestAttribute Token token, @PathVariable Long id, @RequestBody UpdateDto dtoUp){
-        
+        System.out.println("CHAMOU O BACK");
         if (token.userId() != id)
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
@@ -276,27 +292,22 @@ public class ProfileController {
         if (dtoUp.bio() != null)
             found.get().setBio(dtoUp.bio());
 
+        if (dtoUp.image() != null)
+            found.get().setImage(dtoUp.image());
+
         if (dtoUp.email() != null) {
-            if (userService.validateEmail(dtoUp.email())) {
+            if (userService.validateEmail(dtoUp.email(), id)) {
                 found.get().setEmail(dtoUp.email());
             } else {
                 return new ResponseEntity<>("Email inválido", HttpStatus.BAD_REQUEST);
             }
         }
 
-        if (dtoUp.gitUserName() != null)
-            found.get().setGitUsername(dtoUp.gitUserName());
+        if (dtoUp.gitUsername() != null)
+            found.get().setGitUsername(dtoUp.gitUsername());
 
         if (dtoUp.name() != null)
             found.get().setName(dtoUp.name());
-
-        if (dtoUp.password() != null) {
-            if (userService.validatePassword(dtoUp.password())) {
-                found.get().setPassword(encoder.encode(dtoUp.password()));
-            } else {
-                return new ResponseEntity<>("Senha inválida", HttpStatus.BAD_REQUEST);
-            }
-        }
 
         userRepo.save(found.get());
 

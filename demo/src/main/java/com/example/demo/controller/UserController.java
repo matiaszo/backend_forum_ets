@@ -31,7 +31,7 @@ public class UserController {
             return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
         } 
 
-        if (!service.validateEmail(user.email())) {
+        if (!service.validateEmail(user.email(), null)) {
             return new ResponseEntity<>(1, HttpStatus.BAD_REQUEST);
         }
         
