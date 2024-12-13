@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.swing.plaf.OptionPaneUI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,7 @@ import com.example.demo.model.FeedbackModel;
 import com.example.demo.model.InteractionModel;
 import com.example.demo.model.InterestModel;
 import com.example.demo.model.LikeModel;
+import com.example.demo.model.ProjectModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.UserSkillModel;
 import com.example.demo.repositories.CommentRepository;
@@ -139,6 +142,10 @@ public class ProfileController {
     public ResponseEntity<ProfileDto> getAll(@RequestAttribute("token") Token token, @PathVariable Long id) {
 
         Optional<UserModel> optionalModel = userRepo.findById(id);
+        if(optionalModel.isEmpty())
+        {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
         UserModel model = optionalModel.get();
 
         List<Object[]> objectProfile = repo.returnSkillDto(model.getId_user());
@@ -242,22 +249,33 @@ public class ProfileController {
     }
 
     @PostMapping("/feedback")
-    public void createFeedback (@RequestAttribute Token token, @RequestBody FeedBackPostDto ids) {
+    public ResponseEntity<String> createFeedback (@RequestAttribute Token token, @RequestBody FeedBackPostDto ids) {
 
-        UserModel receptor = userRepo.findById(ids.idUser()).get();
+        Optional<UserModel> receptor = userRepo.findById(ids.idUser());
+        Optional<UserModel> sender = userRepo.findById(token.userId());
+        Optional<ProjectModel> project = projectRepo.findById(ids.idProject());
 
-        InteractionModel inter = new InteractionModel();
-        inter.setType("FEEDBACK");
-        inter.setUser(userRepo.findById(token.userId()).get());
-        inter.setDate(new Timestamp(new Date().getTime()));
+        if(receptor.isPresent() && sender.isPresent() && project.isPresent())
+        {
+            InteractionModel inter = new InteractionModel();
+            inter.setType("FEEDBACK");
+            inter.setUser(sender.get());
+            inter.setDate(new Timestamp(new Date().getTime()));
 
-        FeedbackModel model = new FeedbackModel();
-        model.setFeedback(ids.text());
-        model.setProject(projectRepo.findById(ids.idProject()).get());
-        model.setReceptor(receptor);
-        model.setStars(ids.stars());
-        model.setVisibility(true);
-        model.setInteraction(inter);
+            inter = InteractionRep.save(inter);
+    
+            FeedbackModel model = new FeedbackModel();
+            model.setFeedback(ids.text());
+            model.setProject(project.get());
+            model.setReceptor(receptor.get());
+            model.setStars(ids.stars());
+            model.setVisibility(true);
+            model.setInteraction(inter);
+
+            feedRepo.save(model);
+            return new ResponseEntity<>("Inserido com sucesso", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     //! UPDATA

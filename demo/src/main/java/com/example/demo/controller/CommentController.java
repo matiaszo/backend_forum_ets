@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,17 +46,29 @@ public class CommentController {
     public ResponseEntity<Integer> like(@RequestBody CommentLike like) {
         
         var likes = service.like(like);
+        if(likes == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(likes.size(), HttpStatus.OK);
     }
     
     @DeleteMapping("/{idComment}")
-    public ResponseEntity<Integer> deleteComment(@RequestAttribute Token token, @PathVariable Long idComment) {
-        CommentModel model = repo.findById(idComment).get();
+    public ResponseEntity<Integer> deleteComment(@RequestAttribute Token token, @PathVariable Long idComment)
+    {
+        Optional<CommentModel> model = repo.findById(idComment);
 
-        if (token.userId() != model.getInteraction().getUser().getId_user()) 
+        if(model.isEmpty())
+        {
+            return new ResponseEntity<>(2, HttpStatus.NOT_FOUND);
+        }
+
+        CommentModel Comment = model.get();
+
+        if (token.userId() != Comment.getInteraction().getUser().getId_user()) 
             return new ResponseEntity<>(1, HttpStatus.FORBIDDEN);
         
-        repo.deleteById(model.getId_comment());
+        repo.deleteById(Comment.getId_comment());
 
         return new ResponseEntity<>(10, HttpStatus.OK);
     }

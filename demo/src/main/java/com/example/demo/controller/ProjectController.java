@@ -224,6 +224,7 @@ public class ProjectController
         InteractionModel Interaction = new InteractionModel();
         Interaction.setType(null);
         Interaction.setDate(new Timestamp(new Date().getTime()));
+        Interaction.setUser(User.get());
         Interaction = InteractionRep.save(Interaction);
 
         ProjectMessageModel Message = new ProjectMessageModel();
