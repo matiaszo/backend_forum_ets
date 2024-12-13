@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -248,6 +249,7 @@ public class ProfileController {
         InteractionModel inter = new InteractionModel();
         inter.setType("FEEDBACK");
         inter.setUser(userRepo.findById(token.userId()).get());
+        inter.setDate(new Timestamp(new Date().getTime()));
 
         FeedbackModel model = new FeedbackModel();
         model.setFeedback(ids.text());

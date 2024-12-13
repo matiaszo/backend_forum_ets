@@ -90,12 +90,12 @@ public class ProjectController
 
         ProjectModel P = Project.get();
 
-        List<UserModel> Members = P.getMembers();
+        List<ProjectMemberModel> Members = P.getMembers();
         boolean Access = false;
 
         for(int i = 0; i < Members.size(); ++i)
         {
-            if(Members.get(i).getId_user() == token.userId())
+            if(Members.get(i).getUser().getId_user() == token.userId())
             {
                 Access = true;
                 break;
@@ -120,10 +120,10 @@ public class ProjectController
         {
             Users.add(new UserCommentDto
             (
-                item.getId_user(),
-                item.getName(),
-                item.getInstructor(),
-                item.getImage()
+                item.getUser().getId_user(),
+                item.getUser().getName(),
+                item.getUser().getInstructor(),
+                item.getUser().getImage()
             ));
         });
 
@@ -204,12 +204,12 @@ public class ProjectController
 
         ProjectModel P = Project.get();
 
-        List<UserModel> Members = P.getMembers();
+        List<ProjectMemberModel> Members = P.getMembers();
         boolean Access = false;
 
         for(int i = 0; i < Members.size(); ++i)
         {
-            if(Members.get(i).getId_user() == token.userId())
+            if(Members.get(i).getUser().getId_user() == token.userId())
             {
                 Access = true;
                 break;
