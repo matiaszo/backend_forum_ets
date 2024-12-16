@@ -67,7 +67,7 @@ public class ChatController {
         model.setName(name.name());
 
         repo.save(model);
-        return new ResponseEntity<>(new ChatDataDto(model.getId_chat(), model.getName()), HttpStatus.OK);
+        return new ResponseEntity<>(new ChatDataDto(model.getId_chat(), model.getName(), ""),HttpStatus.OK);
     }
 
     @PostMapping("/{id}")
@@ -106,7 +106,9 @@ public class ChatController {
     private ChatDataDto transformToDTO(ChatModel section) {
         return new ChatDataDto(
             section.getId_chat(),
-            section.getName()
+            section.getName(),
+            
+            ""
 
         
         );
@@ -116,6 +118,7 @@ public class ChatController {
     public List<ChatDataDto> getchats(@RequestAttribute Token token, Integer page, String name) {
 
         var results = repo.findAll();
+
             return results.stream()
                     .map(this::transformToDTO) 
                     .collect(Collectors.toCollection(ArrayList::new));
