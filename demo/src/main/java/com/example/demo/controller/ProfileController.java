@@ -119,6 +119,18 @@ public class ProfileController {
         return new ResponseEntity<UserSkillDto>(new UserSkillDto(id,data.image(), data.name()), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@RequestAttribute Token token, @PathVariable Long id)
+    {
+
+        if (token.instructor() != true)
+            return null;
+
+        userRepo.deleteById(id);
+
+        return new ResponseEntity<>("Usuario deletado com sucesso", HttpStatus.OK);
+    }
+
     @DeleteMapping("/skill/{id}")
     public ResponseEntity<UserSkillDto> deleteSkill(@RequestAttribute Token token, @PathVariable Long id, @RequestBody LongRecord skill) {
         

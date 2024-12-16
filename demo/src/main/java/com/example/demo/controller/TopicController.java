@@ -142,7 +142,8 @@ public class TopicController {
                             Usr.getInstructor(),
                             Usr.getImage()
                         ),
-                        null),
+                        null
+                    ),
                     Comments
                 ), 
                 HttpStatus.OK
