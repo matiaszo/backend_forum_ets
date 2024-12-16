@@ -228,7 +228,7 @@ public class ProfileController {
 
     //! FEEDBACK
     @GetMapping("/feedback/{id}")
-    public List<FeedbackProfileDto> feedbacks(@RequestAttribute Token token, @PathVariable Long id) {
+    public ResponseEntity<List<FeedbackProfileDto>> feedbacks(@RequestAttribute Token token, @PathVariable Long id) {
 
         List<FeedbackModel> feeds = feedRepo.findByUser(id);
 
@@ -239,10 +239,10 @@ public class ProfileController {
             if (token.userId() != id && !model.getVisibility()) 
                 continue;
             
-            feeddto.add(new FeedbackProfileDto(model.getStars(), model.getFeedback(), model.getVisibility(), model.getProject().getName(), new GiverDto(model.getInteraction().getUser().getId_user(), model.getInteraction().getUser().getEdv(), model.getInteraction().getUser().getName(), model.getInteraction().getUser().getInstructor(), model.getInteraction().getUser().getImage())));
+            feeddto.add(new FeedbackProfileDto(model.getStars(), model.getFeedback(), model.getVisibility(), model.getProject().getName(), new GiverDto(model.getInteraction().getUser().getId_user(), model.getInteraction().getUser().getName(), model.getInteraction().getUser().getInstructor(), model.getInteraction().getUser().getImage())));
         }
 
-        return feeddto;
+        return new ResponseEntity<>(feeddto, HttpStatus.OK);
     }
 
     @PostMapping("/feedback")
