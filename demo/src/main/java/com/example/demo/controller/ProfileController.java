@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.Token;
 import com.example.demo.dto.FeedBack.FeedbackProfileDto;
+import com.example.demo.dto.FeedBack.UpdateFeedback;
 import com.example.demo.dto.FeedBack.FeedBackPostDto;
 import com.example.demo.dto.interaction.InteractionExtra;
 import com.example.demo.dto.interaction.InteractionFullDto;
@@ -243,6 +244,27 @@ public class ProfileController {
         }
 
         return new ResponseEntity<>(feeddto, HttpStatus.OK);
+    }
+
+    @PatchMapping("/feedback")
+    public ResponseEntity<String> patchFeedback (@RequestAttribute Token token, @RequestBody UpdateFeedback id) {
+
+        var found = feedRepo.findById(id.feddbackId());
+
+        if (found.isEmpty())
+        return new ResponseEntity<>("Feedback não encontrado", HttpStatus.NOT_FOUND);
+
+        var esse = found.get();
+
+
+        if (esse.getReceptor().getId_user() != token.userId())
+            return new ResponseEntity<>("Soemnte o usuário pode alterar isso", HttpStatus.UNAUTHORIZED);
+
+
+        esse.setVisibility(esse.getVisibility() ? false: true);
+        feedRepo.save(esse);
+
+        return new ResponseEntity<>( "Feedback foi alterado para: " + esse.getVisibility().toString() , HttpStatus.OK);
     }
 
     @PostMapping("/feedback")
