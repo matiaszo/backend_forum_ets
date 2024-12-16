@@ -43,7 +43,13 @@ public class TopicService implements TopicInterface {
         topic = repo.save(topic); 
 
         InteractionModel interaction = new InteractionModel();
-        interaction.setUser(null); 
+
+        var userfound = userRepo.findById(info.id());
+
+        if (userfound.isEmpty())
+            return  null;
+
+        interaction.setUser(userfound.get()); 
         interaction.setType("COMMENT");
         interaction.setDate(new Timestamp(new Date().getTime()));
     
@@ -55,13 +61,16 @@ public class TopicService implements TopicInterface {
             interaction.setUser(null);
         }
     
-        interactionRepo.save(interaction); 
+        interaction = interactionRepo.save(interaction); 
 
         CommentModel comment = new CommentModel();
         comment.setContent(info.info().mainComment());
         comment.setTopic(topic);
         comment.setInteraction(interaction); 
-        commentRepo.save(comment); 
+
+        System.out.println(comment);
+
+        comment  = commentRepo.save(comment); 
     
         var sec = sectionRepo.findById(info.info().idSection());
         topic.setSection(sec.isPresent() ? sec.get() : null);
