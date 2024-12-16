@@ -67,7 +67,7 @@ public class ChatController {
         model.setName(name.name());
 
         repo.save(model);
-        return new ResponseEntity<>(new ChatDataDto(model.getId_chat(), model.getName()), HttpStatus.OK);
+        return new ResponseEntity<>(new ChatDataDto(model.getId_chat(), model.getName(), ""),HttpStatus.OK);
     }
 
     @PostMapping("/{id}")
@@ -106,9 +106,8 @@ public class ChatController {
     private ChatDataDto transformToDTO(ChatModel section) {
         return new ChatDataDto(
             section.getId_chat(),
-            section.getName()
-
-        
+            section.getName(),
+            section.getMessages().size() > 0 ? section.getMessages().get(0).getText() : "Sem mensagens" 
         );
     }
 
@@ -116,38 +115,11 @@ public class ChatController {
     public List<ChatDataDto> getchats(@RequestAttribute Token token, Integer page, String name) {
 
         var results = repo.findAll();
+
             return results.stream()
                     .map(this::transformToDTO) 
                     .collect(Collectors.toCollection(ArrayList::new));
-                  // List<ChatModel> chats;
-              
-                  // if (name != null) {
-                  //     chats = repo.findByNameContains(name);
-                  //     System.out.println(chats);
-                  // } else {
-                  //     chats = repo.findByNameContains("");
-                  //     System.out.println(chats);
-                  // }
-              
-              
-                  // Integer countModel = 0;
-                  // Integer countPage = 1;
-              
-                  // List<ChatDataDto> returnDto = new ArrayList<>();
-              
-                  // for (ChatModel chatModel : chats) {
-                      
-                  //     if (countModel == 10) {
-                  //         countPage++;
-                  //         countModel = 0;
-                  //     }
-              
-                  //     if (countPage == page)
-                  //         returnDto.add(new ChatDataDto(chatModel.getId_chat(), chatModel.getName()));
-                      
-              
-                  //     countModel++;
-                  // }
+                  
     }
 
     @GetMapping("/{idchat}")
