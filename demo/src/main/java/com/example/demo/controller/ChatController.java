@@ -107,10 +107,7 @@ public class ChatController {
         return new ChatDataDto(
             section.getId_chat(),
             section.getName(),
-            
-            ""
-
-        
+            section.getMessages().size() > 0 ? section.getMessages().get(0).getText() : "Sem mensagens" 
         );
     }
 
@@ -122,35 +119,7 @@ public class ChatController {
             return results.stream()
                     .map(this::transformToDTO) 
                     .collect(Collectors.toCollection(ArrayList::new));
-                  // List<ChatModel> chats;
-              
-                  // if (name != null) {
-                  //     chats = repo.findByNameContains(name);
-                  //     System.out.println(chats);
-                  // } else {
-                  //     chats = repo.findByNameContains("");
-                  //     System.out.println(chats);
-                  // }
-              
-              
-                  // Integer countModel = 0;
-                  // Integer countPage = 1;
-              
-                  // List<ChatDataDto> returnDto = new ArrayList<>();
-              
-                  // for (ChatModel chatModel : chats) {
-                      
-                  //     if (countModel == 10) {
-                  //         countPage++;
-                  //         countModel = 0;
-                  //     }
-              
-                  //     if (countPage == page)
-                  //         returnDto.add(new ChatDataDto(chatModel.getId_chat(), chatModel.getName()));
-                      
-              
-                  //     countModel++;
-                  // }
+                  
     }
 
     @GetMapping("/{idchat}")
