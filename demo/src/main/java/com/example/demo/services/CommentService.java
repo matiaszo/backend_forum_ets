@@ -77,7 +77,7 @@ public class CommentService implements CommentInterface {
             }
         }
 
-        commentRepo.save(comment);
+        comment = commentRepo.save(comment);
 
         return new CommentDTO(data.userId(), data.topicId(), data.content(), comment.getMention().getId_comment());
     }

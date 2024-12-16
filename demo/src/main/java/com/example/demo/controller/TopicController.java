@@ -77,7 +77,7 @@ public class TopicController {
 
         if(page == null)
         {
-            page = 1;
+            page = 0;
         }
         
         if(Topic.isPresent())
@@ -109,6 +109,9 @@ public class TopicController {
                         Usr.getInstructor(),
                         Usr.getImage()
                     ),
+
+                    Mention == null ? null :
+
                     new MentionDto
                     (
                         Mention.getId_comment(), 
@@ -139,7 +142,8 @@ public class TopicController {
                             Usr.getInstructor(),
                             Usr.getImage()
                         ),
-                        null),
+                        null
+                    ),
                     Comments
                 ), 
                 HttpStatus.OK

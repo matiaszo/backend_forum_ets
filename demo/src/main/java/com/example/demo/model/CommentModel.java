@@ -32,7 +32,7 @@ public class CommentModel {
     @JoinColumn(name = "id_topic")
     private TopicModel topic;
 
-    @OneToOne(orphanRemoval = false)
+    @ManyToOne()
     @JoinColumn(name = "id_mention")
     private CommentModel mention;
 

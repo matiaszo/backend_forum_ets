@@ -46,7 +46,14 @@ public class SkillsController {
     @GetMapping
     public ResponseEntity<List<SkillDataDto>> getAll(String name) {
 
-        var results = repo.findAll();
+        List<SkillsModel> results;
+        if(name == null)
+        {
+            results = repo.findAll();
+        }else
+        {
+            results = repo.findByNameContains(name);
+        }
 
         if (results == null) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
