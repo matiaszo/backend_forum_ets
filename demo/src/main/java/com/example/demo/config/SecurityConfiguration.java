@@ -32,6 +32,7 @@ public class SecurityConfiguration {
                 // permite acesso aos endpoints de login e register livremente
                 .requestMatchers("/auth").permitAll()
                 .requestMatchers("/register").permitAll()
+                .requestMatchers("/user").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(new JWTFilter(jwtService), UsernamePasswordAuthenticationFilter.class)

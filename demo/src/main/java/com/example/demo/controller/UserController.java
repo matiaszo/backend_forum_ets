@@ -6,16 +6,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.Token;
 import com.example.demo.dto.user.UserDataDto;
 import com.example.demo.dto.user.UserSimplifiedDto;
 import com.example.demo.interfaces.UserInterface;
 import com.example.demo.model.UserModel;
+import com.example.demo.repositories.UserRepository;
 
 @RestController
 @RequestMapping
@@ -23,6 +29,9 @@ public class UserController {
 
     @Autowired
     UserInterface service;
+
+    @Autowired
+    UserRepository userRepo;
 
     @PostMapping("/register")
     public ResponseEntity<Integer> create(@RequestBody UserDataDto user) {
@@ -56,9 +65,11 @@ public class UserController {
 
         results.forEach((item) ->
         {
-            ret.add(new UserSimplifiedDto(item.getId_user(), item.getName(), item.getImage()));
+            ret.add(new UserSimplifiedDto(item.getId_user(), item.getName(), item.getImage(), item.getInstructor()));
         });
 
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
+
+    
 }

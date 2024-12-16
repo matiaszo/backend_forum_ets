@@ -44,7 +44,7 @@ public class SkillsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SkillDataDto>> getAll() {
+    public ResponseEntity<List<SkillDataDto>> getAll(String name) {
 
         var results = repo.findAll();
 
@@ -60,7 +60,7 @@ public class SkillsController {
             allSkills.add(newSkill);
         }
 
-        return new ResponseEntity<>(allSkills, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(allSkills, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

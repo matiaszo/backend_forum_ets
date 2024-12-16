@@ -42,7 +42,7 @@ public class UserService implements UserInterface {
         {
             for (int i = 0; i < users.size(); i++)
             {
-                if(users.get(i).getEmail().contentEquals(email) && users.get(i).getId_user() == id)
+                if(users.get(i).getEmail().contentEquals(email) && users.get(i).getId_user() != id)
                 {
                     return false;
                 }

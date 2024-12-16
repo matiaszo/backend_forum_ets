@@ -4,5 +4,6 @@ public record UserSimplifiedDto
 (
     Long id,
     String name,
-    String image
+    String image,
+    Boolean instructor
 ){}
