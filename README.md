@@ -518,7 +518,7 @@
         password : string | null
         name : string | null
         email : string | null
-        github : string | null
+        gitUsername : string | null
         bio : string | null
         image : string | null
     }
@@ -742,6 +742,7 @@
     {
         id : number
         name : string
+        date: string
 
         messages : [
             {
