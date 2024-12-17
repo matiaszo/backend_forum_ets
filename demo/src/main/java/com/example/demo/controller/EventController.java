@@ -50,7 +50,8 @@ public class EventController
                 (
                     item.getUser().getId_user(),
                     item.getUser().getName(),
-                    item.getUser().getImage()
+                    item.getUser().getImage(),
+                    item.getUser().getInstructor()
                 )
             ));
         });
@@ -77,7 +78,8 @@ public class EventController
                 (
                     item.getUser().getId_user(),
                     item.getUser().getName(),
-                    item.getUser().getImage()
+                    item.getUser().getImage(),
+                    item.getUser().getInstructor()
                 )
             ));
         });
