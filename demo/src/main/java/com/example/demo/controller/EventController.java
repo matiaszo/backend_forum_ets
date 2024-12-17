@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.Token;
@@ -87,7 +90,35 @@ public class EventController
         return new ResponseEntity<>(Ret, HttpStatus.OK);
     }
 
-    @GetMapping()
+    @RequestMapping(value = {"/event/{id}", "/news/{id}"}, method = RequestMethod.GET)
+    public ResponseEntity<EventDto> GetEvent(@RequestAttribute Token token, @PathVariable Long id)
+    {
+        Optional<EventModel> Event = EventRep.findById(id);
+        if(!Event.isPresent())
+        {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        EventModel e = Event.get();
+        return new ResponseEntity<>
+        (
+            new EventDto
+            (
+                e.getId_event(),
+                e.getType(),
+                e.getText(),
+                e.getImage(),
+                e.getTitle(),
+                new UserSimplifiedDto
+                (
+                    e.getUser().getId_user(),
+                    e.getUser().getName(),
+                    e.getUser().getImage(),
+                    e.getUser().getInstructor()
+                )
+            ),
+            HttpStatus.OK
+        );
+    }
 
     @PostMapping("/event")
     public ResponseEntity<String> CreateEvent(@RequestAttribute Token token, @RequestBody NewEventDto EventData)
