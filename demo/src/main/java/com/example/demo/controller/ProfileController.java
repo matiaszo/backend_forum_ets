@@ -254,31 +254,31 @@ public class ProfileController {
             if (token.userId() != id && !model.getVisibility()) 
                 continue;
             
-            feeddto.add(new FeedbackProfileDto(model.getStars(), model.getFeedback(), model.getVisibility(), model.getProject().getName(), new GiverDto(model.getInteraction().getUser().getId_user(), model.getInteraction().getUser().getName(), model.getInteraction().getUser().getInstructor(), model.getInteraction().getUser().getImage())));
+            feeddto.add(new FeedbackProfileDto(model.getFeedbackId() ,model.getStars(), model.getFeedback(), model.getVisibility(), model.getProject().getName(), new GiverDto(model.getInteraction().getUser().getId_user(), model.getInteraction().getUser().getName(), model.getInteraction().getUser().getInstructor(), model.getInteraction().getUser().getImage())));
         }
 
         return new ResponseEntity<>(feeddto, HttpStatus.OK);
     }
 
-    @PatchMapping("/feedback")
-    public ResponseEntity<String> patchFeedback (@RequestAttribute Token token, @RequestBody UpdateFeedback id) {
+    @PatchMapping("/feedback/{id}")
+    public ResponseEntity<String> patchFeedback (@RequestAttribute Token token, @PathVariable Long id) {
 
-        var found = feedRepo.findById(id.feddbackId());
+        var found = feedRepo.findById(id);
 
         if (found.isEmpty())
-        return new ResponseEntity<>("Feedback não encontrado", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Feedback não encontrado", HttpStatus.NOT_FOUND);
 
         var esse = found.get();
 
 
         if (esse.getReceptor().getId_user() != token.userId())
-            return new ResponseEntity<>("Soemnte o usuário pode alterar isso", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("Somente o usuário pode alterar isso", HttpStatus.UNAUTHORIZED);
 
 
         esse.setVisibility(esse.getVisibility() ? false: true);
         feedRepo.save(esse);
 
-        return new ResponseEntity<>( "Feedback foi alterado para: " + esse.getVisibility().toString() , HttpStatus.OK);
+        return new ResponseEntity<>( esse.getVisibility().toString() , HttpStatus.OK);
     }
 
     @PostMapping("/feedback")
