@@ -15,6 +15,7 @@ public record ProfileDto(
     String name,
     Boolean instructor,
     Boolean isUser,
+    Integer interactionNumber,
     List<SkillProfileDto> skills,
     List<InterestProfileDto> interests
 ) {}

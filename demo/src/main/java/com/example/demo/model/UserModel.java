@@ -42,6 +42,17 @@ public class UserModel {
     @Column
     private String gitUsername;
 
+    @Column
+    private Integer interactionNumber;
+
+    public Integer getInteractionNumber() {
+        return interactionNumber;
+    }
+
+    public void setInteractionNumber(Integer interactionNumber) {
+        this.interactionNumber = interactionNumber;
+    }
+
     //! fOREGIN KEYS ENVIADAS
     @OneToMany(mappedBy="user", orphanRemoval = true)
     private List<InterestModel> interest;

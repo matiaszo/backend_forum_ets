@@ -177,9 +177,11 @@ public class ProfileController {
             InterestDto.add(new InterestProfileDto(inter.getId_interest(), inter.getName()));
         }
 
+        var num = userRepo.findById(model.getId_user()).get().getInteractions().size();
+
         var isUser = token.userId() == id ? true : false;
         
-        return new ResponseEntity<>(new ProfileDto(model.getId_user(), model.getBio(), model.getEdv(), model.getEmail(), model.getGitUsername(), model.getImage(), model.getName(), model.getInstructor(), isUser, skillsProfile, InterestDto), HttpStatus.OK);
+        return new ResponseEntity<>(new ProfileDto(model.getId_user(), model.getBio(), model.getEdv(), model.getEmail(), model.getGitUsername(), model.getImage(), model.getName(), model.getInstructor(), isUser, num, skillsProfile, InterestDto), HttpStatus.OK);
     }
 
     //! PARTE DOS INTERESSES

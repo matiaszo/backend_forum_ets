@@ -156,6 +156,7 @@ public class ProjectController
         ProjectModel Project = new ProjectModel();
         Project.setName(data.name());
         Project.setDescription(data.description());
+        Project.setImage(data.image());
 
         Project = ProjectRep.save(Project);
 
