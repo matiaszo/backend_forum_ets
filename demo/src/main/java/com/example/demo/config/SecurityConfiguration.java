@@ -33,7 +33,6 @@ public class SecurityConfiguration {
                 .requestMatchers("/auth").permitAll()
                 .requestMatchers("/register").permitAll()
                 .requestMatchers("/user").permitAll()
-                // .requestMatchers("/projects").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(new JWTFilter(jwtService), UsernamePasswordAuthenticationFilter.class)

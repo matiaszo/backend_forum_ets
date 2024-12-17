@@ -67,7 +67,7 @@ public class SkillsController {
             allSkills.add(newSkill);
         }
 
-        return new ResponseEntity<>(allSkills, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(allSkills, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
